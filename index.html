@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#0A0908">
+<meta name="color-scheme" content="light">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Shaolin One">
+<title>Shaolin One · Programme quotidien</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800;9..144,900&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --paper: #FFFFFF;
+    --paper-deep: #F4F4F2;
+    --paper-card: #FFFFFF;
+    --ink: #0A0908;
+    --ink-soft: #4A4845;
+    --ink-faint: #8C8985;
+    --line: rgba(10, 9, 8, 0.14);
+    --line-soft: rgba(10, 9, 8, 0.07);
+
+    --rust: #B23A1F;
+    --rust-deep: #6E1F0E;
+    --rust-bg: #FBEAE3;
+
+    --pine: #1F5234;
+    --pine-deep: #133320;
+    --pine-bg: #E5F0E5;
+
+    --indigo: #243757;
+    --indigo-deep: #131F36;
+    --indigo-bg: #E2E6EE;
+
+    --amber: #7A4A0A;
+    --amber-bg: #F8EAD0;
+
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+    --safe-top: env(safe-area-inset-top, 0);
+    --safe-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    /* Forme stays light by design — no dark mode override */
+  }
+
+  html { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+  }
+
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-bottom: calc(40px + var(--safe-bottom));
+  }
+
+  .app {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ============ HEADER ============ */
+  .top-bar {
+    padding-top: calc(18px + var(--safe-top));
+    padding-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: -0.025em;
+    font-variation-settings: "opsz" 144;
+  }
+  .brand-dot {
+    color: var(--rust);
+  }
+  .brand-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* ============ DAY PICKER ============ */
+  .day-picker {
+    position: sticky;
+    top: 0;
+    background: var(--paper);
+    background: linear-gradient(to bottom, var(--paper) 80%, transparent);
+    padding: 6px 0 16px;
+    z-index: 10;
+    margin: 0 -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .day-pills {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+  }
+  .day-pill {
+    appearance: none;
+    background: var(--paper-deep);
+    border: 1px solid transparent;
+    color: var(--ink-soft);
+    padding: 10px 4px 9px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.1;
+    transition: all 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    letter-spacing: 0.02em;
+  }
+  .day-pill .day-num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+  .day-pill:active { transform: scale(0.96); }
+  .day-pill.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .day-pill.active .day-num { color: var(--paper); opacity: 0.6; }
+  .day-pill.today:not(.active) {
+    border-color: var(--rust);
+    color: var(--rust);
+  }
+
+  /* ============ DAY HERO ============ */
+  .day-hero {
+    padding: 14px 0 20px;
+    border-bottom: 0.5px solid var(--line);
+    margin-bottom: 18px;
+  }
+  .day-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .day-name {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    font-variation-settings: "opsz" 144;
+    margin-bottom: 10px;
+    color: var(--ink);
+  }
+  .day-theme {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+  }
+  .day-meta {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .meta-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .meta-value {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* ============ SECTIONS ============ */
+  .section {
+    margin-bottom: 28px;
+  }
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--line-soft);
+  }
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-variation-settings: "opsz" 100;
+  }
+  .section-time {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+
+  /* ============ EXERCISE / STRETCH CARDS ============ */
+  .card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 14px 14px 12px;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .card-icon {
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    border-radius: 10px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-icon.effort { background: var(--rust-bg); }
+  .card-icon.recup { background: var(--pine-bg); }
+  .card-icon.mind { background: var(--indigo-bg); }
+  .card-icon.warm { background: var(--amber-bg); }
+  .card-icon svg { width: 100%; height: 100%; display: block; }
+  .card-body { flex: 1; min-width: 0; }
+  .card-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: baseline;
+    margin-bottom: 6px;
+    flex-wrap: wrap;
+  }
+  .card-name {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 1.3;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .card-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .card-tag.effort { background: var(--rust-bg); color: var(--rust-deep); }
+  .card-tag.recup { background: var(--pine-bg); color: var(--pine-deep); }
+  .card-tag.mind { background: var(--indigo-bg); color: var(--indigo-deep); }
+  .card-cues {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .card-cues li {
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 2px;
+  }
+  .card-cues li::before {
+    content: "·";
+    position: absolute;
+    left: 4px;
+    top: 0;
+    color: var(--ink-faint);
+    font-weight: 700;
+  }
+
+  /* ============ WARMUP STRIP ============ */
+  .warm-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+  .warm-cell {
+    background: var(--amber-bg);
+    border-radius: 10px;
+    padding: 10px 8px 9px;
+    text-align: center;
+    color: var(--amber);
+  }
+  .warm-cell-icon {
+    width: 28px;
+    height: 28px;
+    margin: 0 auto 5px;
+  }
+  .warm-cell-icon svg { width: 100%; height: 100%; display: block; }
+  .warm-cell-name {
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 2px;
+    color: var(--ink);
+  }
+  .warm-cell-time {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-soft);
+  }
+
+  /* ============ CIRCUIT BANNER ============ */
+  .circuit-banner {
+    background: var(--rust-bg);
+    border-radius: 10px;
+    padding: 9px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--rust-deep);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .circuit-banner strong { font-weight: 600; }
+
+  /* ============ MENTAL CARD ============ */
+  .mental-card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px;
+  }
+  .mental-head {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .mental-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--indigo-bg);
+    padding: 4px;
+  }
+  .mental-icon svg { width: 100%; height: 100%; }
+  .mental-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: -0.015em;
+    font-variation-settings: "opsz" 100;
+  }
+  .mental-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+  .protocol-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .protocol-stat {
+    background: var(--indigo-bg);
+    border-radius: 8px;
+    padding: 9px 6px 8px;
+    text-align: center;
+  }
+  .protocol-num {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--indigo-deep);
+    font-variation-settings: "opsz" 144;
+    letter-spacing: -0.02em;
+  }
+  .protocol-label {
+    font-size: 10px;
+    color: var(--indigo);
+    margin-top: 3px;
+    line-height: 1.2;
+  }
+  .breath-cycle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .breath-half {
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+  .breath-in { background: var(--indigo-bg); color: var(--indigo-deep); }
+  .breath-out { background: var(--amber-bg); color: var(--amber); }
+  .breath-action { font-size: 13px; font-weight: 500; margin-bottom: 1px; }
+  .breath-detail { font-family: var(--font-mono); font-size: 11px; opacity: 0.75; }
+  .mental-tips {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .mental-tips li {
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--ink-soft);
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 2px;
+  }
+  .mental-tips li::before {
+    content: "·";
+    position: absolute;
+    left: 4px;
+    top: 0;
+    color: var(--ink-faint);
+    font-weight: 700;
+  }
+
+  /* ============ APNEA ROW ============ */
+  .apnea {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 14px;
+    background: var(--paper-deep);
+    border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+  .apnea-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--paper-card);
+    padding: 4px;
+    flex-shrink: 0;
+  }
+  .apnea-icon svg { width: 100%; height: 100%; }
+  .apnea-body { flex: 1; }
+  .apnea-status {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--amber);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .apnea-status.recommended { color: var(--rust); }
+  .apnea-text {
+    font-size: 12.5px;
+    line-height: 1.4;
+    color: var(--ink-soft);
+  }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    margin-top: 36px;
+    padding: 20px 0;
+    border-top: 0.5px solid var(--line-soft);
+    text-align: center;
+  }
+  .footer-text {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+  }
+
+  /* ============ INSTALL HINT ============ */
+  .install-hint {
+    position: fixed;
+    bottom: calc(16px + var(--safe-bottom));
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    display: none;
+    align-items: center;
+    gap: 10px;
+    z-index: 100;
+  }
+  .install-hint.show { display: inline-flex; }
+  .install-hint button {
+    background: none;
+    border: none;
+    color: var(--paper);
+    opacity: 0.6;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 0 0 4px;
+  }
+
+  /* ============ TRANSITIONS ============ */
+  .day-content {
+    animation: fade-in 0.25s ease;
+  }
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* iPhone Safari home-screen full-screen styling */
+  @supports (padding: max(0px)) {
+    .top-bar { padding-top: max(18px, calc(env(safe-area-inset-top) + 8px)); }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header class="top-bar">
+    <div class="brand">Shaolin One<span class="brand-dot">.</span></div>
+    <div class="brand-meta" id="today-label">Programme</div>
+  </header>
+
+  <nav class="day-picker">
+    <div class="day-pills" id="day-pills"></div>
+  </nav>
+
+  <main id="day-content"></main>
+
+  <footer class="footer">
+    <p class="footer-text">Programme personnalisé · 20 min/jour<br>Lecture hors-ligne · v1.0</p>
+  </footer>
+
+</div>
+
+<div class="install-hint" id="install-hint">
+  <span id="install-msg">Ajoute à l'écran d'accueil pour une expérience app</span>
+  <button onclick="document.getElementById('install-hint').classList.remove('show')">×</button>
+</div>
+
+<script>
+// ============================================================
+//  DATA — All 7 days
+// ============================================================
+const days = [
+  {
+    id: 'lun',
+    name: 'Lundi',
+    num: '01',
+    theme: 'Pecs, épaules, triceps',
+    duration: '20 min',
+    focus: 'Push',
+    warmup: [
+      { name: 'Jumping jacks', time: '1 min', icon: 'jumping-jacks' },
+      { name: 'Rotations épaules', time: '1 min', icon: 'shoulder-rotation' },
+      { name: 'Mobilité poignets', time: '1 min', icon: 'wrist-mobility' }
+    ],
+    circuit: {
+      meta: '3 tours · ~20 sec récup entre exos · ~3 min/tour',
+      exercises: [
+        {
+          name: 'Pompes', tag: '12 reps', icon: 'pushup',
+          cues: [
+            'Mains largeur d\'épaules, gainage actif, corps en ligne droite',
+            'Descente contrôlée 2 sec, poitrine à hauteur des poings',
+            'Sur les genoux la première semaine si besoin'
+          ]
+        },
+        {
+          name: 'Développé militaire haltères', tag: '12 reps · 5 kg', icon: 'overhead-press',
+          cues: [
+            'Départ haltères au niveau des épaules, paumes vers l\'avant',
+            'Pousse à la verticale, sans verrouiller les coudes',
+            'Gainage abdo, ne cambre pas le bas du dos'
+          ]
+        },
+        {
+          name: 'Élévations latérales', tag: '15 reps · 2 kg', icon: 'lateral-raise',
+          cues: [
+            'Coudes légèrement fléchis, monte jusqu\'à hauteur d\'épaule',
+            'Tempo lent : 1 sec montée, 2 sec descente',
+            'Ne balance pas le buste pour t\'aider'
+          ]
+        },
+        {
+          name: 'Dips sur chaise', tag: '10 reps', icon: 'dips',
+          cues: [
+            'Mains sur le rebord, doigts pointant vers l\'avant',
+            'Coudes à 90°, bassin proche du siège',
+            'Trop dur : pieds rapprochés. Trop facile : jambes tendues'
+          ]
+        },
+        {
+          name: 'Mountain climbers', tag: '30 sec', icon: 'mountain-climbers',
+          cues: [
+            'Position planche stable, mains sous les épaules',
+            'Alterne les genoux vers la poitrine, rythme rapide',
+            'Bassin bas, gainage permanent'
+          ]
+        }
+      ]
+    },
+    stretches: [
+      { name: 'Pectoraux contre mur', tag: '1 min · 30 sec/côté', icon: 'pec-stretch',
+        cues: ['Avant-bras contre un mur, coude à hauteur d\'épaule', 'Avance le buste, tourne le torse à l\'opposé', 'Sensation dans le pec, jamais dans l\'épaule'] },
+      { name: 'Deltoïde postérieur (cross-body)', tag: '1 min · 30 sec/bras', icon: 'cross-body',
+        cues: ['Bras tendu en travers de la poitrine', 'Tire au niveau du coude, pas du poignet', 'Garde l\'épaule basse'] },
+      { name: 'Triceps overhead', tag: '1 min · 30 sec/bras', icon: 'triceps-overhead',
+        cues: ['Bras levé, coude plié, main entre les omoplates', 'Pousse doucement le coude vers l\'arrière', 'Buste droit, ne cambre pas'] },
+      { name: 'Sleeper stretch (rotateurs)', tag: '1 min · 30 sec/côté', icon: 'sleeper',
+        cues: ['Allongé sur le côté, bras à 90° devant toi', 'Pousse l\'avant-bras vers le sol, lentement', 'Stop avant toute douleur'] },
+      { name: 'Cobra (chaîne antérieure)', tag: '1 min', icon: 'cobra',
+        cues: ['Sur le ventre, mains sous les épaules', 'Pousse le buste, épaules basses', 'Étire abdos, pecs et avant des épaules'] }
+    ],
+    mental: { type: 'coherence', duration: '2 min (plus efficace 5 min)' },
+    apnea: { status: 'optional', text: 'Pas de synergie particulière avec une séance push. À privilégier les soirs après cardio (mardi) ou boxe (vendredi). Si tu y tiens lundi, fais-le simplement avant le coucher.' }
+  },
+
+  {
+    id: 'mar',
+    name: 'Mardi',
+    num: '02',
+    theme: 'HIIT cardio & core',
+    duration: '20 min',
+    focus: 'Cardio',
+    warmup: [
+      { name: 'Montées de genoux', time: '1 min', icon: 'high-knees' },
+      { name: 'Talons-fesses', time: '1 min', icon: 'heel-kicks' },
+      { name: 'Rotations bassin', time: '1 min', icon: 'hip-rotation' }
+    ],
+    circuit: {
+      meta: '3 blocs Tabata · 4 min chacun · 8 × (20 sec effort / 10 sec repos)',
+      exercises: [
+        {
+          name: 'Bloc 1 · Cardio', tag: '4 min', icon: 'tabata-cardio',
+          cues: [
+            'Burpees · squats sautés · high knees · shadow boxing',
+            'Un exercice par cycle de 30 sec, on tourne sur les 4 min',
+            'Intensité max sur les 20 sec, vraiment max'
+          ]
+        },
+        {
+          name: 'Bloc 2 · Core', tag: '4 min', icon: 'tabata-core',
+          cues: [
+            'Planche · russian twists 5 kg · mountain climbers · leg raises',
+            'Même format Tabata, on tourne sur les 4 exos',
+            'Gainage actif partout, qualité avant vitesse'
+          ]
+        },
+        {
+          name: 'Bloc 3 · Boxe', tag: '4 min', icon: 'shadow-box',
+          cues: [
+            'Shadow boxing libre, intensité max, jeu de jambes constant',
+            'Combos enchaînés, esquives, déplacements latéraux',
+            'Comme un dernier round, vide le réservoir'
+          ]
+        }
+      ]
+    },
+    stretches: [
+      { name: 'Posture de l\'enfant', tag: '1 min', icon: 'child-pose',
+        cues: ['À genoux, fesses sur les talons, buste sur les cuisses', 'Bras tendus devant, front au sol', 'Respire profondément dans le bas du dos'] },
+      { name: 'Chat-vache', tag: '1 min · 8 cycles', icon: 'cat-cow',
+        cues: ['À quatre pattes, alterne dos creux et dos rond', 'Un cycle complet par respiration', 'Mobilise toute la colonne'] },
+      { name: 'Pigeon (hanches)', tag: '1 min · 30 sec/côté', icon: 'pigeon',
+        cues: ['Une jambe pliée devant, l\'autre tendue derrière', 'Buste vers l\'avant pour intensifier', 'Étire les fessiers et fléchisseurs de hanche'] },
+      { name: 'Étirement abdos (debout)', tag: '1 min', icon: 'standing-back-bend',
+        cues: ['Debout, mains sur les reins, buste vers l\'arrière', 'Étire le diaphragme et les abdos', 'Important après le travail core intense'] },
+      { name: 'Twist allongé', tag: '1 min · 30 sec/côté', icon: 'lying-twist',
+        cues: ['Sur le dos, genou ramené sur le côté opposé', 'Épaules au sol, regard à l\'opposé', 'Décompresse la colonne'] }
+    ],
+    mental: { type: 'visualisation', duration: '2 min (plus efficace 5 min)' },
+    apnea: { status: 'recommended', text: 'Recommandé ce soir. L\'apnée prolonge le bénéfice cardio en améliorant la tolérance au CO2. C\'est aussi le meilleur jour pour progresser sur tes temps.' }
+  },
+
+  {
+    id: 'mer',
+    name: 'Mercredi',
+    num: '03',
+    theme: 'Dos, biceps, avant-bras',
+    duration: '20 min',
+    focus: 'Pull',
+    warmup: [
+      { name: 'Rotations bras', time: '1 min', icon: 'arm-circles' },
+      { name: 'Mobilité scapulaire', time: '1 min', icon: 'scapular' },
+      { name: 'Good mornings', time: '1 min · sans charge', icon: 'good-morning' }
+    ],
+    circuit: {
+      meta: '3 tours · ~20 sec récup · finisher avant-bras à la fin',
+      exercises: [
+        {
+          name: 'Rowing haltère', tag: '12 reps/bras · 5 kg', icon: 'row',
+          cues: [
+            'Buste penché, dos droit, main libre appuyée sur une chaise',
+            'Tire le coude vers l\'arrière, omoplate qui se rétracte',
+            'Descente lente, bien sentir le grand dorsal'
+          ]
+        },
+        {
+          name: 'Tirage menton', tag: '12 reps · 2 × 5 kg', icon: 'upright-row',
+          cues: [
+            'Haltères devant les cuisses, paumes vers le corps',
+            'Tire jusqu\'au menton, coudes plus hauts que les poignets',
+            'Tempo contrôlé, pas de balancier'
+          ]
+        },
+        {
+          name: 'Curl biceps', tag: '12 reps · 5 kg', icon: 'biceps-curl',
+          cues: [
+            'Coudes collés aux flancs, paumes vers le haut',
+            'Monte sans bouger les épaules, contraction au sommet',
+            'Descente complète, bras tendus en bas'
+          ]
+        },
+        {
+          name: 'Curl marteau', tag: '12 reps · 5 kg', icon: 'hammer-curl',
+          cues: [
+            'Comme le curl biceps mais paumes face à face',
+            'Travaille brachial et avant-bras',
+            'Coudes immobiles, focus sur la contraction'
+          ]
+        },
+        {
+          name: 'Finisher avant-bras', tag: '1 min', icon: 'forearm',
+          cues: [
+            'Tes petits appareils, intensité élevée',
+            '30 sec/main, sans pause',
+            'Étirement immédiat des avant-bras à la fin'
+          ]
+        }
+      ]
+    },
+    stretches: [
+      { name: 'Étirement dorsal (porte)', tag: '1 min', icon: 'doorway-lat',
+        cues: ['Mains sur un cadre de porte au-dessus de la tête', 'Recule légèrement, fléchis les genoux', 'Étire grand dorsal et flancs'] },
+      { name: 'Biceps contre mur', tag: '1 min · 30 sec/bras', icon: 'biceps-stretch',
+        cues: ['Bras tendu derrière toi, paume contre le mur', 'Tourne lentement le buste à l\'opposé', 'Sensation dans le biceps et l\'avant-bras'] },
+      { name: 'Avant-bras à genoux', tag: '1 min · alterne', icon: 'forearm-stretch',
+        cues: ['À quatre pattes, paumes au sol, doigts vers les genoux', 'Recule doucement les fesses', 'Étire intensément l\'intérieur de l\'avant-bras'] },
+      { name: 'Étirement trapèzes', tag: '1 min · 30 sec/côté', icon: 'trap-stretch',
+        cues: ['Tête inclinée, main qui tire doucement vers l\'épaule', 'Épaule opposée basse, pas haussée', 'Respire dans la zone tendue'] },
+      { name: 'Posture de l\'enfant bras tendus', tag: '1 min', icon: 'child-pose',
+        cues: ['À genoux, fesses sur les talons', 'Bras tendus devant, paumes au sol', 'Détend tout le dos'] }
+    ],
+    mental: { type: 'mindfulness', duration: '5 min (court 3 min)' },
+    apnea: { status: 'optional', text: 'Facultatif ce soir. Si tu en fais, profite-en pour bosser les apnées statiques sèches assis, plus simples à intégrer en soirée après une séance pull.' }
+  },
+
+  {
+    id: 'jeu',
+    name: 'Jeudi',
+    num: '04',
+    theme: 'Quadri, ischios, fessiers, mollets',
+    duration: '20 min',
+    focus: 'Jambes',
+    warmup: [
+      { name: 'Squats au poids du corps', time: '1 min', icon: 'bodyweight-squat' },
+      { name: 'Fentes alternées', time: '1 min', icon: 'lunge-warm' },
+      { name: 'Mobilité chevilles', time: '1 min', icon: 'ankle-mobility' }
+    ],
+    circuit: {
+      meta: '3 tours · ~25 sec récup entre exos',
+      exercises: [
+        {
+          name: 'Goblet squat', tag: '15 reps · 5 kg', icon: 'goblet-squat',
+          cues: [
+            'Haltère tenu verticalement contre la poitrine',
+            'Descends fesses sous parallèles, dos droit',
+            'Pousse dans les talons à la remontée'
+          ]
+        },
+        {
+          name: 'Fentes marchées', tag: '10/jambe · 2 × 5 kg', icon: 'walking-lunge',
+          cues: [
+            'Un haltère par main le long du corps',
+            'Grand pas, genou arrière proche du sol',
+            'Genou avant aligné avec la pointe du pied'
+          ]
+        },
+        {
+          name: 'Soulevé de terre roumain', tag: '12 reps · 2 × 5 kg', icon: 'rdl',
+          cues: [
+            'Haltères devant les cuisses, jambes presque tendues',
+            'Pousse les fesses vers l\'arrière, dos droit',
+            'Sensation dans les ischios à la descente'
+          ]
+        },
+        {
+          name: 'Mollets unilatéraux', tag: '15/jambe', icon: 'calf-raise',
+          cues: [
+            'Sur la pointe d\'un pied, l\'autre relevé derrière',
+            'Une main au mur pour l\'équilibre',
+            'Amplitude maximale, pause d\'1 sec en haut'
+          ]
+        },
+        {
+          name: 'Wall sit', tag: '45 sec', icon: 'wall-sit',
+          cues: [
+            'Dos plaqué au mur, cuisses parallèles au sol',
+            'Genoux au-dessus des chevilles, pas plus avant',
+            'Respire calmement, ne bloque pas la respiration'
+          ]
+        }
+      ]
+    },
+    stretches: [
+      { name: 'Quadri debout', tag: '1 min · 30 sec/côté', icon: 'quad-stretch',
+        cues: ['Une main qui tient la cheville derrière les fesses', 'Genoux côte à côte, bassin neutre', 'Active légèrement les fessiers'] },
+      { name: 'Ischios assis', tag: '1 min · 30 sec/jambe', icon: 'hamstring',
+        cues: ['Une jambe tendue, l\'autre repliée', 'Buste vers le pied tendu, dos droit', 'Pas besoin d\'attraper le pied'] },
+      { name: 'Pigeon', tag: '1 min · 30 sec/côté', icon: 'pigeon',
+        cues: ['Jambe avant pliée, jambe arrière tendue', 'Buste vers l\'avant pour intensifier', 'Étire fessiers et fléchisseurs'] },
+      { name: 'Mollets contre mur', tag: '1 min · 30 sec/côté', icon: 'calf-stretch',
+        cues: ['Mains au mur, une jambe en arrière, talon au sol', 'Avance la jambe avant pour intensifier', 'Garde le talon arrière planté'] },
+      { name: 'Posture de l\'enfant', tag: '1 min', icon: 'child-pose',
+        cues: ['Fesses sur les talons, buste sur les cuisses', 'Bras tendus devant', 'Décompresse les lombaires'] }
+    ],
+    mental: { type: 'coherence', duration: '2 min (plus efficace 5 min)' },
+    apnea: { status: 'optional', text: 'Facultatif. Si tu choisis d\'en faire, privilégie les apnées dynamiques en marchant lentement — synergique avec le travail des jambes.' }
+  },
+
+  {
+    id: 'ven',
+    name: 'Vendredi',
+    num: '05',
+    theme: 'Boxe technique & cardio',
+    duration: '20 min',
+    focus: 'Combat',
+    warmup: [
+      { name: 'Corde à sauter', time: '1 min · imaginaire', icon: 'jump-rope' },
+      { name: 'Rotations cervicales', time: '1 min', icon: 'neck-rotation' },
+      { name: 'Déplacements', time: '1 min · pas latéraux', icon: 'footwork' }
+    ],
+    circuit: {
+      meta: '3 rounds de 3 min · 30 sec de récup entre rounds',
+      exercises: [
+        {
+          name: 'Round 1 · Technique', tag: '3 min', icon: 'jab-cross',
+          cues: [
+            'Combos direct-direct-crochet, ou jab-cross-hook',
+            'Jeu de jambes constant, jamais figé',
+            'Puissance contrôlée, focus sur la précision'
+          ]
+        },
+        {
+          name: 'Round 2 · Combos + esquives', tag: '3 min', icon: 'slip',
+          cues: [
+            'Combos enchaînés avec esquives entre',
+            'Slip (rotation), bobbing (descente)',
+            'Travail du timing et du rythme'
+          ]
+        },
+        {
+          name: 'Round 3 · Intensité', tag: '3 min', icon: 'sprint-box',
+          cues: [
+            'Intensité maximale, comme un dernier round',
+            'Sprints sur place intercalés (10 sec) tous les 30 sec',
+            'Vide le réservoir, tu récupères pendant les étirements'
+          ]
+        },
+        {
+          name: 'Finisher · Gainage', tag: '1 min', icon: 'plank-side',
+          cues: [
+            '30 sec de planche frontale',
+            '15 sec/côté de gainage latéral',
+            'Termine la séance avec le tronc qui chauffe'
+          ]
+        }
+      ]
+    },
+    stretches: [
+      { name: 'Pectoraux contre mur', tag: '1 min · 30 sec/côté', icon: 'pec-stretch',
+        cues: ['Avant-bras contre mur, coude à hauteur d\'épaule', 'Avance le buste, tourne le torse à l\'opposé', 'Très important après les combos'] },
+      { name: 'Étirement cervicales', tag: '1 min', icon: 'neck-stretch',
+        cues: ['Tête inclinée vers l\'épaule, mouvement lent', '15 sec dans chaque direction', 'Détend les zones tendues par les esquives'] },
+      { name: 'Hanches debout', tag: '1 min · 30 sec/côté', icon: 'hip-flexor',
+        cues: ['Une jambe en arrière, genou plié', 'Pousse le bassin vers l\'avant', 'Étire les fléchisseurs sollicités par le jeu de jambes'] },
+      { name: 'Dorsaux & flancs', tag: '1 min', icon: 'side-bend',
+        cues: ['Debout, bras levé, buste incliné sur le côté', '30 sec/côté, étirement de tout le flanc', 'Mobilise les obliques et grand dorsal'] },
+      { name: 'Posture de l\'enfant', tag: '1 min', icon: 'child-pose',
+        cues: ['Fesses sur les talons, bras tendus devant', 'Respire profondément', 'Marque la fin de la séance'] }
+    ],
+    mental: { type: 'visualisation-boxer', duration: '3 min (plus efficace 5 min)' },
+    apnea: { status: 'recommended', text: 'Recommandé ce soir — c\'est la synergie classique des boxeurs. L\'apnée affine la gestion du souffle sous effort que tu as travaillée pendant la séance.' }
+  },
+
+  {
+    id: 'sam',
+    name: 'Samedi',
+    num: '06',
+    theme: 'Tempo lent, mobilité',
+    duration: '20 min',
+    focus: 'Full body',
+    warmup: [
+      { name: 'Flow articulaire', time: '1 min · cervicales→chevilles', icon: 'flow' },
+      { name: 'Rotations torse', time: '1 min', icon: 'torso-rotation' },
+      { name: 'Mobilité genoux', time: '1 min', icon: 'knee-mobility' }
+    ],
+    circuit: {
+      meta: '3 tours · tempo lent et contrôlé · pas de pause entre exos',
+      exercises: [
+        {
+          name: 'Squat-press', tag: '15 reps · 2 × 2 kg', icon: 'thruster',
+          cues: [
+            'Haltères au niveau des épaules en bas du squat',
+            'Au lever, pousse les haltères au-dessus de la tête',
+            'Mouvement fluide, pas saccadé'
+          ]
+        },
+        {
+          name: 'Pompes lentes', tag: '10 reps · 3 sec descente', icon: 'pushup-slow',
+          cues: [
+            'Descente très contrôlée sur 3 secondes',
+            'Pause d\'1 sec en bas, montée normale',
+            'Qualité maximale, gainage permanent'
+          ]
+        },
+        {
+          name: 'Rowing penché', tag: '12 reps · 2 × 5 kg', icon: 'bent-row',
+          cues: [
+            'Buste à 45°, dos droit, jambes légèrement fléchies',
+            'Tire les haltères vers les hanches, coudes près du corps',
+            'Contracte le dos en haut du mouvement'
+          ]
+        },
+        {
+          name: 'Fentes alternées', tag: '10/jambe · 2 × 2 kg', icon: 'lunge-alt',
+          cues: [
+            'Un haltère par main, le long du corps',
+            'Tempo lent, descente contrôlée',
+            'Genou arrière proche du sol sans le toucher'
+          ]
+        },
+        {
+          name: 'Gainage', tag: '45 sec', icon: 'plank',
+          cues: [
+            'Coudes sous les épaules, corps en ligne droite',
+            'Bassin ni trop haut ni trop bas',
+            'Respire calmement, ne bloque pas'
+          ]
+        }
+      ]
+    },
+    stretches: [
+      { name: 'Étirement complet (étoile)', tag: '1 min', icon: 'star-stretch',
+        cues: ['Allongé sur le dos, bras et jambes en étoile', 'Respire profondément, étire dans toutes les directions', 'Détend tout le corps'] },
+      { name: 'Twist allongé', tag: '1 min · 30 sec/côté', icon: 'lying-twist',
+        cues: ['Genou ramené sur le côté opposé', 'Épaules au sol, regard à l\'opposé', 'Décompresse la colonne'] },
+      { name: 'Pigeon long', tag: '1 min 30 · 45 sec/côté', icon: 'pigeon',
+        cues: ['Jour mobilité : tiens plus longtemps que d\'habitude', 'Buste relâché, respire dans les fessiers', 'Étire fessiers et hanches en profondeur'] },
+      { name: 'Cobra', tag: '1 min', icon: 'cobra',
+        cues: ['Mains sous les épaules, hanches au sol', 'Pousse le buste, épaules basses', 'Étire toute la chaîne antérieure'] },
+      { name: 'Posture de l\'enfant longue', tag: '1 min 30', icon: 'child-pose',
+        cues: ['Tiens plus longtemps qu\'en semaine', 'Bras tendus devant, front au sol', 'Termine sur une longue respiration'] }
+    ],
+    mental: { type: 'mindfulness', duration: '5 min (plus efficace 8 min)' },
+    apnea: { status: 'optional', text: 'Facultatif. Le samedi est un bon jour pour des apnées plus longues et progressives, sans pression de performance.' }
+  },
+
+  {
+    id: 'dim',
+    name: 'Dimanche',
+    num: '07',
+    theme: 'Mobilité douce & étirements profonds',
+    duration: '20 min',
+    focus: 'Récup',
+    warmup: [
+      { name: 'Réveil articulaire', time: '2 min · doux', icon: 'flow' },
+      { name: 'Respirations diaphragmatiques', time: '1 min', icon: 'breath-soft' }
+    ],
+    circuit: {
+      meta: '15 min de mobilité + flow · pas de circuit, on enchaîne',
+      exercises: [
+        {
+          name: 'Flow chat-vache + bébé cobra', tag: '3 min', icon: 'cat-cow',
+          cues: [
+            'À quatre pattes, alterne dos creux et dos rond',
+            'Tous les 3 cycles, descends en bébé cobra',
+            'Mobilise toute la colonne en douceur'
+          ]
+        },
+        {
+          name: 'Salutation au soleil simplifiée', tag: '5 min · 5 cycles', icon: 'sun-salute',
+          cues: [
+            'Enchaînement debout → fente → planche → cobra → debout',
+            'Tempo lent, une respiration par mouvement',
+            '5 cycles complets, la fluidité est l\'objectif'
+          ]
+        },
+        {
+          name: 'Animal flow simplifié', tag: '4 min', icon: 'animal-flow',
+          cues: [
+            'Beast (4 pattes genoux levés) → crab (4 pattes inversé)',
+            'Transitions lentes et contrôlées',
+            'Mobilise hanches, épaules, poignets'
+          ]
+        },
+        {
+          name: 'Posture libre', tag: '3 min', icon: 'free-pose',
+          cues: [
+            'Choisis 1 ou 2 postures qui te font du bien',
+            'Tiens-les plus longtemps que d\'habitude',
+            'Écoute ton corps, c\'est ton jour off'
+          ]
+        }
+      ]
+    },
+    stretches: [
+      { name: 'Étirement complet (5 min)', tag: '5 min', icon: 'star-stretch',
+        cues: ['Tiens chaque posture 45 sec à 1 min', 'Pigeon, twist, cobra, posture de l\'enfant', 'Le double du temps habituel, c\'est le moment'] }
+    ],
+    mental: { type: 'extended', duration: '8 min (plus efficace 10-15 min)' },
+    apnea: { status: 'recommended', text: 'Recommandé. Le dimanche soir, l\'apnée renforce la bascule parasympathique du jour de récup. Idéal avant une bonne nuit.' }
+  }
+];
+
+// ============================================================
+//  SVG ICONS
+// ============================================================
+const icons = {
+  // ============ WARMUP ICONS (mini, 32x32) ============
+  'jumping-jacks': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="16" cy="6" r="2"/><line x1="16" y1="8" x2="16" y2="20"/><line x1="16" y1="11" x2="6" y2="6"/><line x1="16" y1="11" x2="26" y2="6"/><line x1="16" y1="20" x2="10" y2="28"/><line x1="16" y1="20" x2="22" y2="28"/></svg>',
+  'shoulder-rotation': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="16" cy="8" r="2.5"/><line x1="16" y1="11" x2="16" y2="22"/><path d="M 16 13 Q 6 10 8 18"/><path d="M 16 13 Q 26 10 24 18"/><line x1="16" y1="22" x2="12" y2="30"/><line x1="16" y1="22" x2="20" y2="30"/></svg>',
+  'wrist-mobility': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="6" y1="20" x2="20" y2="20"/><circle cx="22" cy="20" r="2"/><path d="M 22 18 Q 26 14 24 12"/><path d="M 22 18 Q 28 18 28 22"/></svg>',
+  'high-knees': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="16" cy="6" r="2"/><line x1="16" y1="8" x2="16" y2="18"/><line x1="16" y1="11" x2="10" y2="16"/><line x1="16" y1="11" x2="22" y2="14"/><line x1="16" y1="18" x2="22" y2="14"/><line x1="22" y1="14" x2="20" y2="22"/><line x1="16" y1="18" x2="14" y2="28"/></svg>',
+  'heel-kicks': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="16" cy="6" r="2"/><line x1="16" y1="8" x2="16" y2="22"/><line x1="16" y1="22" x2="22" y2="20"/><line x1="22" y1="20" x2="18" y2="14"/><line x1="16" y1="22" x2="12" y2="30"/></svg>',
+  'hip-rotation': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="16" cy="6" r="2"/><line x1="16" y1="8" x2="16" y2="18"/><ellipse cx="16" cy="20" rx="6" ry="2"/><line x1="14" y1="22" x2="12" y2="30"/><line x1="18" y1="22" x2="20" y2="30"/></svg>',
+  'arm-circles': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="16" cy="8" r="2"/><line x1="16" y1="10" x2="16" y2="22"/><circle cx="8" cy="14" r="3"/><circle cx="24" cy="14" r="3"/><line x1="16" y1="22" x2="13" y2="30"/><line x1="16" y1="22" x2="19" y2="30"/></svg>',
+  'scapular': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="16" cy="6" r="2"/><line x1="10" y1="14" x2="22" y2="14"/><line x1="16" y1="8" x2="16" y2="22"/><line x1="11" y1="11" x2="13" y2="17"/><line x1="21" y1="11" x2="19" y2="17"/><line x1="16" y1="22" x2="12" y2="30"/><line x1="16" y1="22" x2="20" y2="30"/></svg>',
+  'good-morning': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="14" r="2"/><line x1="10" y1="14" x2="22" y2="20"/><line x1="22" y1="20" x2="22" y2="30"/><line x1="11" y1="14" x2="14" y2="8"/></svg>',
+  'bodyweight-squat': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="16" cy="6" r="2"/><line x1="16" y1="8" x2="16" y2="16"/><line x1="16" y1="13" x2="9" y2="14"/><line x1="16" y1="13" x2="23" y2="14"/><line x1="16" y1="16" x2="10" y2="22"/><line x1="10" y1="22" x2="14" y2="28"/><line x1="16" y1="16" x2="22" y2="22"/><line x1="22" y1="22" x2="18" y2="28"/></svg>',
+  'lunge-warm': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="14" cy="6" r="2"/><line x1="14" y1="8" x2="14" y2="20"/><line x1="14" y1="20" x2="22" y2="28"/><line x1="14" y1="20" x2="8" y2="28"/><line x1="8" y1="28" x2="6" y2="22"/></svg>',
+  'ankle-mobility': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="14" y1="6" x2="14" y2="22"/><circle cx="14" cy="24" r="2"/><line x1="14" y1="26" x2="20" y2="28"/><path d="M 14 24 Q 22 22 24 18"/></svg>',
+  'jump-rope': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="16" cy="6" r="2"/><line x1="16" y1="8" x2="16" y2="20"/><line x1="16" y1="11" x2="11" y2="13"/><line x1="16" y1="11" x2="21" y2="13"/><path d="M 11 13 Q 4 22 16 26 Q 28 22 21 13"/><line x1="16" y1="20" x2="13" y2="28"/><line x1="16" y1="20" x2="19" y2="28"/></svg>',
+  'neck-rotation': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="16" cy="8" r="3"/><path d="M 13 6 Q 10 4 12 2"/><path d="M 19 6 Q 22 4 20 2"/><line x1="16" y1="11" x2="16" y2="22"/><line x1="10" y1="14" x2="22" y2="14"/><line x1="16" y1="22" x2="12" y2="30"/><line x1="16" y1="22" x2="20" y2="30"/></svg>',
+  'footwork': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="16" cy="6" r="2"/><line x1="16" y1="8" x2="16" y2="20"/><line x1="16" y1="11" x2="11" y2="14"/><line x1="16" y1="11" x2="21" y2="14"/><line x1="16" y1="20" x2="9" y2="26"/><line x1="16" y1="20" x2="23" y2="26"/><line x1="6" y1="29" x2="11" y2="29"/><line x1="21" y1="29" x2="26" y2="29"/></svg>',
+  'flow': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M 4 16 Q 10 8 16 16 Q 22 24 28 16"/><circle cx="6" cy="14" r="1.2" fill="currentColor"/><circle cx="26" cy="18" r="1.2" fill="currentColor"/></svg>',
+  'torso-rotation': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="16" cy="6" r="2"/><line x1="16" y1="8" x2="16" y2="20"/><path d="M 8 14 Q 16 12 24 14"/><line x1="16" y1="20" x2="12" y2="30"/><line x1="16" y1="20" x2="20" y2="30"/><path d="M 22 12 L 25 11 L 23 14"/></svg>',
+  'knee-mobility': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="16" cy="6" r="2"/><line x1="16" y1="8" x2="16" y2="14"/><line x1="16" y1="14" x2="20" y2="20"/><circle cx="20" cy="20" r="1.5"/><line x1="20" y1="20" x2="20" y2="28"/><line x1="16" y1="14" x2="12" y2="22"/><line x1="12" y1="22" x2="14" y2="28"/></svg>',
+  'breath-soft': '<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M 4 16 Q 12 10 16 16 Q 20 22 28 16"/><circle cx="16" cy="16" r="1.5" fill="currentColor"/></svg>',
+
+  // ============ EXERCISE ICONS (64x64) ============
+  'pushup': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="48" x2="60" y2="48" stroke-dasharray="3,2" stroke-width="1"/><circle cx="12" cy="28" r="3.5"/><line x1="15" y1="29" x2="48" y2="32"/><line x1="48" y1="32" x2="58" y2="34"/><line x1="20" y1="30" x2="20" y2="46"/><line x1="40" y1="32" x2="40" y2="46"/></svg>',
+  'overhead-press': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="22" r="3.5"/><line x1="32" y1="26" x2="32" y2="48"/><line x1="29" y1="28" x2="20" y2="14"/><line x1="35" y1="28" x2="44" y2="14"/><rect x="16" y="8" width="8" height="6" rx="1"/><rect x="40" y="8" width="8" height="6" rx="1"/><line x1="32" y1="48" x2="26" y2="60"/><line x1="32" y1="48" x2="38" y2="60"/></svg>',
+  'lateral-raise': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="14" r="3.5"/><line x1="32" y1="18" x2="32" y2="42"/><line x1="29" y1="22" x2="10" y2="22"/><line x1="35" y1="22" x2="54" y2="22"/><rect x="4" y="19" width="6" height="6" rx="1"/><rect x="54" y="19" width="6" height="6" rx="1"/><line x1="32" y1="42" x2="26" y2="58"/><line x1="32" y1="42" x2="38" y2="58"/></svg>',
+  'dips': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="56" x2="60" y2="56" stroke-dasharray="3,2" stroke-width="1"/><rect x="38" y="30" width="22" height="3" stroke-width="2"/><line x1="40" y1="33" x2="40" y2="56"/><line x1="58" y1="33" x2="58" y2="56"/><circle cx="20" cy="20" r="3.5"/><line x1="20" y1="24" x2="22" y2="40"/><line x1="22" y1="28" x2="40" y2="32"/><line x1="22" y1="40" x2="34" y2="50"/><line x1="34" y1="50" x2="42" y2="50"/></svg>',
+  'mountain-climbers': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="56" x2="60" y2="56" stroke-dasharray="3,2" stroke-width="1"/><circle cx="10" cy="28" r="3.5"/><line x1="13" y1="30" x2="44" y2="34"/><line x1="44" y1="34" x2="58" y2="36"/><line x1="16" y1="32" x2="14" y2="50"/><line x1="40" y1="36" x2="56" y2="50"/><line x1="30" y1="34" x2="36" y2="44"/></svg>',
+  'tabata-cardio': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="22"/><line x1="32" y1="14" x2="32" y2="32"/><line x1="32" y1="32" x2="44" y2="38"/><circle cx="32" cy="32" r="2" fill="currentColor"/></svg>',
+  'tabata-core': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="48" x2="60" y2="48" stroke-dasharray="3,2" stroke-width="1"/><circle cx="14" cy="32" r="3.5"/><line x1="17" y1="33" x2="50" y2="33"/><line x1="50" y1="33" x2="58" y2="40"/><line x1="22" y1="34" x2="20" y2="46"/><line x1="42" y1="33" x2="44" y2="46"/></svg>',
+  'shadow-box': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="28" cy="14" r="3.5"/><line x1="28" y1="18" x2="28" y2="40"/><line x1="28" y1="22" x2="48" y2="20"/><circle cx="50" cy="20" r="3" fill="currentColor" opacity="0.3"/><line x1="28" y1="24" x2="18" y2="32"/><circle cx="16" cy="32" r="2" fill="currentColor" opacity="0.3"/><line x1="28" y1="40" x2="22" y2="58"/><line x1="28" y1="40" x2="34" y2="58"/></svg>',
+  'row': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="20" r="3.5"/><line x1="17" y1="22" x2="42" y2="30"/><line x1="42" y1="30" x2="50" y2="38"/><line x1="22" y1="24" x2="32" y2="32"/><line x1="32" y1="32" x2="34" y2="22"/><rect x="30" y="14" width="8" height="6" rx="1"/><line x1="42" y1="30" x2="44" y2="48"/><line x1="42" y1="30" x2="36" y2="50"/></svg>',
+  'upright-row': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="14" r="3.5"/><line x1="32" y1="18" x2="32" y2="42"/><line x1="30" y1="22" x2="22" y2="20"/><line x1="34" y1="22" x2="42" y2="20"/><line x1="22" y1="20" x2="26" y2="28"/><line x1="42" y1="20" x2="38" y2="28"/><rect x="22" y="28" width="20" height="5" rx="1"/><line x1="32" y1="42" x2="26" y2="58"/><line x1="32" y1="42" x2="38" y2="58"/></svg>',
+  'biceps-curl': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="14" r="3.5"/><line x1="32" y1="18" x2="32" y2="42"/><line x1="29" y1="22" x2="22" y2="32"/><line x1="22" y1="32" x2="28" y2="22"/><line x1="35" y1="22" x2="42" y2="32"/><line x1="42" y1="32" x2="36" y2="22"/><rect x="22" y="18" width="8" height="5" rx="1"/><rect x="34" y="18" width="8" height="5" rx="1"/><line x1="32" y1="42" x2="26" y2="58"/><line x1="32" y1="42" x2="38" y2="58"/></svg>',
+  'hammer-curl': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="14" r="3.5"/><line x1="32" y1="18" x2="32" y2="42"/><line x1="29" y1="22" x2="22" y2="30"/><line x1="22" y1="30" x2="28" y2="20"/><line x1="35" y1="22" x2="42" y2="30"/><line x1="42" y1="30" x2="36" y2="20"/><rect x="25" y="14" width="5" height="8" rx="1"/><rect x="34" y="14" width="5" height="8" rx="1"/><line x1="32" y1="42" x2="26" y2="58"/><line x1="32" y1="42" x2="38" y2="58"/></svg>',
+  'forearm': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="20" y1="32" x2="44" y2="32"/><circle cx="48" cy="32" r="4"/><circle cx="16" cy="32" r="4"/><path d="M 48 28 Q 56 24 54 18"/><path d="M 16 28 Q 8 24 10 18"/><path d="M 48 36 Q 56 40 54 46"/><path d="M 16 36 Q 8 40 10 46"/></svg>',
+  'goblet-squat': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="14" r="3.5"/><line x1="32" y1="18" x2="32" y2="32"/><rect x="26" y="22" width="12" height="8" rx="2"/><line x1="32" y1="32" x2="22" y2="42"/><line x1="22" y1="42" x2="22" y2="56"/><line x1="32" y1="32" x2="42" y2="42"/><line x1="42" y1="42" x2="42" y2="56"/></svg>',
+  'walking-lunge': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="56" x2="60" y2="56" stroke-dasharray="3,2" stroke-width="1"/><circle cx="28" cy="14" r="3.5"/><line x1="28" y1="18" x2="28" y2="34"/><line x1="22" y1="24" x2="14" y2="34"/><line x1="34" y1="24" x2="42" y2="34"/><rect x="9" y="32" width="8" height="5" rx="1"/><rect x="40" y="32" width="8" height="5" rx="1"/><line x1="28" y1="34" x2="44" y2="50"/><line x1="44" y1="50" x2="44" y2="56"/><line x1="28" y1="34" x2="14" y2="46"/><line x1="14" y1="46" x2="20" y2="56"/></svg>',
+  'rdl': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="56" x2="60" y2="56" stroke-dasharray="3,2" stroke-width="1"/><circle cx="14" cy="22" r="3.5"/><line x1="17" y1="24" x2="44" y2="32"/><line x1="44" y1="32" x2="44" y2="56"/><line x1="22" y1="26" x2="20" y2="40"/><line x1="32" y1="30" x2="30" y2="40"/><rect x="16" y="38" width="8" height="5" rx="1"/><rect x="26" y="38" width="8" height="5" rx="1"/></svg>',
+  'calf-raise': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="56" x2="60" y2="56" stroke-dasharray="3,2" stroke-width="1"/><line x1="50" y1="6" x2="50" y2="56" stroke-width="1"/><circle cx="32" cy="14" r="3.5"/><line x1="32" y1="18" x2="32" y2="38"/><line x1="32" y1="20" x2="46" y2="22"/><line x1="32" y1="38" x2="32" y2="50"/><line x1="32" y1="50" x2="36" y2="50"/><line x1="32" y1="40" x2="28" y2="50"/></svg>',
+  'wall-sit': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="6" y2="56" stroke-width="2.5"/><line x1="6" y1="14" x2="2" y2="10" stroke-width="1"/><line x1="6" y1="30" x2="2" y2="26" stroke-width="1"/><line x1="6" y1="46" x2="2" y2="42" stroke-width="1"/><circle cx="14" cy="22" r="3.5"/><line x1="14" y1="26" x2="14" y2="38"/><line x1="14" y1="38" x2="36" y2="38"/><line x1="36" y1="38" x2="36" y2="56"/><line x1="14" y1="32" x2="22" y2="32"/></svg>',
+  'jab-cross': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="22" cy="14" r="3.5"/><line x1="22" y1="18" x2="22" y2="40"/><line x1="22" y1="22" x2="48" y2="20"/><circle cx="50" cy="20" r="3" fill="currentColor" opacity="0.4"/><line x1="22" y1="24" x2="14" y2="30"/><line x1="22" y1="40" x2="16" y2="58"/><line x1="22" y1="40" x2="28" y2="58"/></svg>',
+  'slip': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="22" cy="18" r="3.5"/><path d="M 22 22 Q 30 30 26 40"/><line x1="22" y1="24" x2="14" y2="32"/><line x1="22" y1="24" x2="32" y2="30"/><line x1="26" y1="40" x2="20" y2="58"/><line x1="26" y1="40" x2="32" y2="58"/><path d="M 38 14 Q 44 18 38 22" stroke-dasharray="2,2" opacity="0.5"/></svg>',
+  'sprint-box': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="56" x2="60" y2="56" stroke-dasharray="3,2" stroke-width="1"/><circle cx="22" cy="12" r="3.5"/><line x1="22" y1="16" x2="20" y2="34"/><line x1="22" y1="20" x2="32" y2="14"/><line x1="22" y1="22" x2="14" y2="28"/><line x1="20" y1="34" x2="14" y2="48"/><line x1="14" y1="48" x2="14" y2="56"/><line x1="20" y1="34" x2="32" y2="44"/><line x1="32" y1="44" x2="38" y2="56"/></svg>',
+  'plank-side': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="56" x2="60" y2="56" stroke-dasharray="3,2" stroke-width="1"/><circle cx="10" cy="34" r="3.5"/><line x1="13" y1="35" x2="56" y2="48"/><line x1="14" y1="36" x2="14" y2="48"/></svg>',
+  'thruster': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="22" r="3.5"/><line x1="32" y1="26" x2="32" y2="40"/><line x1="29" y1="28" x2="22" y2="14"/><line x1="35" y1="28" x2="42" y2="14"/><rect x="18" y="8" width="8" height="6" rx="1"/><rect x="38" y="8" width="8" height="6" rx="1"/><line x1="32" y1="40" x2="24" y2="50"/><line x1="24" y1="50" x2="24" y2="60"/><line x1="32" y1="40" x2="40" y2="50"/><line x1="40" y1="50" x2="40" y2="60"/></svg>',
+  'pushup-slow': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="48" x2="60" y2="48" stroke-dasharray="3,2" stroke-width="1"/><circle cx="12" cy="28" r="3.5"/><line x1="15" y1="29" x2="48" y2="32"/><line x1="48" y1="32" x2="58" y2="34"/><line x1="20" y1="30" x2="20" y2="46"/><line x1="40" y1="32" x2="40" y2="46"/><circle cx="32" cy="14" r="2"/><path d="M 30 14 Q 32 10 34 14" stroke-dasharray="1,1"/></svg>',
+  'bent-row': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="56" x2="60" y2="56" stroke-dasharray="3,2" stroke-width="1"/><circle cx="14" cy="22" r="3.5"/><line x1="17" y1="24" x2="44" y2="32"/><line x1="44" y1="32" x2="42" y2="56"/><line x1="20" y1="26" x2="22" y2="38"/><line x1="30" y1="30" x2="32" y2="38"/><rect x="18" y="38" width="8" height="5" rx="1"/><rect x="28" y="38" width="8" height="5" rx="1"/></svg>',
+  'lunge-alt': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="56" x2="60" y2="56" stroke-dasharray="3,2" stroke-width="1"/><circle cx="32" cy="14" r="3.5"/><line x1="32" y1="18" x2="32" y2="34"/><line x1="32" y1="22" x2="22" y2="30"/><line x1="32" y1="22" x2="42" y2="30"/><rect x="18" y="28" width="6" height="5" rx="1"/><rect x="40" y="28" width="6" height="5" rx="1"/><line x1="32" y1="34" x2="46" y2="50"/><line x1="46" y1="50" x2="46" y2="56"/><line x1="32" y1="34" x2="18" y2="46"/><line x1="18" y1="46" x2="22" y2="56"/></svg>',
+  'plank': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="50" x2="60" y2="50" stroke-dasharray="3,2" stroke-width="1"/><circle cx="10" cy="32" r="3.5"/><line x1="13" y1="34" x2="56" y2="38"/><line x1="14" y1="34" x2="14" y2="48"/><line x1="40" y1="38" x2="44" y2="48"/></svg>',
+  'sun-salute': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="6"/><line x1="32" y1="14" x2="32" y2="22"/><line x1="32" y1="42" x2="32" y2="50"/><line x1="14" y1="32" x2="22" y2="32"/><line x1="42" y1="32" x2="50" y2="32"/><line x1="20" y1="20" x2="25" y2="25"/><line x1="44" y1="20" x2="39" y2="25"/><line x1="20" y1="44" x2="25" y2="39"/><line x1="44" y1="44" x2="39" y2="39"/></svg>',
+  'animal-flow': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="56" x2="60" y2="56" stroke-dasharray="3,2" stroke-width="1"/><circle cx="14" cy="32" r="3"/><line x1="17" y1="33" x2="34" y2="34"/><line x1="34" y1="34" x2="44" y2="40"/><line x1="20" y1="34" x2="20" y2="48"/><line x1="20" y1="48" x2="22" y2="52"/><line x1="34" y1="34" x2="34" y2="48"/><line x1="34" y1="48" x2="36" y2="52"/></svg>',
+  'free-pose': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="20" r="4"/><line x1="32" y1="24" x2="32" y2="40"/><line x1="32" y1="28" x2="20" y2="20"/><line x1="32" y1="28" x2="44" y2="20"/><line x1="32" y1="40" x2="22" y2="50"/><line x1="32" y1="40" x2="42" y2="50"/></svg>',
+
+  // ============ STRETCH ICONS (64x64) ============
+  'pec-stretch': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="56" y1="6" x2="56" y2="58" stroke-width="2.5"/><line x1="56" y1="14" x2="62" y2="8" stroke-width="1"/><line x1="56" y1="30" x2="62" y2="24" stroke-width="1"/><line x1="56" y1="46" x2="62" y2="40" stroke-width="1"/><circle cx="22" cy="14" r="3.5"/><line x1="22" y1="18" x2="22" y2="40"/><line x1="22" y1="22" x2="44" y2="22"/><line x1="44" y1="22" x2="44" y2="8"/><line x1="22" y1="24" x2="14" y2="38"/><line x1="22" y1="40" x2="16" y2="58"/><line x1="22" y1="40" x2="28" y2="58"/></svg>',
+  'cross-body': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="14" r="3.5"/><line x1="32" y1="18" x2="32" y2="42"/><line x1="35" y1="22" x2="14" y2="28"/><line x1="29" y1="22" x2="22" y2="32"/><line x1="22" y1="32" x2="20" y2="28"/><line x1="32" y1="42" x2="26" y2="58"/><line x1="32" y1="42" x2="38" y2="58"/></svg>',
+  'triceps-overhead': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="22" r="3.5"/><line x1="32" y1="26" x2="32" y2="46"/><line x1="34" y1="28" x2="38" y2="10"/><line x1="38" y1="10" x2="30" y2="22"/><line x1="30" y1="28" x2="34" y2="14"/><line x1="32" y1="46" x2="26" y2="60"/><line x1="32" y1="46" x2="38" y2="60"/></svg>',
+  'sleeper': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="54" x2="60" y2="54" stroke-dasharray="3,2" stroke-width="1"/><circle cx="50" cy="34" r="3.5"/><line x1="46" y1="34" x2="22" y2="36"/><line x1="22" y1="36" x2="6" y2="32"/><line x1="6" y1="32" x2="14" y2="22"/><line x1="40" y1="32" x2="40" y2="14"/><line x1="40" y1="14" x2="52" y2="20"/><line x1="44" y1="22" x2="48" y2="14"/></svg>',
+  'cobra': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="54" x2="60" y2="54" stroke-dasharray="3,2" stroke-width="1"/><line x1="22" y1="50" x2="58" y2="50"/><path d="M 22 50 Q 18 30 26 22"/><circle cx="22" cy="18" r="3.5"/><line x1="20" y1="22" x2="14" y2="50"/><line x1="24" y1="22" x2="24" y2="50"/></svg>',
+  'child-pose': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="54" x2="60" y2="54" stroke-dasharray="3,2" stroke-width="1"/><circle cx="50" cy="40" r="3.5"/><line x1="46" y1="40" x2="32" y2="44"/><line x1="32" y1="44" x2="14" y2="52"/><line x1="32" y1="44" x2="40" y2="52"/><line x1="42" y1="40" x2="14" y2="36"/></svg>',
+  'cat-cow': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="54" x2="60" y2="54" stroke-dasharray="3,2" stroke-width="1"/><path d="M 14 52 Q 32 28 50 52"/><circle cx="50" cy="34" r="3"/><line x1="14" y1="52" x2="14" y2="42"/><line x1="50" y1="36" x2="50" y2="42"/></svg>',
+  'pigeon': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="54" x2="60" y2="54" stroke-dasharray="3,2" stroke-width="1"/><circle cx="14" cy="20" r="3.5"/><line x1="14" y1="24" x2="22" y2="40"/><line x1="22" y1="40" x2="34" y2="40"/><line x1="34" y1="40" x2="34" y2="48"/><line x1="34" y1="48" x2="58" y2="48"/><line x1="22" y1="40" x2="20" y2="48"/><line x1="20" y1="48" x2="38" y2="50"/></svg>',
+  'standing-back-bend': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="36" cy="14" r="3.5"/><path d="M 36 18 Q 26 28 32 42"/><line x1="36" y1="22" x2="44" y2="32"/><line x1="32" y1="42" x2="26" y2="58"/><line x1="32" y1="42" x2="38" y2="58"/></svg>',
+  'lying-twist': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="54" x2="60" y2="54" stroke-dasharray="3,2" stroke-width="1"/><circle cx="10" cy="32" r="3.5"/><line x1="13" y1="33" x2="36" y2="34"/><line x1="36" y1="34" x2="50" y2="20"/><line x1="36" y1="34" x2="50" y2="44"/><line x1="14" y1="34" x2="2" y2="38"/></svg>',
+  'doorway-lat': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="4" width="36" height="56" stroke-width="1"/><line x1="32" y1="14" x2="22" y2="20"/><line x1="32" y1="14" x2="42" y2="20"/><line x1="22" y1="20" x2="22" y2="14"/><line x1="42" y1="20" x2="42" y2="14"/><circle cx="32" cy="22" r="3"/><line x1="32" y1="25" x2="34" y2="40"/><line x1="34" y1="40" x2="28" y2="56"/><line x1="34" y1="40" x2="40" y2="56"/></svg>',
+  'biceps-stretch': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="56" y1="6" x2="56" y2="58" stroke-width="2.5"/><line x1="56" y1="14" x2="62" y2="8" stroke-width="1"/><line x1="56" y1="30" x2="62" y2="24" stroke-width="1"/><line x1="56" y1="46" x2="62" y2="40" stroke-width="1"/><circle cx="20" cy="14" r="3.5"/><line x1="20" y1="18" x2="22" y2="40"/><line x1="22" y1="22" x2="48" y2="28"/><line x1="48" y1="28" x2="56" y2="30"/><line x1="22" y1="40" x2="16" y2="58"/><line x1="22" y1="40" x2="28" y2="58"/></svg>',
+  'forearm-stretch': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="54" x2="60" y2="54" stroke-dasharray="3,2" stroke-width="1"/><circle cx="50" cy="20" r="3.5"/><line x1="46" y1="20" x2="32" y2="34"/><line x1="32" y1="34" x2="14" y2="50"/><line x1="32" y1="34" x2="48" y2="50"/><line x1="14" y1="50" x2="22" y2="40"/><line x1="48" y1="50" x2="40" y2="40"/></svg>',
+  'trap-stretch': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="26" cy="16" r="3.5"/><line x1="28" y1="14" x2="42" y2="14"/><line x1="42" y1="14" x2="36" y2="22"/><line x1="32" y1="20" x2="32" y2="44"/><line x1="32" y1="44" x2="26" y2="58"/><line x1="32" y1="44" x2="38" y2="58"/></svg>',
+  'quad-stretch': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="58" x2="60" y2="58" stroke-dasharray="3,2" stroke-width="1"/><circle cx="32" cy="14" r="3.5"/><line x1="32" y1="18" x2="32" y2="38"/><line x1="32" y1="38" x2="26" y2="56"/><line x1="32" y1="38" x2="38" y2="46"/><line x1="38" y1="46" x2="34" y2="34"/><line x1="32" y1="22" x2="38" y2="34"/></svg>',
+  'hamstring': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="54" x2="60" y2="54" stroke-dasharray="3,2" stroke-width="1"/><circle cx="14" cy="36" r="3.5"/><line x1="17" y1="38" x2="44" y2="44"/><line x1="20" y1="40" x2="56" y2="50"/><line x1="22" y1="44" x2="32" y2="52"/><line x1="32" y1="52" x2="22" y2="50"/></svg>',
+  'calf-stretch': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="56" y1="6" x2="56" y2="58" stroke-width="2.5"/><line x1="56" y1="14" x2="62" y2="8" stroke-width="1"/><line x1="56" y1="30" x2="62" y2="24" stroke-width="1"/><line x1="56" y1="46" x2="62" y2="40" stroke-width="1"/><circle cx="20" cy="18" r="3.5"/><line x1="20" y1="22" x2="32" y2="32"/><line x1="32" y1="32" x2="50" y2="34"/><line x1="32" y1="32" x2="20" y2="56"/><line x1="20" y1="56" x2="14" y2="56"/></svg>',
+  'neck-stretch': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="28" cy="16" r="3.5"/><path d="M 28 13 Q 18 10 22 6"/><line x1="32" y1="20" x2="32" y2="40"/><line x1="32" y1="24" x2="42" y2="22"/><line x1="42" y1="22" x2="32" y2="14"/><line x1="32" y1="40" x2="26" y2="58"/><line x1="32" y1="40" x2="38" y2="58"/></svg>',
+  'hip-flexor': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="58" x2="60" y2="58" stroke-dasharray="3,2" stroke-width="1"/><circle cx="32" cy="14" r="3.5"/><line x1="32" y1="18" x2="32" y2="34"/><line x1="32" y1="34" x2="46" y2="50"/><line x1="46" y1="50" x2="46" y2="58"/><line x1="32" y1="34" x2="16" y2="42"/><line x1="16" y1="42" x2="22" y2="58"/></svg>',
+  'side-bend': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="14" r="3.5"/><path d="M 32 18 Q 38 28 36 42"/><line x1="32" y1="22" x2="48" y2="14"/><line x1="48" y1="14" x2="48" y2="6"/><line x1="32" y1="22" x2="22" y2="32"/><line x1="36" y1="42" x2="30" y2="58"/><line x1="36" y1="42" x2="42" y2="58"/></svg>',
+  'star-stretch': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="58" x2="60" y2="58" stroke-dasharray="3,2" stroke-width="1"/><circle cx="32" cy="20" r="3.5"/><line x1="32" y1="24" x2="32" y2="42"/><line x1="32" y1="28" x2="14" y2="20"/><line x1="32" y1="28" x2="50" y2="20"/><line x1="32" y1="42" x2="20" y2="56"/><line x1="32" y1="42" x2="44" y2="56"/></svg>',
+
+  // ============ MENTAL ICONS ============
+  'coherence': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M 4 32 Q 14 12 24 32 Q 34 52 44 32 Q 54 12 60 32"/><circle cx="14" cy="22" r="1.8" fill="currentColor"/><circle cx="34" cy="42" r="1.8" fill="currentColor"/><circle cx="54" cy="22" r="1.8" fill="currentColor"/></svg>',
+  'visualisation': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="32" cy="32" r="20"/><circle cx="32" cy="32" r="10"/><circle cx="32" cy="32" r="3" fill="currentColor"/><line x1="32" y1="4" x2="32" y2="12"/><line x1="32" y1="52" x2="32" y2="60"/></svg>',
+  'mindfulness': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="32" cy="20" r="6"/><path d="M 14 50 Q 32 36 50 50"/><line x1="20" y1="44" x2="14" y2="50"/><line x1="44" y1="44" x2="50" y2="50"/></svg>',
+  'extended': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="32" cy="32" r="22"/><path d="M 32 12 Q 44 24 32 32 Q 20 40 32 52"/></svg>',
+  'visualisation-boxer': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="32" cy="32" r="20"/><circle cx="22" cy="28" r="2" fill="currentColor"/><circle cx="42" cy="28" r="2" fill="currentColor"/><path d="M 24 40 Q 32 46 40 40"/></svg>',
+
+  // ============ APNEA ICON ============
+  'apnea-icon': '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M 4 32 Q 14 16 22 32"/><line x1="22" y1="32" x2="42" y2="32" stroke-width="2.5"/><path d="M 42 32 Q 50 48 60 32"/><line x1="28" y1="38" x2="36" y2="38"/><line x1="32" y1="34" x2="32" y2="42"/></svg>'
+};
+
+// ============================================================
+//  MENTAL CONTENT
+// ============================================================
+const mentalProtocols = {
+  coherence: {
+    title: 'Cohérence cardiaque',
+    sub: 'Bascule parasympathique',
+    stats: [
+      { num: '3', label: 'fois par jour idéal' },
+      { num: '6', label: 'respirations par minute' },
+      { num: '5', label: 'minutes par session' }
+    ],
+    breath: { in: 'Inspiration · 5 sec', inDetail: 'par le nez, ventre qui se gonfle', out: 'Expiration · 5 sec', outDetail: 'par la bouche, lèvres entrouvertes' },
+    tips: ['Assis, dos droit, pieds au sol, mains sur les cuisses', '12 cycles = 2 min · 30 cycles = 5 min', 'Yeux fermés ou regard posé loin', 'Si l\'esprit dérive, reviens au souffle sans jugement']
+  },
+  visualisation: {
+    title: 'Visualisation projective',
+    sub: 'Ancrage de l\'objectif',
+    stats: [
+      { num: '3', label: 'mois de projection' },
+      { num: '5', label: 'sens à mobiliser' },
+      { num: '2', label: 'minutes minimum' }
+    ],
+    breath: { in: 'Inspiration · 4 sec', inDetail: 'profonde, par le nez', out: 'Expiration · 6 sec', outDetail: 'lente, par la bouche' },
+    tips: ['Projette-toi 3 mois plus tard, en forme retrouvée', 'Active les 5 sens : vue, son, sensation corporelle, odeur, goût', 'Sens la posture, la confiance, l\'énergie', 'Pas de pensée, juste la sensation projetée']
+  },
+  'visualisation-boxer': {
+    title: 'Visualisation du boxeur',
+    sub: 'Calme dans le combat',
+    stats: [
+      { num: '3', label: 'rounds revisités' },
+      { num: '4', label: 'sens du combat' },
+      { num: '3', label: 'minutes minimum' }
+    ],
+    breath: { in: 'Inspiration · 4 sec', inDetail: 'nasale, calme', out: 'Expiration · 6 sec', outDetail: 'longue, contrôlée' },
+    tips: ['Revis mentalement chaque round, mais lucide et calme', 'Sens la respiration sous l\'effort, jamais paniquée', 'Vois les esquives, le timing parfait', 'Sors avec un sentiment de maîtrise, pas d\'épuisement']
+  },
+  mindfulness: {
+    title: 'Pleine conscience',
+    sub: 'Sensations corporelles',
+    stats: [
+      { num: '3', label: 'zones à scanner' },
+      { num: '5', label: 'minutes idéales' },
+      { num: '0', label: 'jugement, juste observer' }
+    ],
+    breath: { in: 'Inspiration · libre', inDetail: 'observe sans contrôler', out: 'Expiration · libre', outDetail: 'observe sans contrôler' },
+    tips: ['Scan corporel : pieds → bassin → torse → bras → tête', 'Observe les sensations post-effort sans chercher à les changer', 'Si tu remarques tension, simplement la noter et passer', 'L\'observation est l\'exercice, pas la relaxation']
+  },
+  extended: {
+    title: 'Pratique étendue',
+    sub: 'Choisis ton format',
+    stats: [
+      { num: '8', label: 'minutes minimum' },
+      { num: '3', label: 'options possibles' },
+      { num: '1', label: 'à choisir selon l\'envie' }
+    ],
+    breath: { in: 'Inspiration · au choix', inDetail: 'selon la pratique', out: 'Expiration · au choix', outDetail: 'selon la pratique' },
+    tips: ['Option 1 : cohérence cardiaque longue (10 min)', 'Option 2 : pleine conscience prolongée (10-15 min)', 'Option 3 : visualisation détaillée de la semaine à venir', 'Profite du dimanche pour pousser la durée']
+  }
+};
+
+// ============================================================
+//  RENDER
+// ============================================================
+const dayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+const dayIds = ['dim', 'lun', 'mar', 'mer', 'jeu', 'ven', 'sam'];
+
+function getCurrentDayId() {
+  return dayIds[new Date().getDay()];
+}
+
+function renderPicker(activeId) {
+  const todayId = getCurrentDayId();
+  const pills = document.getElementById('day-pills');
+  const order = ['lun', 'mar', 'mer', 'jeu', 'ven', 'sam', 'dim'];
+  pills.innerHTML = order.map(id => {
+    const day = days.find(d => d.id === id);
+    const isActive = id === activeId ? 'active' : '';
+    const isToday = id === todayId ? 'today' : '';
+    const short = day.name.slice(0, 3);
+    return `<button class="day-pill ${isActive} ${isToday}" data-id="${id}">
+      <span>${short}</span><span class="day-num">${day.num}</span>
+    </button>`;
+  }).join('');
+  pills.querySelectorAll('.day-pill').forEach(b => {
+    b.addEventListener('click', () => {
+      renderDay(b.dataset.id);
+    });
+  });
+}
+
+function renderDay(id) {
+  const day = days.find(d => d.id === id);
+  if (!day) return;
+  const isToday = id === getCurrentDayId();
+
+  const html = `
+    <article class="day-content" key="${id}">
+      <div class="day-hero">
+        <div class="day-tag">${day.focus} · ${isToday ? 'aujourd\'hui' : day.name.toLowerCase()}</div>
+        <h1 class="day-name">${day.name}</h1>
+        <p class="day-theme">${day.theme}</p>
+        <div class="day-meta">
+          <div class="meta-item">
+            <span class="meta-label">Durée</span>
+            <span class="meta-value">${day.duration}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Échauffement</span>
+            <span class="meta-value">3 min</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Circuit</span>
+            <span class="meta-value">12 min</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Récup</span>
+            <span class="meta-value">5 min</span>
+          </div>
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <span class="section-num">01 ·</span>
+            <span class="section-title">Échauffement</span>
+          </div>
+          <span class="section-time">3 min</span>
+        </div>
+        <div class="warm-strip">
+          ${day.warmup.map(w => `
+            <div class="warm-cell">
+              <div class="warm-cell-icon">${icons[w.icon] || ''}</div>
+              <div class="warm-cell-name">${w.name}</div>
+              <div class="warm-cell-time">${w.time}</div>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <span class="section-num">02 ·</span>
+            <span class="section-title">Circuit principal</span>
+          </div>
+          <span class="section-time">12 min</span>
+        </div>
+        <div class="circuit-banner">
+          <span>${day.circuit.meta}</span>
+        </div>
+        ${day.circuit.exercises.map(ex => `
+          <div class="card">
+            <div class="card-icon effort">${icons[ex.icon] || ''}</div>
+            <div class="card-body">
+              <div class="card-head">
+                <span class="card-name">${ex.name}</span>
+                <span class="card-tag effort">${ex.tag}</span>
+              </div>
+              <ul class="card-cues">
+                ${ex.cues.map(c => `<li>${c}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        `).join('')}
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <span class="section-num">03 ·</span>
+            <span class="section-title">Étirements</span>
+          </div>
+          <span class="section-time">5 min · idéal 6–7 min</span>
+        </div>
+        ${day.stretches.map(s => `
+          <div class="card">
+            <div class="card-icon recup">${icons[s.icon] || ''}</div>
+            <div class="card-body">
+              <div class="card-head">
+                <span class="card-name">${s.name}</span>
+                <span class="card-tag recup">${s.tag}</span>
+              </div>
+              <ul class="card-cues">
+                ${s.cues.map(c => `<li>${c}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        `).join('')}
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <span class="section-num">04 ·</span>
+            <span class="section-title">Mental</span>
+          </div>
+          <span class="section-time">${day.mental.duration}</span>
+        </div>
+        ${renderMental(day.mental.type)}
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <span class="section-num">05 ·</span>
+            <span class="section-title">Apnée</span>
+          </div>
+          <span class="section-time">bonus du soir</span>
+        </div>
+        <div class="apnea">
+          <div class="apnea-icon">${icons['apnea-icon']}</div>
+          <div class="apnea-body">
+            <div class="apnea-status ${day.apnea.status === 'recommended' ? 'recommended' : ''}">${day.apnea.status === 'recommended' ? 'Recommandé ce soir' : 'Facultatif ce soir'}</div>
+            <div class="apnea-text">${day.apnea.text}</div>
+          </div>
+        </div>
+      </section>
+    </article>
+  `;
+
+  document.getElementById('day-content').innerHTML = html;
+  renderPicker(id);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderMental(type) {
+  const proto = mentalProtocols[type] || mentalProtocols.coherence;
+  return `
+    <div class="mental-card">
+      <div class="mental-head">
+        <div class="mental-icon" style="color: var(--indigo-deep);">${icons[type] || icons.coherence}</div>
+        <div>
+          <div class="mental-title">${proto.title}</div>
+          <div class="mental-sub">${proto.sub}</div>
+        </div>
+      </div>
+      <div class="protocol-grid">
+        ${proto.stats.map(s => `
+          <div class="protocol-stat">
+            <div class="protocol-num">${s.num}</div>
+            <div class="protocol-label">${s.label}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="breath-cycle">
+        <div class="breath-half breath-in">
+          <div class="breath-action">${proto.breath.in}</div>
+          <div class="breath-detail">${proto.breath.inDetail}</div>
+        </div>
+        <div class="breath-half breath-out">
+          <div class="breath-action">${proto.breath.out}</div>
+          <div class="breath-detail">${proto.breath.outDetail}</div>
+        </div>
+      </div>
+      <ul class="mental-tips">
+        ${proto.tips.map(t => `<li>${t}</li>`).join('')}
+      </ul>
+    </div>
+  `;
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+function setTodayLabel() {
+  const todayId = getCurrentDayId();
+  const day = days.find(d => d.id === todayId);
+  document.getElementById('today-label').textContent = day ? day.focus.toUpperCase() : 'PROGRAMME';
+}
+
+function init() {
+  setTodayLabel();
+  const initialId = getCurrentDayId();
+  const exists = days.find(d => d.id === initialId);
+  renderDay(exists ? initialId : 'lun');
+
+  // Show iOS install hint if not standalone
+  setTimeout(() => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    if (isIOS && !isStandalone && !sessionStorage.getItem('hint-shown')) {
+      const hint = document.getElementById('install-hint');
+      document.getElementById('install-msg').innerHTML = 'Partager → Sur l\'écran d\'accueil';
+      hint.classList.add('show');
+      sessionStorage.setItem('hint-shown', '1');
+      setTimeout(() => hint.classList.remove('show'), 8000);
+    }
+  }, 2000);
+
+  // Register service worker for offline
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
