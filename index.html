@@ -1,0 +1,2285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#0A0908">
+<meta name="color-scheme" content="light">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Shaolin One">
+<title>Shaolin One · Cervin 2027</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,800;9..144,900&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --paper: #FFFFFF;
+    --paper-deep: #F4F4F2;
+    --paper-card: #FFFFFF;
+    --ink: #0A0908;
+    --ink-soft: #4A4845;
+    --ink-faint: #8C8985;
+    --line: rgba(10, 9, 8, 0.14);
+    --line-soft: rgba(10, 9, 8, 0.07);
+
+    --rust: #B23A1F;
+    --rust-deep: #6E1F0E;
+    --rust-bg: #FBEAE3;
+
+    --pine: #1F5234;
+    --pine-deep: #133320;
+    --pine-bg: #E5F0E5;
+
+    --indigo: #243757;
+    --indigo-deep: #131F36;
+    --indigo-bg: #E2E6EE;
+
+    --amber: #7A4A0A;
+    --amber-bg: #F8EAD0;
+
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+    --safe-top: env(safe-area-inset-top, 0);
+    --safe-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  html { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+  }
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-bottom: calc(20px + var(--safe-bottom));
+  }
+
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .app { max-width: 560px; margin: 0 auto; padding: 0 20px; }
+
+  /* ============ TOP BAR ============ */
+  .top-bar {
+    padding-top: calc(18px + var(--safe-top));
+    padding-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: -0.03em;
+    font-variation-settings: "opsz" 144;
+  }
+  .brand-dot { color: var(--rust); }
+  .brand-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .back-btn {
+    padding-top: calc(18px + var(--safe-top));
+    padding-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .back-btn:active { color: var(--rust); }
+
+  /* ============ HERO / WEEK COUNTER ============ */
+  .hero {
+    padding: 22px 0 24px;
+  }
+  .hero-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    font-variation-settings: "opsz" 144;
+    margin-bottom: 14px;
+  }
+  .progress-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .progress-slot {
+    flex: 1;
+    height: 8px;
+    background: var(--paper-deep);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .progress-slot.done { background: var(--rust); }
+  .progress-caption {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+
+  /* ============ SECTION LABEL ============ */
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin: 26px 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  /* ============ SESSION CARDS ============ */
+  .session-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .session-card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    transition: transform 0.1s ease;
+    width: 100%;
+    position: relative;
+  }
+  .session-card:active { transform: scale(0.98); }
+  .session-card.done {
+    background: var(--pine-bg);
+    border-color: var(--pine);
+  }
+  .session-card.done::after {
+    content: "✓";
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    color: var(--pine-deep);
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .session-body { flex: 1; min-width: 0; }
+  .session-focus {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--rust);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .session-card.done .session-focus { color: var(--pine-deep); }
+  .session-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 4px;
+    font-variation-settings: "opsz" 100;
+  }
+  .session-meta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .session-arrow {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--ink-faint);
+    font-weight: 500;
+    margin-left: 12px;
+  }
+  .session-card.done .session-arrow { display: none; }
+
+  /* Direct-check card (boxe style) */
+  .direct-check-card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+  }
+  .check-btn {
+    padding: 8px 14px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .direct-check-card.done { background: var(--pine-bg); border-color: var(--pine); }
+  .direct-check-card.done .check-btn { background: var(--pine); }
+  .direct-check-card.done .session-focus { color: var(--pine-deep); }
+
+  /* ============ NAV BUTTONS (bonus, lexique, etirements) ============ */
+  .nav-tile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: var(--paper-deep);
+    border-radius: 12px;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 6px;
+  }
+  .nav-tile:active { background: var(--line-soft); }
+  .nav-tile-body { flex: 1; }
+  .nav-tile-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    margin-bottom: 2px;
+  }
+  .nav-tile-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .nav-tile-arrow {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--ink-faint);
+  }
+
+  /* ============ SESSION PREVIEW ============ */
+  .preview-title {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    margin: 22px 0 6px;
+    font-variation-settings: "opsz" 144;
+  }
+  .preview-focus {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--rust);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .preview-meta {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .preview-meta-item .preview-meta-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+  .preview-meta-item .preview-meta-value {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .preview-intro {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin-bottom: 22px;
+  }
+  .preview-plan {
+    margin-bottom: 24px;
+  }
+  .preview-plan-section {
+    margin-bottom: 14px;
+  }
+  .preview-plan-head {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .preview-plan-list {
+    list-style: none;
+    padding: 0;
+  }
+  .preview-plan-list li {
+    font-size: 14px;
+    padding: 4px 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--ink);
+  }
+  .preview-plan-list li .step-t {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .start-btn {
+    width: 100%;
+    padding: 18px;
+    background: var(--rust);
+    color: white;
+    border-radius: 12px;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+  .start-btn:active { background: var(--rust-deep); }
+
+  /* ============ RUNNING VIEW ============ */
+  .running {
+    padding-top: calc(12px + var(--safe-top));
+  }
+  .run-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .run-quit, .run-pause {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+  .run-pause {
+    background: var(--paper-deep);
+    color: var(--ink);
+  }
+  .run-pause.paused {
+    background: var(--amber-bg);
+    color: var(--amber);
+  }
+  .run-total {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  .run-progress {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 30px;
+    height: 4px;
+  }
+  .run-progress-slot {
+    flex: 1;
+    background: var(--paper-deep);
+    border-radius: 2px;
+  }
+  .run-progress-slot.done { background: var(--rust); }
+  .run-progress-slot.current { background: var(--ink); }
+
+  .run-step-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .run-step-name {
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    text-align: center;
+    margin-bottom: 6px;
+    font-variation-settings: "opsz" 144;
+  }
+  .run-step-sub {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .run-timer {
+    text-align: center;
+    margin-bottom: 26px;
+  }
+  .run-timer-value {
+    font-family: var(--font-display);
+    font-size: 96px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.05em;
+    font-variation-settings: "opsz" 144, "wdth" 100;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+  .run-timer.rest .run-timer-value { color: var(--pine); }
+  .run-timer.warmup .run-timer-value { color: var(--amber); }
+
+  .run-progress-ring {
+    width: 100%;
+    max-width: 220px;
+    height: 4px;
+    background: var(--paper-deep);
+    border-radius: 2px;
+    margin: 12px auto 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .run-progress-ring-fill {
+    height: 100%;
+    background: var(--ink);
+    transition: width 0.3s linear;
+  }
+  .run-timer.rest .run-progress-ring-fill { background: var(--pine); }
+  .run-timer.warmup .run-progress-ring-fill { background: var(--amber); }
+
+  .run-cues {
+    background: var(--paper-deep);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 26px;
+  }
+  .run-cues-head {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .run-cues-list {
+    list-style: none;
+    padding: 0;
+  }
+  .run-cues-list li {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+    padding-left: 14px;
+    position: relative;
+    margin-bottom: 3px;
+  }
+  .run-cues-list li::before {
+    content: "·";
+    position: absolute;
+    left: 4px;
+    top: 0;
+    color: var(--rust);
+    font-weight: 700;
+  }
+
+  .run-next {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .run-next span { color: var(--ink-soft); }
+
+  .run-action-btn {
+    width: 100%;
+    padding: 20px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 14px;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+  .run-action-btn:active { background: var(--rust); }
+  .run-action-btn.done { background: var(--rust); }
+  .run-action-btn.skip {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    padding: 12px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ============ COMPLETE VIEW ============ */
+  .complete {
+    padding-top: 60px;
+    text-align: center;
+  }
+  .complete-mark {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--rust);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .complete-title {
+    font-family: var(--font-display);
+    font-size: 54px;
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    font-variation-settings: "opsz" 144;
+    margin-bottom: 20px;
+  }
+  .complete-progress {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--rust);
+    margin-bottom: 40px;
+    font-variant-numeric: tabular-nums;
+  }
+  .complete-arrow { color: var(--ink-faint); margin: 0 12px; }
+  .complete-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 20px;
+  }
+  .complete-actions button {
+    padding: 16px;
+    border-radius: 12px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+  }
+  .complete-actions .primary { background: var(--pine); color: white; }
+  .complete-actions .secondary {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink);
+  }
+
+  /* ============ LIST VIEW (bonus, lexique) ============ */
+  .list-title {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    margin: 22px 0 6px;
+    font-variation-settings: "opsz" 144;
+  }
+  .list-intro {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+    line-height: 1.55;
+  }
+  .list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line-soft);
+    width: 100%;
+    text-align: left;
+  }
+  .list-item:last-child { border-bottom: none; }
+  .list-item:active { background: var(--paper-deep); }
+  .list-item-body { flex: 1; padding-right: 12px; }
+  .list-item-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.015em;
+    margin-bottom: 3px;
+  }
+  .list-item-sub {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .list-item-arrow {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--ink-faint);
+  }
+
+  /* ============ LEXIQUE ITEM DETAIL ============ */
+  .lex-detail-title {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    margin: 22px 0 8px;
+    font-variation-settings: "opsz" 144;
+  }
+  .lex-detail-cat {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--indigo);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .lex-section {
+    margin-bottom: 22px;
+  }
+  .lex-section-head {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 600;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .lex-section p {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .lex-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  .lex-section ul li {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 4px;
+  }
+  .lex-section ul li::before {
+    content: "·";
+    position: absolute;
+    left: 4px;
+    top: 0;
+    color: var(--indigo);
+    font-weight: 700;
+  }
+  .lex-protocol {
+    background: var(--indigo-bg);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 22px;
+  }
+  .lex-protocol .lex-section-head { color: var(--indigo-deep); border: none; margin-bottom: 8px; }
+  .lex-protocol p, .lex-protocol li { color: var(--indigo-deep); }
+
+  /* ============ FOOTER ============ */
+  .footer {
+    margin-top: 40px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line-soft);
+    text-align: center;
+  }
+  .footer-text {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+  }
+
+  /* ============ ANIMATIONS ============ */
+  .view {
+    animation: fade-in 0.2s ease;
+  }
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .run-pause.paused .run-timer-value { animation: pulse 1s ease-in-out infinite; }
+
+  /* ============ DIALOG ============ */
+  .dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 9, 8, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .dialog-overlay.show { display: flex; }
+  .dialog {
+    background: var(--paper);
+    border-radius: 14px;
+    padding: 22px;
+    max-width: 340px;
+    width: 100%;
+  }
+  .dialog-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.015em;
+    margin-bottom: 6px;
+  }
+  .dialog-text {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+  .dialog-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .dialog-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .dialog-actions .primary { background: var(--rust); color: white; }
+  .dialog-actions .cancel { background: var(--paper-deep); color: var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="app" id="app"></div>
+
+<div class="dialog-overlay" id="dialog"></div>
+
+<script>
+// ============================================================
+//  DATA — Sessions, bonus, lexique, stretches
+// ============================================================
+
+/*
+  STEP TYPES:
+    { type: 'time', name, duration (seconds), cues: [], label: 'exercice'|'échauffement'|... }
+    { type: 'reps', name, reps: '12 reps', cues: [], label: 'exercice' }
+    { type: 'rest', duration }
+    { type: 'section', title }  // marker, not shown in timer
+*/
+
+const SESSIONS = {
+  'course-z2': {
+    id: 'course-z2',
+    focus: 'Course · Moteur aérobie',
+    title: 'Endurance zone 2',
+    duration: '65 min',
+    intro: 'La séance qui construit le moteur qu\'on ne perd pas. Zone 2 = tu peux tenir une conversation. Sur cette Phase 0, on installe l\'habitude et on ré-habitue tendons et cœur.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Marche + mobilité', t: '5 min' }] },
+      { head: 'Corps', items: [{ n: 'Course zone 2', t: '45 min' }] },
+      { head: 'Retour au calme', items: [{ n: 'Marche', t: '3 min' }] },
+      { head: 'Gainage', items: [
+        { n: 'Planche', t: '45 sec' },
+        { n: 'Planches latérales', t: '30 sec × 2' },
+        { n: 'Dead bug', t: '12 reps' },
+        { n: 'Bird dog', t: '10 / côté' },
+        { n: 'Hollow hold', t: '30 sec' }
+      ]}
+    ],
+    steps: [
+      { type: 'time', name: 'Échauffement', duration: 300, label: 'échauffement',
+        cues: ['Marche rapide, respire par le nez', 'Rotations chevilles + hanches', 'Montées de genoux légères sur les 2 dernières minutes'] },
+      { type: 'time', name: 'Course zone 2', duration: 2700, label: 'endurance',
+        cues: ['Nez qui respire, conversation possible', 'Cadence ~170-180 pas/min si tu peux', 'C\'est trop lent = c\'est bien'] },
+      { type: 'time', name: 'Retour au calme', duration: 180, label: 'récup',
+        cues: ['Décélération progressive', 'Respiration profonde', 'Marche pas courue'] },
+      { type: 'time', name: 'Planche', duration: 45, label: 'gainage',
+        cues: ['Coudes sous les épaules', 'Corps en ligne droite', 'Bassin engagé, ne creuse pas'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Planche latérale G', duration: 30, label: 'gainage',
+        cues: ['Coude sous l\'épaule', 'Hanches hautes', 'Ligne droite du pied à la tête'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche latérale D', duration: 30, label: 'gainage',
+        cues: ['Coude sous l\'épaule', 'Hanches hautes', 'Ligne droite du pied à la tête'] },
+      { type: 'rest', duration: 25 },
+      { type: 'reps', name: 'Dead bug', reps: '12 reps', label: 'gainage',
+        cues: ['Dos plaqué au sol', 'Bras + jambe opposés qui descendent', 'Contrôlé, respire à chaque rep'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Bird dog', reps: '10 / côté', label: 'gainage',
+        cues: ['Quatre pattes stable', 'Bras + jambe opposés à l\'horizontale', 'Ne cambre pas le bas du dos'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Hollow hold', duration: 30, label: 'gainage',
+        cues: ['Bas du dos plaqué au sol', 'Bras et jambes tendus, décollés', 'Respiration continue, ne bloque pas'] }
+    ]
+  },
+
+  'renfo-bas': {
+    id: 'renfo-bas',
+    focus: 'Renfo · Bas du corps',
+    title: 'Jambes & montée',
+    duration: '45 min',
+    intro: 'Le travail qui te porte sur l\'arête du Hörnli. Step-ups en priorité — le geste roi qui reproduit exactement le dénivelé. Phase 0 : poids de corps, on installe le mouvement et le volume.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Jumping jacks + mobilité', t: '5 min' }] },
+      { head: 'Circuit 3 tours', items: [
+        { n: 'Step-ups', t: '10 / jambe' },
+        { n: 'Fentes bulgares', t: '10 / jambe' },
+        { n: 'Squats', t: '15 reps' },
+        { n: 'Mollets', t: '20 reps' }
+      ]},
+      { head: 'Finisher', items: [{ n: 'Wall sit', t: '45 sec' }] },
+      { head: 'Étirements', items: [{ n: 'Quadri, ischios, mollets, hanches', t: '5 min' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Jumping jacks', duration: 60, label: 'échauffement',
+        cues: ['Rythme constant', 'Bras et jambes ouverts', 'Respire régulier'] },
+      { type: 'time', name: 'Mobilité hanches', duration: 90, label: 'échauffement',
+        cues: ['Cercles hanches lents', 'Fentes dynamiques 5/jambe', 'Squats à vide amplitude complète'] },
+      { type: 'time', name: 'Mobilité chevilles', duration: 60, label: 'échauffement',
+        cues: ['Cercles chevilles', 'Genoux au mur (dorsiflexion)', 'Extension mollets debout'] },
+      { type: 'time', name: 'Activation', duration: 90, label: 'échauffement',
+        cues: ['10 squats poids de corps rapides', '10 fentes alternées', '10 montées de genoux'] },
+
+      // Tour 1
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'circuit — tour 1/3',
+        cues: ['Marche/chaise haute', 'Pousse dans le talon, extension complète en haut', 'Descente contrôlée, pas de rebond'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Fentes bulgares', reps: '10 / jambe', label: 'circuit — tour 1/3',
+        cues: ['Pied arrière sur une chaise', 'Descente droite, genou avant aligné', 'Pousse dans le talon avant'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Squats', reps: '15 reps', label: 'circuit — tour 1/3',
+        cues: ['Fesses vers l\'arrière', 'Descends fesses sous parallèles', 'Dos droit, poitrine ouverte'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Mollets', reps: '20 reps', label: 'circuit — tour 1/3',
+        cues: ['Sur les pointes de pieds', 'Amplitude maximale', 'Pause 1 sec en haut'] },
+      { type: 'rest', duration: 60 },
+
+      // Tour 2
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'circuit — tour 2/3',
+        cues: ['Marche/chaise haute', 'Pousse dans le talon', 'Descente contrôlée'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Fentes bulgares', reps: '10 / jambe', label: 'circuit — tour 2/3',
+        cues: ['Pied arrière sur une chaise', 'Genou avant aligné', 'Pousse dans le talon avant'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Squats', reps: '15 reps', label: 'circuit — tour 2/3',
+        cues: ['Fesses vers l\'arrière', 'Sous parallèles', 'Dos droit'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Mollets', reps: '20 reps', label: 'circuit — tour 2/3',
+        cues: ['Amplitude maximale', 'Pause 1 sec en haut', 'Descente lente'] },
+      { type: 'rest', duration: 60 },
+
+      // Tour 3
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'circuit — tour 3/3',
+        cues: ['Dernier tour, garde la qualité', 'Pousse dans le talon', 'Ne t\'appuie pas avec l\'autre jambe'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Fentes bulgares', reps: '10 / jambe', label: 'circuit — tour 3/3',
+        cues: ['Ça brûle, c\'est normal', 'Maintiens la posture', 'Respire à chaque rep'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Squats', reps: '15 reps', label: 'circuit — tour 3/3',
+        cues: ['Ne bâcle pas', 'Amplitude complète', 'Termine fort'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Mollets', reps: '20 reps', label: 'circuit — tour 3/3',
+        cues: ['Dernières reps', 'Amplitude, amplitude, amplitude', 'Ne triche pas'] },
+      { type: 'rest', duration: 60 },
+
+      // Finisher
+      { type: 'time', name: 'Wall sit', duration: 45, label: 'finisher',
+        cues: ['Dos plaqué au mur', 'Cuisses parallèles au sol', 'Respire calmement'] }
+    ]
+  },
+
+  'renfo-haut': {
+    id: 'renfo-haut',
+    focus: 'Renfo · Haut du corps + core',
+    title: 'Tirage & gainage',
+    duration: '40 min',
+    intro: 'La force qui te tient sur le rocher et les cordes fixes. En Phase 0, on construit les bases : pompes, tractions négatives, gainage anti-rotation. Objectif : arriver à 8-10 tractions et 40 pompes en janvier.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Rotations bras + mobilité épaules', t: '4 min' }] },
+      { head: 'Circuit 3 tours', items: [
+        { n: 'Pompes', t: '10 reps' },
+        { n: 'Tractions négatives', t: '5 reps' },
+        { n: 'Rowing sac / haltère', t: '12 / bras' },
+        { n: 'Développé militaire', t: '12 reps' }
+      ]},
+      { head: 'Core', items: [
+        { n: 'Planche', t: '45 sec' },
+        { n: 'Russian twists', t: '20 reps' },
+        { n: 'Hollow hold', t: '25 sec × 2' }
+      ]},
+      { head: 'Étirements', items: [{ n: 'Pecs, dorsaux, épaules', t: '4 min' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Rotations bras', duration: 60, label: 'échauffement',
+        cues: ['Cercles épaules avant/arrière', 'Grande amplitude', 'Lent, contrôlé'] },
+      { type: 'time', name: 'Mobilité épaules', duration: 90, label: 'échauffement',
+        cues: ['Bras au mur, "wall angels"', 'Passages de bâton (imaginaire)', 'Rétractions scapulaires'] },
+      { type: 'time', name: 'Activation', duration: 90, label: 'échauffement',
+        cues: ['5 pompes lentes', '5 tractions à vide (agrippe une barre, engage)', '10 rotations tronc'] },
+
+      // Tour 1
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'circuit — tour 1/3',
+        cues: ['Mains largeur épaules', 'Corps en ligne, gainage actif', 'Descente 2 sec, sur les genoux si besoin'] },
+      { type: 'rest', duration: 25 },
+      { type: 'reps', name: 'Tractions négatives', reps: '5 reps', label: 'circuit — tour 1/3',
+        cues: ['Saute pour te positionner en haut', 'Descente lente 4-5 secondes', 'Si pas de barre : rowing élastique 12'] },
+      { type: 'rest', duration: 25 },
+      { type: 'reps', name: 'Rowing haltère / sac', reps: '12 / bras', label: 'circuit — tour 1/3',
+        cues: ['Buste penché à 45°, dos droit', 'Coude près du corps', 'Rétracte l\'omoplate à chaque rep'] },
+      { type: 'rest', duration: 25 },
+      { type: 'reps', name: 'Développé militaire', reps: '12 reps', label: 'circuit — tour 1/3',
+        cues: ['Haltères 5 kg ou sac léger', 'Pousse à la verticale', 'Ne cambre pas le dos'] },
+      { type: 'rest', duration: 60 },
+
+      // Tour 2
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'circuit — tour 2/3',
+        cues: ['Mains largeur épaules', 'Gainage actif', 'Qualité avant tout'] },
+      { type: 'rest', duration: 25 },
+      { type: 'reps', name: 'Tractions négatives', reps: '5 reps', label: 'circuit — tour 2/3',
+        cues: ['Descente lente et contrôlée', '4-5 secondes de descente', 'Résiste à la gravité'] },
+      { type: 'rest', duration: 25 },
+      { type: 'reps', name: 'Rowing haltère / sac', reps: '12 / bras', label: 'circuit — tour 2/3',
+        cues: ['Buste penché stable', 'Rétracte l\'omoplate', 'Ne balance pas le corps'] },
+      { type: 'rest', duration: 25 },
+      { type: 'reps', name: 'Développé militaire', reps: '12 reps', label: 'circuit — tour 2/3',
+        cues: ['Pousse à la verticale', 'Ne cambre pas', 'Contrôle la descente'] },
+      { type: 'rest', duration: 60 },
+
+      // Tour 3
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'circuit — tour 3/3',
+        cues: ['Dernier tour', 'Ne bâcle pas les dernières', 'Qualité, qualité, qualité'] },
+      { type: 'rest', duration: 25 },
+      { type: 'reps', name: 'Tractions négatives', reps: '5 reps', label: 'circuit — tour 3/3',
+        cues: ['Vraiment lent', 'C\'est là que tu progresses', 'Résiste au maximum'] },
+      { type: 'rest', duration: 25 },
+      { type: 'reps', name: 'Rowing haltère / sac', reps: '12 / bras', label: 'circuit — tour 3/3',
+        cues: ['Maintiens la forme', 'Rétracte à chaque rep', 'Termine fort'] },
+      { type: 'rest', duration: 25 },
+      { type: 'reps', name: 'Développé militaire', reps: '12 reps', label: 'circuit — tour 3/3',
+        cues: ['Dernier exo du circuit', 'Amplitude complète', 'Ne triche pas'] },
+      { type: 'rest', duration: 45 },
+
+      // Core
+      { type: 'time', name: 'Planche', duration: 45, label: 'core',
+        cues: ['Coudes sous épaules', 'Corps en ligne, bassin engagé', 'Respire'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Russian twists', reps: '20 reps', label: 'core',
+        cues: ['Assis, pieds décollés ou au sol', 'Rotation buste, touche le sol côté', 'Amplitude complète, tempo contrôlé'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Hollow hold', duration: 25, label: 'core',
+        cues: ['Bas du dos au sol', 'Bras et jambes décollés', 'Respire, ne bloque pas'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Hollow hold', duration: 25, label: 'core',
+        cues: ['Deuxième série', 'Tiens la forme', 'Termine bien'] }
+    ]
+  }
+};
+
+const WEEK_PLAN = {
+  target: 3,
+  sessions: ['course-z2', 'renfo-bas', 'renfo-haut'],
+  boxe: null  // set to a session id later when boxe becomes weekly
+};
+
+// ============================================================
+//  BONUS LIBRARY (20 min sessions)
+// ============================================================
+const BONUS = [
+  {
+    id: 'bonus-jambes-power',
+    focus: 'Bonus · Jambes',
+    title: 'Step-ups intensifs',
+    duration: '20 min',
+    intro: 'Focus vertical pur : step-ups avec charge + travail excentrique. Le vrai transfert vers le dénivelé du Hörnli.',
+    steps: [
+      { type: 'time', name: 'Échauffement', duration: 180, label: 'préparation',
+        cues: ['Mobilité chevilles + hanches', '20 squats à vide', '10 fentes alternées'] },
+      { type: 'reps', name: 'Step-ups sac lesté', reps: '15 / jambe', label: 'bloc 1/4',
+        cues: ['Sac ~5-10 kg (progressif)', 'Marche haute (30-40 cm)', 'Pousse dans le talon'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Fentes marchées', reps: '12 / jambe', label: 'bloc 2/4',
+        cues: ['Avancer en fentes', 'Genou arrière proche du sol', 'Grands pas'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Step-ups excentriques', reps: '10 / jambe', label: 'bloc 3/4',
+        cues: ['Descente très lente 4 secondes', 'Contrôle la charge', 'Simule la descente en montagne'] },
+      { type: 'rest', duration: 40 },
+      { type: 'time', name: 'Wall sit', duration: 60, label: 'bloc 4/4',
+        cues: ['Cuisses parallèles au sol', 'Bras croisés', 'Respire calmement'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Mollets excentriques', duration: 45, label: 'finisher',
+        cues: ['Sur les pointes, descente lente 3 sec', 'Amplitude maximale', 'Sur une jambe si trop facile'] }
+    ]
+  },
+  {
+    id: 'bonus-gainage',
+    focus: 'Bonus · Tronc',
+    title: 'Gainage complet',
+    duration: '20 min',
+    intro: 'Le tronc qui te tient en équilibre sur l\'arête. Circuit varié : planches, anti-rotation, hollow, dead bugs.',
+    steps: [
+      { type: 'time', name: 'Cat-cow', duration: 60, label: 'échauffement',
+        cues: ['À quatre pattes', 'Alterne dos rond / dos creux', 'Respire à chaque cycle'] },
+      { type: 'time', name: 'Planche', duration: 60, label: 'circuit 1',
+        cues: ['Coudes sous épaules', 'Corps en ligne', 'Bassin engagé'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Planche latérale G', duration: 40, label: 'circuit 1',
+        cues: ['Coude sous épaule', 'Hanches hautes'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche latérale D', duration: 40, label: 'circuit 1',
+        cues: ['Coude sous épaule', 'Hanches hautes'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Dead bug', reps: '15 / côté', label: 'circuit 2',
+        cues: ['Dos plaqué au sol', 'Bras + jambe opposés', 'Lent, contrôlé'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Bird dog', reps: '12 / côté', label: 'circuit 2',
+        cues: ['Quatre pattes stable', 'Bras + jambe opposés à l\'horizontale', 'Pause 1 sec au sommet'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Hollow hold', duration: 30, label: 'circuit 2',
+        cues: ['Bas du dos plaqué', 'Bras et jambes tendus décollés', 'Respiration continue'] },
+      { type: 'rest', duration: 40 },
+      { type: 'time', name: 'Planche + rotation hanches', duration: 40, label: 'circuit 3',
+        cues: ['Planche stable', 'Descend les hanches G puis D lentement', 'Ne relâche pas le gainage'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Superman', reps: '15 reps', label: 'circuit 3',
+        cues: ['À plat ventre', 'Décolle bras et jambes', 'Pause 1 sec en haut'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Planche finale', duration: 45, label: 'finisher',
+        cues: ['Vraiment finir', 'Qualité, gainage actif', 'Respiration continue'] }
+    ]
+  },
+  {
+    id: 'bonus-haut',
+    focus: 'Bonus · Haut du corps',
+    title: 'Tirage & pompes',
+    duration: '20 min',
+    intro: 'Focus tirage et poussée : tractions, pompes variées, rowing. Construire progressivement vers les 8 tractions.',
+    steps: [
+      { type: 'time', name: 'Mobilité épaules', duration: 180, label: 'échauffement',
+        cues: ['Rotations, wall angels', 'Rétractions scapulaires', '5 pompes lentes de prep'] },
+      { type: 'reps', name: 'Pompes classiques', reps: '10-15 reps', label: 'bloc 1',
+        cues: ['Qualité, corps en ligne', 'Descente 2 sec', 'Sur les genoux si besoin'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Tractions ou négatives', reps: '5-8 reps', label: 'bloc 1',
+        cues: ['Sur une barre de porte', 'Négatives descente 5 sec', 'Ou rowing élastique si pas de barre'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes déclinées', reps: '8-12 reps', label: 'bloc 2',
+        cues: ['Pieds surélevés (chaise)', 'Focus haut des pecs et épaules', 'Contrôle la descente'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Rowing haltère / sac', reps: '12 / bras', label: 'bloc 2',
+        cues: ['Buste à 45°', 'Rétracte l\'omoplate', 'Coude près du corps'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes diamant', reps: '8-10 reps', label: 'bloc 3',
+        cues: ['Mains rapprochées en losange', 'Focus triceps', 'Coudes près du corps'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Curl + développé', reps: '10 reps', label: 'bloc 3',
+        cues: ['Haltères ou sac lesté', 'Curl bras, puis pousse au-dessus tête', 'Enchaîné, fluide'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Dead hang', duration: 30, label: 'finisher',
+        cues: ['Suspendu à la barre', 'Épaules engagées (pas mortes)', 'Bonus grip pour Cervin'] }
+    ]
+  },
+  {
+    id: 'bonus-mobilite',
+    focus: 'Bonus · Mobilité',
+    title: 'Hanches & chevilles',
+    duration: '20 min',
+    intro: 'Souvent négligée, essentielle pour l\'alpinisme : hanches ouvertes pour les grandes enjambées, chevilles mobiles pour les appuis délicats.',
+    steps: [
+      { type: 'time', name: 'Cat-cow', duration: 90, label: 'ouverture',
+        cues: ['À quatre pattes', 'Alterne dos rond / dos creux', 'Respire à chaque cycle'] },
+      { type: 'time', name: 'Rotations hanches (à 4 pattes)', duration: 90, label: 'ouverture',
+        cues: ['Genou qui décrit un cercle', 'Amplitude maximale', '45 sec par côté'] },
+      { type: 'time', name: 'Fente basse + rotation', duration: 90, label: 'hanches',
+        cues: ['Fente basse profonde', 'Rotation buste vers la jambe avant', '45 sec par côté'] },
+      { type: 'time', name: 'Grenouille (frog)', duration: 90, label: 'hanches',
+        cues: ['Genoux écartés au sol, coudes au sol', 'Recule doucement les fesses', 'Respire dans les adducteurs'] },
+      { type: 'time', name: 'Pigeon G', duration: 90, label: 'hanches',
+        cues: ['Jambe avant pliée, tibia parallèle au bord', 'Jambe arrière tendue', 'Descend le buste'] },
+      { type: 'time', name: 'Pigeon D', duration: 90, label: 'hanches',
+        cues: ['Autre côté', 'Buste vers l\'avant si possible', 'Respiration profonde'] },
+      { type: 'time', name: 'Genoux au mur (dorsiflexion)', duration: 90, label: 'chevilles',
+        cues: ['Pied à 10 cm du mur', 'Touche le mur avec le genou sans lever le talon', '30 sec par pied puis alterné'] },
+      { type: 'time', name: 'Étirement mollets contre mur', duration: 90, label: 'chevilles',
+        cues: ['Talon planté, pointe au mur', 'Avance la hanche', '45 sec par côté'] },
+      { type: 'time', name: 'Squat profond tenu', duration: 90, label: 'intégration',
+        cues: ['Descends en squat profond', 'Coudes contre l\'intérieur des genoux, ouvre', 'Respire, tiens la posture'] },
+      { type: 'time', name: 'Enfant + torsion', duration: 90, label: 'récupération',
+        cues: ['Posture de l\'enfant', 'Passe un bras sous l\'autre pour twister', '45 sec par côté'] }
+    ]
+  },
+  {
+    id: 'bonus-hiit',
+    focus: 'Bonus · Cardio',
+    title: 'HIIT court intense',
+    duration: '20 min',
+    intro: 'Cardio explosif à intégrer quand tu veux mettre du gaz. Simule le VO2max qu\'on développera vraiment en Phase 2. Attention : intense.',
+    steps: [
+      { type: 'time', name: 'Échauffement', duration: 240, label: 'préparation',
+        cues: ['Jumping jacks doux', 'Montées de genoux', 'Mobilité générale'] },
+      // 4 rounds Tabata (20 on / 10 off × 8)
+      { type: 'time', name: 'Burpees', duration: 20, label: 'round 1 · 1/4',
+        cues: ['Intensité max 20 sec', 'Descend en planche, pompe, saut', 'Ne triche pas'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'Mountain climbers', duration: 20, label: 'round 1 · 2/4',
+        cues: ['Position planche stable', 'Genoux vers la poitrine', 'Rythme maximal'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'High knees', duration: 20, label: 'round 1 · 3/4',
+        cues: ['Genoux hauts, plus haut', 'Bras qui bougent', 'Cadence max'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'Squats sautés', duration: 20, label: 'round 1 · 4/4',
+        cues: ['Squat complet, saut vertical', 'Amortis en squat', 'Explosivité'] },
+      { type: 'rest', duration: 60 },
+
+      { type: 'time', name: 'Burpees', duration: 20, label: 'round 2 · 1/4',
+        cues: ['Deuxième round', 'Garde la forme', 'Vraiment fort'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'Mountain climbers', duration: 20, label: 'round 2 · 2/4',
+        cues: ['Rythme max', 'Gainage actif'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'High knees', duration: 20, label: 'round 2 · 3/4',
+        cues: ['Cadence max', 'Genoux vraiment hauts'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'Squats sautés', duration: 20, label: 'round 2 · 4/4',
+        cues: ['Explosivité', 'Amortis'] },
+      { type: 'rest', duration: 90 },
+
+      { type: 'time', name: 'Finisher · Burpees', duration: 60, label: 'finisher',
+        cues: ['1 minute de burpees', 'Rythme soutenu', 'Vide le réservoir'] },
+      { type: 'time', name: 'Retour au calme', duration: 90, label: 'récup',
+        cues: ['Marche', 'Respiration profonde', 'Bras dessus la tête'] }
+    ]
+  },
+  {
+    id: 'bonus-grip',
+    focus: 'Bonus · Grip & portage',
+    title: 'Farmer & suspension',
+    duration: '20 min',
+    intro: 'La préhension pour les cordes fixes du Hörnli et le portage sac. Travail spécifique et transférable direct.',
+    steps: [
+      { type: 'time', name: 'Échauffement mains', duration: 120, label: 'préparation',
+        cues: ['Rotations poignets', 'Ouvre/ferme les poings 30 fois', 'Étire les avant-bras'] },
+      { type: 'time', name: 'Dead hang', duration: 30, label: 'bloc 1 · suspension',
+        cues: ['Suspendu à la barre bras tendus', 'Épaules engagées', 'Respire'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Dead hang', duration: 30, label: 'bloc 1 · suspension',
+        cues: ['Deuxième set', 'Tiens plus longtemps si possible'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Dead hang une main', duration: 15, label: 'bloc 1 · suspension',
+        cues: ['Alterne mains', '15 sec par main', 'Skip si trop dur, refais un dead hang double'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Farmer carry', reps: '40 mètres', label: 'bloc 2 · portage',
+        cues: ['Une charge lourde par main (sac, jerrican, haltères)', 'Marche droite, épaules basses', 'Gainage actif'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Farmer carry unilatéral', reps: '20m / bras', label: 'bloc 2 · portage',
+        cues: ['Charge d\'un seul côté', 'Anti-rotation, ne penche pas', '20m par côté'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Farmer carry lourd', reps: '40 mètres', label: 'bloc 2 · portage',
+        cues: ['La plus grosse charge tenable', 'Respire, avance calmement', 'Grip max'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Serrage éponge/balle', duration: 45, label: 'finisher grip',
+        cues: ['Éponge dure, balle de tennis', 'Serre fort 3 sec, relâche 1 sec', 'Alterne les mains'] },
+      { type: 'time', name: 'Étirement avant-bras', duration: 90, label: 'récup',
+        cues: ['À genoux, paumes au sol doigts vers toi', 'Recule doucement', '45 sec par sens'] }
+    ]
+  },
+  {
+    id: 'bonus-descente',
+    focus: 'Bonus · Descente',
+    title: 'Excentrique jambes',
+    duration: '20 min',
+    intro: 'La descente est le moment où arrivent la plupart des accidents. Ce bonus travaille l\'excentrique quadri + mollets — ce qui te sauve les genoux et t\'évite la panne à la descente.',
+    steps: [
+      { type: 'time', name: 'Mobilité genoux + chevilles', duration: 180, label: 'préparation',
+        cues: ['Rotations, flexions', 'Cercles chevilles', 'Petits squats à vide'] },
+      { type: 'reps', name: 'Squats descente lente', reps: '10 reps', label: 'bloc 1',
+        cues: ['Descente 4 secondes', 'Montée normale', 'Focus le contrôle excentrique'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Step-downs (descentes contrôlées)', reps: '10 / jambe', label: 'bloc 1',
+        cues: ['Debout sur une marche', 'Descend un pied contrôlé 3 sec', 'L\'autre reste engagé'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Fentes descente lente', reps: '10 / jambe', label: 'bloc 2',
+        cues: ['Descente en fente 3 sec', 'Genou arrière proche du sol', 'Contrôle le quadri'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Wall sit', duration: 60, label: 'bloc 2',
+        cues: ['Endurance quadri statique', 'Respire calmement', 'Tiens'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Mollets excentriques', reps: '15 reps', label: 'bloc 3',
+        cues: ['Monte normal, descend en 3 sec', 'Sur une seule jambe si possible', 'Amplitude max'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Mollets excentriques', reps: '15 reps', label: 'bloc 3',
+        cues: ['Autre jambe', 'Descente encore plus lente si tu peux', 'C\'est ça qui protège'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Étirement quadri debout', duration: 90, label: 'étirements',
+        cues: ['Talon vers les fesses', '45 sec par jambe', 'Ne pas cambrer'] },
+      { type: 'time', name: 'Étirement mollets contre mur', duration: 90, label: 'étirements',
+        cues: ['Talon planté', 'Avance la hanche', '45 sec par jambe'] }
+    ]
+  },
+  {
+    id: 'bonus-respi',
+    focus: 'Bonus · Mental',
+    title: 'Respiration & visualisation',
+    duration: '20 min',
+    intro: 'Séance parasportive complète : cohérence cardiaque + box breathing + visualisation de l\'itinéraire Cervin. Le mental se construit aussi ici.',
+    steps: [
+      { type: 'time', name: 'Installation', duration: 60, label: 'préparation',
+        cues: ['Assis droit ou allongé', 'Yeux fermés', 'Détecte les tensions et relâche'] },
+      { type: 'time', name: 'Cohérence cardiaque', duration: 300, label: 'bloc 1',
+        cues: ['5 sec inspire par le nez', '5 sec expire par la bouche', '6 respirations par minute'] },
+      { type: 'time', name: 'Transition', duration: 60, label: 'transition',
+        cues: ['Respiration libre', 'Note ce qui a changé dans le corps'] },
+      { type: 'time', name: 'Box breathing 4-4-4-4', duration: 300, label: 'bloc 2',
+        cues: ['4 sec inspire · 4 sec pause · 4 sec expire · 4 sec pause', 'Rythme militaire, régulier', 'Reste calme même dans la pause vide'] },
+      { type: 'time', name: 'Transition', duration: 60, label: 'transition',
+        cues: ['Retour à une respiration naturelle', 'Prépare la visualisation'] },
+      { type: 'time', name: 'Visualisation Cervin', duration: 420, label: 'bloc 3',
+        cues: ['Vois-toi partir du Hörnli à 4h du matin', 'Sens le froid, entends les crampons', 'Sois calme sur les ressauts exposés', 'Vois la désescalade nette et lucide'] },
+      { type: 'time', name: 'Ancrage', duration: 60, label: 'clôture',
+        cues: ['Reviens ici et maintenant', 'Sens ton corps', 'Emporte le calme avec toi'] }
+    ]
+  }
+];
+
+// ============================================================
+//  LEXIQUE PARASPORTIF
+// ============================================================
+const LEXIQUE = [
+  {
+    id: 'coherence',
+    cat: 'Respiration',
+    title: 'Cohérence cardiaque',
+    intro: 'Synchronise le cœur et la respiration. Un des outils les plus efficaces pour basculer en parasympathique. Baisse cortisol, améliore focus.',
+    when: [
+      'Le matin avant de démarrer la journée',
+      'À midi, avant/après repas',
+      'Le soir avant de dormir',
+      'Avant une séance de sport ou une situation stressante'
+    ],
+    protocol: {
+      title: 'Protocole 3-6-5',
+      body: '3 fois par jour, 6 respirations par minute (5 secondes inspire par le nez, 5 secondes expire par la bouche), pendant 5 minutes.',
+      details: [
+        'Assis dos droit ou allongé',
+        '30 cycles = 5 minutes',
+        'Effet immédiat 3-4 heures, cumulatif si régulier',
+        'Yeux fermés ou regard doux au loin'
+      ]
+    }
+  },
+  {
+    id: 'box-breathing',
+    cat: 'Respiration',
+    title: 'Box breathing (4-4-4-4)',
+    intro: 'Technique militaire (Navy SEALs) pour rester calme sous pression. Idéale avant un effort engagé ou pour reprendre le contrôle en cas de stress aigu.',
+    when: [
+      'Avant les ressauts exposés en montagne',
+      'Avant un round de boxe difficile',
+      'En cas de pic de stress ou peur',
+      'Pour préparer un effort intense (VO2, seuil)'
+    ],
+    protocol: {
+      title: 'Le carré du souffle',
+      body: '4 secondes d\'inspire, 4 secondes de pause poumons pleins, 4 secondes d\'expire, 4 secondes de pause poumons vides. Répète 4 à 8 cycles.',
+      details: [
+        'Reste calme même dans les pauses (l\'inconfort passe)',
+        'Nasal si possible, sinon bouche',
+        'Peut se pratiquer debout en marchant',
+        'Progressivement augmenter à 5-5-5-5 puis 6-6-6-6'
+      ]
+    }
+  },
+  {
+    id: 'wim-hof',
+    cat: 'Respiration',
+    title: 'Méthode Wim Hof',
+    intro: 'Hyperventilation contrôlée + apnée. Augmente la tolérance au CO2, active le système immunitaire, prépare au froid. Attention : jamais en apnée dans l\'eau.',
+    when: [
+      'Le matin à jeun idéalement',
+      'Avant un défi mental',
+      'Avant douche froide / bain froid',
+      'Pas juste avant de dormir (trop stimulant)'
+    ],
+    protocol: {
+      title: 'Cycle complet',
+      body: '30 respirations profondes rapides (inspire par le nez ou bouche, expire relâchée) puis apnée poumons vides jusqu\'au signal du corps, puis inspire pleine + rétention 15 sec. Répète 3 tours.',
+      details: [
+        'Jamais dans l\'eau ni au volant',
+        'Note tes temps d\'apnée à chaque tour',
+        'Après le 3ᵉ tour, respiration normale',
+        '10-15 minutes total'
+      ]
+    }
+  },
+  {
+    id: 'apnee-statique',
+    cat: 'Apnée',
+    title: 'Apnée statique',
+    intro: 'Tenir sa respiration au repos. Développe la tolérance au CO2 et le calme mental. Prérequis avant l\'apnée dynamique.',
+    when: [
+      'Le soir avant de dormir (calme)',
+      'Après une séance de sport',
+      'Jamais dans l\'eau seul, jamais debout'
+    ],
+    protocol: {
+      title: 'Table CO2',
+      body: 'Alterne 8 apnées avec des temps de repos qui diminuent : repos 2:00, apnée 1:00 ; repos 1:45, apnée 1:00 ; ... jusqu\'à repos 0:15, apnée 1:00.',
+      details: [
+        'Allongé ou assis confortable',
+        'Bouche fermée, doigts pincent le nez',
+        'Adapte la durée d\'apnée à ton niveau (30 sec pour démarrer)',
+        'Progression : augmente la durée d\'apnée toutes les 2 semaines'
+      ]
+    }
+  },
+  {
+    id: 'apnee-dynamique',
+    cat: 'Apnée',
+    title: 'Apnée dynamique',
+    intro: 'Marcher ou bouger en apnée. Simule l\'effort sous manque d\'oxygène — parfait entraînement mental pour l\'altitude et les efforts engagés.',
+    when: [
+      'En complément d\'une séance cardio',
+      'À l\'échauffement pour préparer une séance intense',
+      'À l\'extérieur, jamais dans l\'eau seul'
+    ],
+    protocol: {
+      title: 'Marche en apnée',
+      body: 'Inspire pleine, retiens la respiration, marche jusqu\'à en ressentir l\'envie de respirer, reprends 5 respirations, recommence. 5-10 tours.',
+      details: [
+        'Progression : 20 pas → 30 → 40 → 50',
+        'Ne force jamais au-delà du besoin réel',
+        'Toujours en sécurité (jamais en montée raide, jamais dans l\'eau)',
+        'Note tes progrès (nombre de pas)'
+      ]
+    }
+  },
+  {
+    id: 'douche-froide',
+    cat: 'Exposition au froid',
+    title: 'Douche froide',
+    intro: 'Le déclencheur d\'inconfort volontaire le plus simple. Booste la dopamine, entraîne à choisir le difficile, réduit inflammations. La brique quotidienne du mental.',
+    when: [
+      'Chaque matin idéalement',
+      'Après séance de sport (récup + mental)',
+      'Fin de la douche chaude, jamais à jeun d\'énergie'
+    ],
+    protocol: {
+      title: 'Progressif sur 4 semaines',
+      body: 'Semaine 1 : 30 sec froid après la douche chaude. Semaine 2 : 1 min. Semaine 3 : 1:30. Semaine 4+ : 2-3 min. Respire calmement, ne bloque pas.',
+      details: [
+        'Le plus froid possible (curseur au max)',
+        'Respire par le nez, lente et profonde',
+        'Le premier choc dure ~10 sec puis passe',
+        'Bonus : termine par la nuque et le visage'
+      ]
+    }
+  },
+  {
+    id: 'bain-froid',
+    cat: 'Exposition au froid',
+    title: 'Bain froid / Ice bath',
+    intro: 'Immersion complète dans l\'eau froide. Anti-inflammatoire puissant, boost mental énorme. Plus intense que la douche : à réserver aux fins de semaine.',
+    when: [
+      'Post-séance intense (mais pas après renfo lourd immédiatement)',
+      '1 fois par semaine max',
+      'Jamais seul dans l\'eau naturelle'
+    ],
+    protocol: {
+      title: 'Immersion contrôlée',
+      body: 'Eau à 10-15°C (baignoire + glaçons ou lac). 3 à 5 minutes maximum. Immersion jusqu\'à la nuque, pas la tête.',
+      details: [
+        'Entre lentement, ne saute pas',
+        'Respiration lente et contrôlée (box breathing)',
+        'Sortir avant le tremblement',
+        'Réchauffe-toi passivement (habits chauds, thé) — pas de douche chaude immédiate'
+      ]
+    }
+  },
+  {
+    id: 'meditation',
+    cat: 'Mental',
+    title: 'Méditation body scan',
+    intro: 'Ancre l\'attention dans le corps. Améliore l\'écoute des signaux (fatigue, tension) et la capacité à rester présent — clé pour l\'alpinisme long et engagé.',
+    when: [
+      'Le soir avant de dormir',
+      'Le matin après le réveil',
+      'Après une séance de sport (récupération active)'
+    ],
+    protocol: {
+      title: 'Scan pieds → tête',
+      body: '10 à 20 minutes. Allongé ou assis. Balaye ton attention lentement des orteils jusqu\'au sommet du crâne, en notant les sensations sans les juger.',
+      details: [
+        'Pas de but à atteindre, juste observer',
+        'Si l\'esprit dérive, reviens au point corporel actuel',
+        'Zones habituelles de tension : mâchoire, épaules, ventre',
+        'App : Insight Timer, Petit Bambou, ou seul en silence'
+      ]
+    }
+  },
+  {
+    id: 'visualisation',
+    cat: 'Mental',
+    title: 'Visualisation Cervin',
+    intro: 'Répétition mentale de l\'itinéraire. Prépare le cerveau à l\'exécution réelle, réduit l\'anxiété du passage, ancre la lucidité à la descente. Utilisé par tous les alpinistes de haut niveau.',
+    when: [
+      'Le soir, en fin de journée',
+      'Après une séance de respiration',
+      'De plus en plus fréquent à mesure que l\'échéance approche'
+    ],
+    protocol: {
+      title: 'Le film mental',
+      body: '5 à 15 minutes. Ferme les yeux et joue le film de l\'ascension complète : départ du refuge, arête, ressauts, sommet, descente. Sois vivant, calme et lucide dans chaque scène.',
+      details: [
+        'Focus surtout sur la DESCENTE (là où arrivent les problèmes)',
+        'Vois-toi calme et fort dans les passages engagés',
+        'Sens le vent, le froid, la corde, les crampons',
+        'Termine sur le retour au refuge, satisfaction tranquille'
+      ]
+    }
+  }
+];
+
+// ============================================================
+//  STRETCHING (complete post-session)
+// ============================================================
+const STRETCHING = {
+  id: 'stretching',
+  title: 'Étirements complets',
+  duration: '10 min',
+  intro: 'Circuit complet post-séance. À faire après une séance renfo ou course. Prends ton temps, respire dans chaque posture.',
+  steps: [
+    { type: 'time', name: 'Quadriceps G', duration: 30, label: 'jambes',
+      cues: ['Debout, talon vers les fesses', 'Genoux côte à côte', 'Bassin neutre'] },
+    { type: 'time', name: 'Quadriceps D', duration: 30, label: 'jambes',
+      cues: ['Autre côté', 'Léger étirement dans l\'avant de la cuisse'] },
+    { type: 'time', name: 'Ischios G', duration: 30, label: 'jambes',
+      cues: ['Assis, une jambe tendue l\'autre pliée', 'Buste vers le pied tendu', 'Dos droit'] },
+    { type: 'time', name: 'Ischios D', duration: 30, label: 'jambes',
+      cues: ['Autre côté', 'Pas besoin de toucher le pied'] },
+    { type: 'time', name: 'Pigeon G', duration: 45, label: 'hanches',
+      cues: ['Genou avant plié, jambe arrière tendue', 'Buste vers l\'avant si possible', 'Respire dans les fessiers'] },
+    { type: 'time', name: 'Pigeon D', duration: 45, label: 'hanches',
+      cues: ['Autre côté', 'Prends ton temps'] },
+    { type: 'time', name: 'Fléchisseurs G', duration: 30, label: 'hanches',
+      cues: ['Fente basse, genou arrière au sol', 'Pousse le bassin vers l\'avant', 'Étire l\'avant de la hanche'] },
+    { type: 'time', name: 'Fléchisseurs D', duration: 30, label: 'hanches',
+      cues: ['Autre côté'] },
+    { type: 'time', name: 'Mollets G contre mur', duration: 30, label: 'mollets',
+      cues: ['Talon planté, jambe tendue', 'Avance la hanche', 'Sensation dans le mollet'] },
+    { type: 'time', name: 'Mollets D contre mur', duration: 30, label: 'mollets',
+      cues: ['Autre côté'] },
+    { type: 'time', name: 'Twist allongé G', duration: 30, label: 'dos',
+      cues: ['Sur le dos, genou ramené côté opposé', 'Épaules au sol', 'Regard à l\'opposé'] },
+    { type: 'time', name: 'Twist allongé D', duration: 30, label: 'dos',
+      cues: ['Autre côté'] },
+    { type: 'time', name: 'Cobra', duration: 40, label: 'dos',
+      cues: ['À plat ventre, mains sous épaules', 'Pousse le buste, épaules basses', 'Étire toute la chaîne antérieure'] },
+    { type: 'time', name: 'Enfant', duration: 60, label: 'récup',
+      cues: ['Fesses sur les talons', 'Bras tendus devant', 'Respiration profonde'] },
+    { type: 'time', name: 'Cross-body G', duration: 20, label: 'épaules',
+      cues: ['Bras en travers de la poitrine', 'Tire au niveau du coude', 'Épaule basse'] },
+    { type: 'time', name: 'Cross-body D', duration: 20, label: 'épaules',
+      cues: ['Autre côté'] },
+    { type: 'time', name: 'Pec G contre mur', duration: 30, label: 'épaules',
+      cues: ['Avant-bras contre un mur, coude épaule', 'Avance le buste, tourne à l\'opposé', 'Sensation dans le pec'] },
+    { type: 'time', name: 'Pec D contre mur', duration: 30, label: 'épaules',
+      cues: ['Autre côté'] }
+  ]
+};
+
+// ============================================================
+//  STATE + PERSISTENCE
+// ============================================================
+const STORAGE_KEY = 'shaolin-one-state-v1';
+
+const state = {
+  view: 'home',
+  sessionId: null,
+  isBonus: false,
+  isStretching: false,
+  lexiqueId: null,
+
+  timer: {
+    running: false,
+    paused: false,
+    stepIdx: 0,
+    stepElapsed: 0,
+    totalElapsed: 0,
+    intervalId: null
+  },
+
+  week: {
+    id: getWeekId(),
+    completed: []
+  },
+
+  wakeLock: null,
+  audioCtx: null
+};
+
+function getWeekId() {
+  const d = new Date();
+  const year = d.getFullYear();
+  // Simple week identifier: year + week number
+  const start = new Date(year, 0, 1);
+  const diff = (d - start) / (1000 * 60 * 60 * 24);
+  const week = Math.ceil((diff + start.getDay() + 1) / 7);
+  return `${year}-W${week}`;
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (saved.week && saved.week.id === state.week.id) {
+      state.week.completed = saved.week.completed || [];
+    }
+  } catch (e) { /* ignore */ }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      week: state.week
+    }));
+  } catch (e) { /* ignore */ }
+}
+
+// ============================================================
+//  AUDIO + VIBRATION
+// ============================================================
+function ensureAudio() {
+  if (!state.audioCtx) {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) state.audioCtx = new AC();
+    } catch (e) { /* no audio */ }
+  }
+  if (state.audioCtx && state.audioCtx.state === 'suspended') {
+    state.audioCtx.resume();
+  }
+}
+
+function beep(freq = 660, duration = 0.18) {
+  if (!state.audioCtx) return;
+  try {
+    const osc = state.audioCtx.createOscillator();
+    const gain = state.audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    gain.gain.value = 0.001;
+    osc.connect(gain);
+    gain.connect(state.audioCtx.destination);
+    const now = state.audioCtx.currentTime;
+    osc.start(now);
+    gain.gain.exponentialRampToValueAtTime(0.3, now + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+    osc.stop(now + duration + 0.05);
+  } catch (e) { /* ignore */ }
+}
+
+function vibrate(pattern) {
+  if (navigator.vibrate) navigator.vibrate(pattern);
+}
+
+function signalTransition() {
+  beep(660, 0.15);
+  setTimeout(() => beep(880, 0.2), 180);
+  vibrate([120, 60, 180]);
+}
+function signalCountdown() {
+  beep(440, 0.08);
+  vibrate(60);
+}
+function signalComplete() {
+  beep(660, 0.15);
+  setTimeout(() => beep(880, 0.15), 180);
+  setTimeout(() => beep(1100, 0.3), 360);
+  vibrate([200, 80, 200, 80, 400]);
+}
+
+// ============================================================
+//  WAKE LOCK
+// ============================================================
+async function requestWakeLock() {
+  if ('wakeLock' in navigator) {
+    try {
+      state.wakeLock = await navigator.wakeLock.request('screen');
+    } catch (e) { /* ignore */ }
+  }
+}
+function releaseWakeLock() {
+  if (state.wakeLock) {
+    state.wakeLock.release().catch(()=>{});
+    state.wakeLock = null;
+  }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && state.timer.running) {
+    requestWakeLock();
+  }
+});
+
+// ============================================================
+//  TIMER LOGIC
+// ============================================================
+function getCurrentSession() {
+  if (state.isStretching) return STRETCHING;
+  if (state.isBonus) return BONUS.find(b => b.id === state.sessionId);
+  return SESSIONS[state.sessionId];
+}
+
+function activeSteps() {
+  const session = getCurrentSession();
+  return session ? session.steps : [];
+}
+
+function currentStep() {
+  return activeSteps()[state.timer.stepIdx];
+}
+
+function startTimer() {
+  ensureAudio();
+  requestWakeLock();
+  state.timer.running = true;
+  state.timer.paused = false;
+  state.timer.stepIdx = 0;
+  state.timer.stepElapsed = 0;
+  state.timer.totalElapsed = 0;
+  if (state.timer.intervalId) clearInterval(state.timer.intervalId);
+  state.timer.intervalId = setInterval(tick, 1000);
+  render();
+}
+
+function tick() {
+  if (!state.timer.running || state.timer.paused) return;
+  state.timer.totalElapsed += 1;
+  const step = currentStep();
+  if (!step) return;
+
+  if (step.type === 'time' || step.type === 'rest') {
+    state.timer.stepElapsed += 1;
+    const remaining = step.duration - state.timer.stepElapsed;
+    if (remaining <= 3 && remaining > 0) {
+      signalCountdown();
+    }
+    if (state.timer.stepElapsed >= step.duration) {
+      advance();
+      return;
+    }
+  }
+  updateTimerUI();
+}
+
+function togglePause() {
+  state.timer.paused = !state.timer.paused;
+  render();
+}
+
+function advance() {
+  signalTransition();
+  state.timer.stepIdx += 1;
+  state.timer.stepElapsed = 0;
+  if (state.timer.stepIdx >= activeSteps().length) {
+    completeSession();
+    return;
+  }
+  render();
+}
+
+function skipStep() {
+  state.timer.stepIdx += 1;
+  state.timer.stepElapsed = 0;
+  if (state.timer.stepIdx >= activeSteps().length) {
+    completeSession();
+    return;
+  }
+  render();
+}
+
+function completeSession() {
+  if (state.timer.intervalId) clearInterval(state.timer.intervalId);
+  state.timer.intervalId = null;
+  state.timer.running = false;
+  releaseWakeLock();
+  signalComplete();
+
+  // Register the session if it's a tronc session (not bonus, not stretching)
+  if (!state.isBonus && !state.isStretching && state.sessionId) {
+    if (!state.week.completed.includes(state.sessionId)) {
+      state.week.completed.push(state.sessionId);
+      saveState();
+    }
+  }
+
+  state.view = 'complete';
+  render();
+}
+
+function quitSession() {
+  if (state.timer.intervalId) clearInterval(state.timer.intervalId);
+  state.timer.intervalId = null;
+  state.timer.running = false;
+  state.timer.paused = false;
+  releaseWakeLock();
+  state.view = 'home';
+  render();
+}
+
+// ============================================================
+//  DIALOG
+// ============================================================
+function showDialog(title, text, onConfirm, confirmLabel = 'Quitter') {
+  const el = document.getElementById('dialog');
+  el.innerHTML = `
+    <div class="dialog">
+      <div class="dialog-title">${title}</div>
+      <div class="dialog-text">${text}</div>
+      <div class="dialog-actions">
+        <button class="cancel" onclick="hideDialog()">Annuler</button>
+        <button class="primary" id="dialog-confirm">${confirmLabel}</button>
+      </div>
+    </div>`;
+  el.classList.add('show');
+  document.getElementById('dialog-confirm').addEventListener('click', () => {
+    hideDialog();
+    onConfirm();
+  });
+}
+function hideDialog() {
+  document.getElementById('dialog').classList.remove('show');
+}
+
+// ============================================================
+//  NAVIGATION
+// ============================================================
+function goto(view, opts = {}) {
+  if (state.timer.running && view !== 'running') {
+    showDialog('Séance en cours', 'Quitter la séance ? Elle ne sera pas validée.', () => {
+      quitSession();
+      Object.assign(state, opts);
+      state.view = view;
+      render();
+    });
+    return;
+  }
+  Object.assign(state, opts);
+  state.view = view;
+  window.scrollTo({ top: 0 });
+  render();
+}
+
+function openSession(sessionId, isBonus = false) {
+  state.sessionId = sessionId;
+  state.isBonus = isBonus;
+  state.isStretching = false;
+  state.view = 'preview';
+  window.scrollTo({ top: 0 });
+  render();
+}
+
+function openStretching() {
+  state.isStretching = true;
+  state.isBonus = false;
+  state.sessionId = null;
+  state.view = 'preview';
+  window.scrollTo({ top: 0 });
+  render();
+}
+
+function startCurrentSession() {
+  state.view = 'running';
+  startTimer();
+}
+
+function checkBoxe() {
+  const boxeId = 'boxe';
+  if (state.week.completed.includes(boxeId)) {
+    // toggle off
+    state.week.completed = state.week.completed.filter(x => x !== boxeId);
+  } else {
+    state.week.completed.push(boxeId);
+  }
+  saveState();
+  render();
+}
+
+// ============================================================
+//  RENDER — HOME
+// ============================================================
+function renderHome() {
+  const completed = state.week.completed.length;
+  const target = WEEK_PLAN.target;
+
+  const progressSlots = Array.from({ length: target }, (_, i) => {
+    const done = i < completed;
+    return `<div class="progress-slot ${done ? 'done' : ''}"></div>`;
+  }).join('');
+
+  const sessionsHTML = WEEK_PLAN.sessions.map(id => {
+    const s = SESSIONS[id];
+    const done = state.week.completed.includes(id);
+    return `
+      <button class="session-card ${done ? 'done' : ''}" onclick="openSession('${id}')">
+        <div class="session-body">
+          <div class="session-focus">${s.focus}</div>
+          <div class="session-title">${s.title}</div>
+          <div class="session-meta">${s.duration}</div>
+        </div>
+        <div class="session-arrow">→</div>
+      </button>`;
+  }).join('');
+
+  // Boxe direct-check tile (shown but noted as "à partir de la prochaine semaine")
+  // Currently we don't include it in week plan, but keep the structure for later
+
+  return `
+    <div class="view">
+      <header class="top-bar">
+        <div class="brand">Shaolin One<span class="brand-dot">.</span></div>
+        <div class="brand-meta">Cervin · Phase 0</div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-tag">Cette semaine</div>
+        <h1 class="hero-title">${completed}<span style="color:var(--ink-faint)">/${target}</span></h1>
+        <div class="progress-bar">${progressSlots}</div>
+        <div class="progress-caption">${completed === target ? 'Semaine bouclée · bien joué' : `${target - completed} séance${target - completed > 1 ? 's' : ''} restante${target - completed > 1 ? 's' : ''}`}</div>
+      </section>
+
+      <div class="section-label">Tronc principal · au choix</div>
+      <div class="session-list">${sessionsHTML}</div>
+
+      <div class="section-label">Bibliothèque</div>
+      <button class="nav-tile" onclick="goto('bonus-list')">
+        <div class="nav-tile-body">
+          <div class="nav-tile-title">Séances bonus</div>
+          <div class="nav-tile-sub">${BONUS.length} séances · 20 min chacune · en complément</div>
+        </div>
+        <div class="nav-tile-arrow">→</div>
+      </button>
+      <button class="nav-tile" onclick="openStretching()">
+        <div class="nav-tile-body">
+          <div class="nav-tile-title">Étirements complets</div>
+          <div class="nav-tile-sub">10 min · post-séance</div>
+        </div>
+        <div class="nav-tile-arrow">→</div>
+      </button>
+      <button class="nav-tile" onclick="goto('lexique-list')">
+        <div class="nav-tile-body">
+          <div class="nav-tile-title">Lexique parasportif</div>
+          <div class="nav-tile-sub">${LEXIQUE.length} techniques · respiration, apnée, froid, mental</div>
+        </div>
+        <div class="nav-tile-arrow">→</div>
+      </button>
+
+      <footer class="footer">
+        <p class="footer-text">Objectif Cervin · été 2027<br>3 séances/semaine · Phase 0</p>
+      </footer>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — SESSION PREVIEW
+// ============================================================
+function renderPreview() {
+  const s = getCurrentSession();
+  const planHTML = (s.plan || []).map(section => `
+    <div class="preview-plan-section">
+      <div class="preview-plan-head">${section.head}</div>
+      <ul class="preview-plan-list">
+        ${section.items.map(i => `<li><span>${i.n}</span><span class="step-t">${i.t}</span></li>`).join('')}
+      </ul>
+    </div>`).join('');
+
+  const nbTimeSteps = s.steps.filter(x => x.type !== 'section').length;
+
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <div class="preview-focus">${s.focus || 'Bonus'}</div>
+      <h1 class="preview-title">${s.title}</h1>
+
+      <div class="preview-meta">
+        <div class="preview-meta-item">
+          <div class="preview-meta-label">Durée</div>
+          <div class="preview-meta-value">${s.duration}</div>
+        </div>
+        <div class="preview-meta-item">
+          <div class="preview-meta-label">Étapes</div>
+          <div class="preview-meta-value">${nbTimeSteps}</div>
+        </div>
+      </div>
+
+      ${s.intro ? `<p class="preview-intro">${s.intro}</p>` : ''}
+
+      ${planHTML ? `<div class="preview-plan">${planHTML}</div>` : ''}
+
+      <button class="start-btn" onclick="startCurrentSession()">Démarrer la séance</button>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — RUNNING
+// ============================================================
+function renderRunning() {
+  const steps = activeSteps();
+  const step = currentStep();
+  if (!step) return renderComplete();
+
+  const totalMin = Math.floor(state.timer.totalElapsed / 60);
+  const totalSec = state.timer.totalElapsed % 60;
+  const totalStr = `${totalMin}:${String(totalSec).padStart(2, '0')}`;
+
+  // Progress slots
+  const progressHTML = steps.map((_, i) => {
+    let cls = '';
+    if (i < state.timer.stepIdx) cls = 'done';
+    else if (i === state.timer.stepIdx) cls = 'current';
+    return `<div class="run-progress-slot ${cls}"></div>`;
+  }).join('');
+
+  const isRest = step.type === 'rest';
+  const isWarmup = step.label === 'échauffement' || step.label === 'préparation';
+
+  // Timer display
+  let timerHTML = '';
+  let actionHTML = '';
+  let stepNameHTML = '';
+  let stepSubHTML = '';
+
+  if (step.type === 'rest') {
+    const remaining = step.duration - state.timer.stepElapsed;
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const pct = Math.min(100, (state.timer.stepElapsed / step.duration) * 100);
+    stepNameHTML = `<div class="run-step-name">Repos</div>`;
+    // Show next step
+    const next = steps[state.timer.stepIdx + 1];
+    const nextName = next ? (next.name || 'Fin de séance') : 'Fin de séance';
+    stepSubHTML = `<div class="run-step-sub">Prochain · ${nextName}</div>`;
+    timerHTML = `
+      <div class="run-timer rest">
+        <div class="run-timer-value">${timeStr}</div>
+        <div class="run-progress-ring"><div class="run-progress-ring-fill" style="width:${pct}%"></div></div>
+      </div>`;
+    actionHTML = `<button class="run-action-btn skip" onclick="skipStep()">Passer le repos →</button>`;
+  }
+  else if (step.type === 'time') {
+    const remaining = step.duration - state.timer.stepElapsed;
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const pct = Math.min(100, (state.timer.stepElapsed / step.duration) * 100);
+    stepNameHTML = `<div class="run-step-name">${step.name}</div>`;
+    if (step.label) stepSubHTML = `<div class="run-step-sub">${step.label}</div>`;
+    const cls = isWarmup ? 'warmup' : '';
+    timerHTML = `
+      <div class="run-timer ${cls}">
+        <div class="run-timer-value">${timeStr}</div>
+        <div class="run-progress-ring"><div class="run-progress-ring-fill" style="width:${pct}%"></div></div>
+      </div>`;
+    actionHTML = `<button class="run-action-btn skip" onclick="skipStep()">Passer →</button>`;
+  }
+  else if (step.type === 'reps') {
+    stepNameHTML = `<div class="run-step-name">${step.name}</div>`;
+    stepSubHTML = `<div class="run-step-sub">${step.reps || ''}${step.label ? ' · ' + step.label : ''}</div>`;
+    timerHTML = '';
+    actionHTML = `<button class="run-action-btn done" onclick="advance()">✓ Fait</button>`;
+  }
+
+  // Cues
+  let cuesHTML = '';
+  if (step.cues && step.cues.length) {
+    cuesHTML = `
+      <div class="run-cues">
+        <div class="run-cues-head">Cues</div>
+        <ul class="run-cues-list">
+          ${step.cues.map(c => `<li>${c}</li>`).join('')}
+        </ul>
+      </div>`;
+  }
+
+  // Next preview (for reps steps)
+  let nextPreview = '';
+  if (step.type === 'reps') {
+    const next = steps[state.timer.stepIdx + 1];
+    if (next) {
+      const nextLabel = next.type === 'rest' ? `Repos ${next.duration}s` : (next.name + (next.reps ? ` · ${next.reps}` : ''));
+      nextPreview = `<div class="run-next">Prochain · <span>${nextLabel}</span></div>`;
+    }
+  }
+
+  return `
+    <div class="view running">
+      <div class="run-top">
+        <button class="run-quit" onclick="askQuit()">← Quitter</button>
+        <div class="run-total">${totalStr}</div>
+        <button class="run-pause ${state.timer.paused ? 'paused' : ''}" onclick="togglePause()">
+          ${state.timer.paused ? '▶ Reprendre' : '⏸ Pause'}
+        </button>
+      </div>
+
+      <div class="run-progress">${progressHTML}</div>
+
+      ${stepNameHTML}
+      ${stepSubHTML}
+      ${timerHTML}
+      ${cuesHTML}
+      ${nextPreview}
+      ${actionHTML}
+    </div>`;
+}
+
+function askQuit() {
+  showDialog(
+    'Quitter la séance ?',
+    'La séance ne sera pas validée. Tu peux reprendre depuis le début plus tard.',
+    quitSession
+  );
+}
+
+function updateTimerUI() {
+  // Instead of full re-render (which would break animations), just update the timer text
+  const step = currentStep();
+  if (!step) return;
+  if (step.type === 'time' || step.type === 'rest') {
+    const remaining = step.duration - state.timer.stepElapsed;
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const pct = Math.min(100, (state.timer.stepElapsed / step.duration) * 100);
+    const valEl = document.querySelector('.run-timer-value');
+    const fillEl = document.querySelector('.run-progress-ring-fill');
+    if (valEl) valEl.textContent = timeStr;
+    if (fillEl) fillEl.style.width = pct + '%';
+  }
+  // update total
+  const totalMin = Math.floor(state.timer.totalElapsed / 60);
+  const totalSec = state.timer.totalElapsed % 60;
+  const totalEl = document.querySelector('.run-total');
+  if (totalEl) totalEl.textContent = `${totalMin}:${String(totalSec).padStart(2, '0')}`;
+}
+
+// ============================================================
+//  RENDER — COMPLETE
+// ============================================================
+function renderComplete() {
+  const isBonus = state.isBonus;
+  const isStretching = state.isStretching;
+  const before = state.week.completed.length - (!isBonus && !isStretching ? 1 : 0);
+  const after = state.week.completed.length;
+  const target = WEEK_PLAN.target;
+
+  let progressHTML = '';
+  if (!isBonus && !isStretching) {
+    progressHTML = `<div class="complete-progress">${before}<span class="complete-arrow">→</span>${after}<span style="color:var(--ink-faint);font-size:20px"> / ${target}</span></div>`;
+  }
+
+  return `
+    <div class="view complete">
+      <div class="complete-mark">Séance validée</div>
+      <div class="complete-title">Bien joué.</div>
+      ${progressHTML}
+      <div class="complete-actions">
+        ${!isStretching ? `<button class="primary" onclick="openStretching()">Étirements post-séance →</button>` : ''}
+        <button class="secondary" onclick="goto('home')">Retour à l'accueil</button>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — BONUS LIST
+// ============================================================
+function renderBonusList() {
+  const itemsHTML = BONUS.map(b => `
+    <button class="list-item" onclick="openSession('${b.id}', true)">
+      <div class="list-item-body">
+        <div class="list-item-title">${b.title}</div>
+        <div class="list-item-sub">${b.focus} · ${b.duration}</div>
+      </div>
+      <div class="list-item-arrow">→</div>
+    </button>`).join('');
+
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <h1 class="list-title">Bonus</h1>
+      <p class="list-intro">Séances de 20 min à démarrer quand tu as la pêche, en complément du tronc principal. Ne comptent pas dans le compteur 3/3.</p>
+      <div>${itemsHTML}</div>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — LEXIQUE
+// ============================================================
+function renderLexiqueList() {
+  const itemsHTML = LEXIQUE.map(l => `
+    <button class="list-item" onclick="goto('lexique-detail', {lexiqueId: '${l.id}'})">
+      <div class="list-item-body">
+        <div class="list-item-title">${l.title}</div>
+        <div class="list-item-sub">${l.cat}</div>
+      </div>
+      <div class="list-item-arrow">→</div>
+    </button>`).join('');
+
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <h1 class="list-title">Parasportif</h1>
+      <p class="list-intro">Les outils qui complètent l'entraînement physique. Respiration, apnée, exposition au froid, mental — le carburant qui fait tenir sur la longueur.</p>
+      <div>${itemsHTML}</div>
+    </div>`;
+}
+
+function renderLexiqueDetail() {
+  const item = LEXIQUE.find(l => l.id === state.lexiqueId);
+  if (!item) return renderLexiqueList();
+
+  const whenHTML = item.when ? `
+    <div class="lex-section">
+      <div class="lex-section-head">Quand</div>
+      <ul>${item.when.map(w => `<li>${w}</li>`).join('')}</ul>
+    </div>` : '';
+
+  const protocolHTML = item.protocol ? `
+    <div class="lex-protocol">
+      <div class="lex-section-head">Protocole · ${item.protocol.title}</div>
+      <p>${item.protocol.body}</p>
+      ${item.protocol.details ? `<ul>${item.protocol.details.map(d => `<li>${d}</li>`).join('')}</ul>` : ''}
+    </div>` : '';
+
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('lexique-list')">← Retour</button>
+      <div class="lex-detail-cat">${item.cat}</div>
+      <h1 class="lex-detail-title">${item.title}</h1>
+      <p class="preview-intro">${item.intro}</p>
+      ${whenHTML}
+      ${protocolHTML}
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — DISPATCHER
+// ============================================================
+function render() {
+  const app = document.getElementById('app');
+  switch (state.view) {
+    case 'home': app.innerHTML = renderHome(); break;
+    case 'preview': app.innerHTML = renderPreview(); break;
+    case 'running': app.innerHTML = renderRunning(); break;
+    case 'complete': app.innerHTML = renderComplete(); break;
+    case 'bonus-list': app.innerHTML = renderBonusList(); break;
+    case 'lexique-list': app.innerHTML = renderLexiqueList(); break;
+    case 'lexique-detail': app.innerHTML = renderLexiqueDetail(); break;
+    default: app.innerHTML = renderHome();
+  }
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+function init() {
+  loadState();
+  render();
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
