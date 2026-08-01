@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v10 · Recovery URL detection fix
-const CACHE = 'shaolin-v10-cervin';
+// v11 · Modern typo + startDate + bonus full-body
+const CACHE = 'shaolin-v11-cervin';
 const ASSETS = [
   './',
   './index.html',
