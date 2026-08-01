@@ -92,6 +92,174 @@
 
   .app { max-width: 560px; margin: 0 auto; padding: 0 18px; }
 
+  /* ============ STICKY TOP BAR (persistent counter) ============ */
+  .top-sticky {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 20;
+    padding-top: calc(10px + var(--safe-top));
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 -18px 0;
+    padding-left: 18px;
+    padding-right: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .top-sticky-left { display: flex; align-items: center; gap: 10px; }
+  .top-brand {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    font-variation-settings: var(--display-strong);
+  }
+  .top-brand-dot { color: var(--gold); }
+  .top-back {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 100px;
+    background: var(--paper-elev);
+  }
+  .top-back:active { background: var(--line); }
+  .top-counter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .top-counter-dots {
+    display: flex;
+    gap: 4px;
+  }
+  .top-counter-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1.5px solid var(--line-strong);
+  }
+  .top-counter-dot.done { background: var(--ink); border-color: var(--ink); }
+  .top-counter.full .top-counter-dot { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 6px var(--gold-halo); }
+  .top-counter-frac {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--ink);
+    font-variation-settings: var(--display-strong);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .top-counter-frac span { color: var(--ink-faint); font-size: 12px; }
+  .top-counter.full .top-counter-frac { color: var(--gold-deep); }
+  .top-counter.full .top-counter-frac span { color: var(--gold); }
+
+  /* ============ TAB BAR (bottom nav) ============ */
+  .tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-bottom: var(--safe-bottom);
+    z-index: 30;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .tab-btn {
+    padding: 10px 8px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    color: var(--ink-faint);
+    transition: color 0.15s;
+  }
+  .tab-btn.active { color: var(--ink); }
+  .tab-icon {
+    font-size: 20px;
+    line-height: 1;
+    font-family: var(--font-display);
+    font-weight: 800;
+  }
+  .tab-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .has-tabbar { padding-bottom: calc(66px + var(--safe-bottom)); }
+
+  /* ============ PHASE SELECTOR ============ */
+  .phase-selector {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .phase-btn {
+    padding: 10px 4px;
+    background: var(--paper-elev);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink-soft);
+    text-align: center;
+    transition: all 0.15s;
+  }
+  .phase-btn:active { transform: scale(0.97); }
+  .phase-btn.active {
+    background: var(--gold-bg);
+    border-color: var(--gold);
+    color: var(--gold-deep);
+    box-shadow: 0 0 12px var(--gold-halo);
+  }
+  .phase-btn-num {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 800;
+    display: block;
+    margin-bottom: 2px;
+    font-variation-settings: var(--display-strong);
+    letter-spacing: -0.02em;
+  }
+  .phase-btn.active .phase-btn-num { color: var(--gold-deep); }
+  .phase-mode-hint {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-top: 8px;
+    letter-spacing: 0.04em;
+  }
+  .phase-reset {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gold-deep);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    margin-top: 6px;
+  }
+
   /* ============ TOP BAR ============ */
   .top-bar {
     padding-top: calc(16px + var(--safe-top));
@@ -1644,6 +1812,8 @@ if (SUPABASE_ENABLED && window.supabase) {
 //  PHASE + WEEK ID
 // ============================================================
 function currentPhase() {
+  // Manual override takes priority
+  if (state.settings && state.settings.manualPhase) return state.settings.manualPhase;
   const now = new Date();
   if (now < new Date(2026, 9, 1)) return 'phase-0';
   if (now < new Date(2027, 1, 1)) return 'phase-1';
@@ -1735,8 +1905,8 @@ function buildCardioSession(type) {
 //  RENFO ROTATION
 // ============================================================
 const RENFO_ROTATION = [
-  { id: 'renfo-fondation', variant: 'A', focus: 'Renfo · Force fondation', focusClass: 'renfo',
-    title: 'Force fondation', duration: '45 min', durationMin: 45,
+  { id: 'renfo-fondation', variant: 'A', focus: 'Renfo · Renfo', focusClass: 'renfo',
+    title: 'Renfo', duration: '45 min', durationMin: 45,
     intro: 'Bases classiques : squats, pompes, tirages, planche.',
     plan: [
       { head: 'Échauffement', items: [{ n: 'Mobilité + activation', t: '5 min' }] },
@@ -2126,7 +2296,8 @@ const state = {
   lastSyncedAt: null,
   loginMessage: null,
   timer: { running: false, paused: false, stepIdx: 0, stepElapsed: 0, totalElapsed: 0, intervalId: null },
-  settings: { startDate: null },
+  settings: { startDate: null, manualPhase: null },
+  tab: 'training',
   week: {
     id: getWeekId(),
     monday: getMondayOfWeek(new Date()).toISOString().slice(0, 10),
@@ -2589,9 +2760,27 @@ async function saveStartDate() {
   saveState();
   if (sb && state.user) {
     try {
-      await sb.auth.updateUser({ data: { startDate: date } });
+      await sb.auth.updateUser({ data: { startDate: date, manualPhase: state.settings.manualPhase } });
     } catch (e) { console.warn('Failed to sync startDate:', e.message); }
   }
+  render();
+}
+
+async function savePhase(phase) {
+  state.settings.manualPhase = phase;
+  saveState();
+  if (sb && state.user) {
+    try {
+      await sb.auth.updateUser({ data: { startDate: state.settings.startDate, manualPhase: phase } });
+    } catch (e) { console.warn('Failed to sync phase:', e.message); }
+  }
+  render();
+}
+
+function switchTab(tab) {
+  state.tab = tab;
+  state.view = tab;
+  window.scrollTo({ top: 0 });
   render();
 }
 
@@ -2679,35 +2868,50 @@ function drawLineChart(actualData, targetData, opts = {}) {
 }
 
 // ============================================================
-//  RENDER — HOME
+//  RENDER — TOP BAR + TAB BAR (persistent)
 // ============================================================
-function renderHome() {
+function renderTopBar(opts = {}) {
+  const done = countDone();
+  const isFull = done === 3;
+  const dots = Array.from({ length: 3 }, (_, i) => `<div class="top-counter-dot ${i < done ? 'done' : ''}"></div>`).join('');
+  const backHTML = opts.back
+    ? `<button class="top-back" onclick="${opts.back}">← Retour</button>`
+    : `<div class="top-brand">Shaolin One<span class="top-brand-dot">.</span></div>`;
+  return `
+    <div class="top-sticky">
+      <div class="top-sticky-left">${backHTML}</div>
+      <button class="top-counter ${isFull ? 'full' : ''}" onclick="switchTab('training')" style="background:none; border:none; padding:0; cursor:pointer;">
+        <div class="top-counter-dots">${dots}</div>
+        <div class="top-counter-frac">${done}<span>/3</span></div>
+      </button>
+    </div>`;
+}
+
+function renderTabBar() {
+  const tab = state.tab || 'training';
+  return `
+    <nav class="tab-bar">
+      <button class="tab-btn ${tab === 'training' ? 'active' : ''}" onclick="switchTab('training')">
+        <div class="tab-icon">◈</div>
+        <div class="tab-label">Entraînement</div>
+      </button>
+      <button class="tab-btn ${tab === 'cockpit' ? 'active' : ''}" onclick="switchTab('cockpit')">
+        <div class="tab-icon">◐</div>
+        <div class="tab-label">Cockpit</div>
+      </button>
+    </nav>`;
+}
+
+// ============================================================
+//  RENDER — TRAINING (ex-home)
+// ============================================================
+function renderTraining() {
   const done = countDone();
   const target = 3;
-
   const renfoVariant = getCurrentRenfo();
   const cardio = state.week.cardio;
   const boxe = state.week.boxe;
   const renfo = state.week.renfo;
-
-  // Weekly overview (last 8 weeks)
-  const recent = getRecentWeeks(8);
-  const currentId = state.week.id;
-  const weekCellsHTML = recent.map(w => {
-    const d = countDoneInWeek(w);
-    const isFull = d === 3 && !w.beforeStart;
-    const isCurrent = w.id === currentId;
-    const beforeStart = !!w.beforeStart;
-    const dots = ['boxe', 'cardio', 'renfo'].map(slot => {
-      const doneSlot = !beforeStart && w[slot] && w[slot].done;
-      return `<div class="week-dot ${doneSlot ? 'done' : ''}"></div>`;
-    }).join('');
-    return `
-      <div class="week-cell ${isFull ? 'full' : ''} ${isCurrent ? 'current' : ''} ${beforeStart ? 'before-start' : ''}">
-        <div class="week-cell-dots">${dots}</div>
-        <div class="week-label">S${shortWeekLabel(w.id)}</div>
-      </div>`;
-  }).join('');
 
   // Session rows
   let cardioTile;
@@ -2799,17 +3003,11 @@ function renderHome() {
   }).join('');
 
   return `
-    <div class="view">
-      <header class="top-bar">
-        <div class="brand">Shaolin One<span class="brand-dot">.</span></div>
-        <div class="phase-chip">
-          <div class="phase-chip-dot"></div>
-          <div class="phase-chip-text">${phaseLabel(phase)}</div>
-        </div>
-      </header>
+    <div class="view has-tabbar">
+      ${renderTopBar()}
 
-      <section class="hero">
-        <div class="hero-label">Cette semaine</div>
+      <section class="hero" style="padding: 20px 0 8px;">
+        <div class="hero-label">Cette semaine · ${phaseLabel(phase)}</div>
         <div class="hero-counter">
           <div class="hero-num ${done === target ? 'complete' : ''}">${done}</div>
           <div class="hero-denom">/${target}</div>
@@ -2817,16 +3015,8 @@ function renderHome() {
         <div class="hero-caption">${done === target ? '· semaine bouclée ·' : `${target - done} restante${target - done > 1 ? 's' : ''}`}</div>
       </section>
 
-      <div class="week-strip-wrap">
-        <div class="week-strip-head">
-          <div class="week-strip-title">Les 8 dernières semaines</div>
-          <div class="week-strip-hint">✧ = 3/3</div>
-        </div>
-        <div class="week-strip">${weekCellsHTML}</div>
-      </div>
-
       <div class="section-title">
-        <div class="section-title-text">Cette semaine · à faire</div>
+        <div class="section-title-text">À faire</div>
       </div>
       <div class="session-list">
         ${cardioTile}
@@ -2834,11 +3024,7 @@ function renderHome() {
         ${boxeTile}
       </div>
 
-      <div class="library-row">
-        <button class="lib-tile" onclick="goto('stats')">
-          <div class="lib-tile-count">◔</div>
-          <div class="lib-tile-title">Stats</div>
-        </button>
+      <div class="library-row" style="grid-template-columns: 1fr 1fr 1fr;">
         <button class="lib-tile" onclick="goto('bonus-list')">
           <div class="lib-tile-count">${BONUS.length}</div>
           <div class="lib-tile-title">Bonus</div>
@@ -2853,17 +3039,6 @@ function renderHome() {
         </button>
       </div>
 
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding: 0 4px;">
-        <button class="sync-badge ${state.syncStatus}" onclick="goto('account')">
-          <div class="sync-badge-dot"></div>
-          ${sb && state.user ? (state.syncStatus === 'synced' ? '☁ Sync ok' : state.syncStatus === 'syncing' ? '☁ Sync…' : state.syncStatus === 'error' ? '☁ Erreur' : '☁ Sync') : '☁ Local'}
-        </button>
-        <button class="sync-badge" onclick="goto('account')" style="cursor:pointer">
-          <div class="sync-badge-dot" style="background:var(--gold)"></div>
-          Compte
-        </button>
-      </div>
-
       <div class="journey">
         <div class="journey-label">Cervin · été 2027</div>
         <div class="journey-line">
@@ -2871,7 +3046,172 @@ function renderHome() {
           ${journeyNodes}
         </div>
       </div>
-    </div>`;
+    </div>
+    ${renderTabBar()}`;
+}
+
+// ============================================================
+//  RENDER — COCKPIT (semainier + stats + settings)
+// ============================================================
+function renderCockpit() {
+  const N = 8;
+  const weeks = getRecentWeeks(N);
+  const boxe = computeBoxeStats(weeks);
+  const cardio = computeCardioStats(weeks);
+  const renfo = computeRenfoStats(weeks);
+  const hasAnyData = boxe.total > 0 || cardio.totalDone > 0 || renfo.totalRenfo > 0 || renfo.totalBonus > 0;
+
+  const boxeChart = drawLineChart(boxe.scores, boxe.target, { maxY: 5.5 });
+  const cardioChart = drawLineChart(cardio.pcts, cardio.target, { maxY: 130 });
+  const renfoChart = drawLineChart(renfo.counts, renfo.target, { maxY: Math.max(3, Math.max(...renfo.counts, 0) + 1) });
+
+  // Semainier
+  const currentId = state.week.id;
+  const weekCellsHTML = weeks.map(w => {
+    const d = countDoneInWeek(w);
+    const isFull = d === 3 && !w.beforeStart;
+    const isCurrent = w.id === currentId;
+    const beforeStart = !!w.beforeStart;
+    const dots = ['boxe', 'cardio', 'renfo'].map(slot => {
+      const doneSlot = !beforeStart && w[slot] && w[slot].done;
+      return `<div class="week-dot ${doneSlot ? 'done' : ''}"></div>`;
+    }).join('');
+    return `
+      <div class="week-cell ${isFull ? 'full' : ''} ${isCurrent ? 'current' : ''} ${beforeStart ? 'before-start' : ''}">
+        <div class="week-cell-dots">${dots}</div>
+        <div class="week-label">S${shortWeekLabel(w.id)}</div>
+      </div>`;
+  }).join('');
+
+  // Phase selector
+  const phase = currentPhase();
+  const isManual = !!(state.settings && state.settings.manualPhase);
+  const phaseBtns = ['phase-0', 'phase-1', 'phase-2', 'phase-3'].map((p, i) => `
+    <button class="phase-btn ${p === phase ? 'active' : ''}" onclick="savePhase('${p}')">
+      <span class="phase-btn-num">${i}</span>
+      ${['Reprise', 'Dévt', 'Spéc.', 'Terrain'][i]}
+    </button>`).join('');
+
+  const scopeLabel = state.settings.startDate
+    ? `Depuis le ${new Date(state.settings.startDate).toLocaleDateString('fr-FR', { day:'numeric', month:'short', year:'numeric' })} · ${boxe.n} sem`
+    : `${N} dernières semaines`;
+
+  return `
+    <div class="view has-tabbar">
+      ${renderTopBar()}
+
+      <h1 class="stats-page-title" style="margin-top: 20px;">Cockpit.</h1>
+      <div class="stats-page-sub">${scopeLabel}</div>
+
+      <div class="section-title" style="margin-top: 4px;">
+        <div class="section-title-text">Semainier</div>
+      </div>
+      <div class="week-strip-wrap" style="margin-top: 0;">
+        <div class="week-strip-head">
+          <div class="week-strip-title">Les 8 dernières</div>
+          <div class="week-strip-hint">✧ = 3/3</div>
+        </div>
+        <div class="week-strip">${weekCellsHTML}</div>
+      </div>
+
+      <div class="section-title">
+        <div class="section-title-text">Progression</div>
+      </div>
+
+      ${!hasAnyData ? `<div class="stat-empty">Pas encore de données. Valide tes premières séances pour voir la progression.</div>` : `
+      <div class="stat-block">
+        <div class="stat-block-head">
+          <div class="stat-block-title">Boxe</div>
+          <div class="stat-block-meta">Score / sem · cible ★★★★</div>
+        </div>
+        <div class="stat-figures">
+          <div class="stat-figure">
+            <div class="stat-figure-val">${boxe.total}<span class="unit"> / ${boxe.n}</span></div>
+            <div class="stat-figure-lbl">Séances</div>
+          </div>
+          <div class="stat-figure">
+            <div class="stat-figure-val">${boxe.avgScore}<span class="unit"> / 5</span></div>
+            <div class="stat-figure-lbl">Score moyen</div>
+          </div>
+        </div>
+        ${boxeChart}
+      </div>
+
+      <div class="stat-block">
+        <div class="stat-block-head">
+          <div class="stat-block-title">Cardio</div>
+          <div class="stat-block-meta">% cible · ${phaseShort(phase)}</div>
+        </div>
+        <div class="stat-figures">
+          <div class="stat-figure">
+            <div class="stat-figure-val">${cardio.totalDone}<span class="unit"> / ${cardio.n}</span></div>
+            <div class="stat-figure-lbl">Séances</div>
+          </div>
+          <div class="stat-figure">
+            <div class="stat-figure-val">${Math.round(cardio.totalMin)}<span class="unit"> min</span></div>
+            <div class="stat-figure-lbl">Total</div>
+          </div>
+          <div class="stat-figure">
+            <div class="stat-figure-val">${cardio.totalKm.toFixed(1)}<span class="unit"> km</span></div>
+            <div class="stat-figure-lbl">Distance</div>
+          </div>
+        </div>
+        ${cardioChart}
+      </div>
+
+      <div class="stat-block">
+        <div class="stat-block-head">
+          <div class="stat-block-title">Renfo</div>
+          <div class="stat-block-meta">Séances / sem (renfo + bonus)</div>
+        </div>
+        <div class="stat-figures">
+          <div class="stat-figure">
+            <div class="stat-figure-val">${renfo.totalRenfo}<span class="unit"> / ${renfo.n}</span></div>
+            <div class="stat-figure-lbl">Renfo</div>
+          </div>
+          <div class="stat-figure">
+            <div class="stat-figure-val">${renfo.totalBonus}</div>
+            <div class="stat-figure-lbl">Bonus</div>
+          </div>
+        </div>
+        ${renfoChart}
+      </div>
+      `}
+
+      <div class="section-title" style="margin-top: 24px;">
+        <div class="section-title-text">Réglages</div>
+      </div>
+
+      <div class="account-block">
+        <div class="account-block-title">Phase actuelle</div>
+        <div class="account-block-value">${phaseLabel(phase)}</div>
+        <div class="account-block-meta">
+          ${isManual ? 'Choix manuel · les cibles cardio s\'adaptent.' : 'Calculée depuis la date. Force une phase pour aller plus vite ou plus lentement.'}
+        </div>
+        <div class="phase-selector">${phaseBtns}</div>
+        ${isManual ? `<div><button class="phase-reset" onclick="savePhase(null)">Revenir au calcul auto</button></div>` : ''}
+      </div>
+
+      <div class="account-block">
+        <div class="account-block-title">Date de départ</div>
+        <div class="account-block-value">${state.settings.startDate ? new Date(state.settings.startDate).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' }) : 'Non définie'}</div>
+        <div class="account-block-meta">Les semaines avant sont grisées et exclues des stats.</div>
+        <div class="account-block-actions">
+          <input type="date" id="start-date-input" value="${state.settings.startDate || ''}" style="flex:2; padding: 12px 14px; background: var(--paper-elev); border: 1px solid var(--line); border-radius: 10px; font-family: var(--font-mono); font-size: 13px; color: var(--ink);">
+          <button class="gold" onclick="saveStartDate()">Enregistrer</button>
+        </div>
+      </div>
+
+      <div class="account-block">
+        <div class="account-block-title">Compte & sync</div>
+        <div class="account-block-value">${sb && state.user ? (state.user.email || 'Connecté') : 'Local uniquement'}</div>
+        <div class="account-block-meta">${sb && state.user ? 'Historique synchronisé avec le cloud.' : 'Connecte-toi pour synchroniser tes données.'}</div>
+        <div class="account-block-actions">
+          <button class="gold" onclick="goto('account')">Gérer le compte</button>
+        </div>
+      </div>
+    </div>
+    ${renderTabBar()}`;
 }
 
 // ============================================================
@@ -2896,7 +3236,7 @@ function renderStats() {
 
   return `
     <div class="view">
-      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      ${renderTopBar({ back: "goto('training')" })}
       <h1 class="stats-page-title">Stats.</h1>
       <div class="stats-page-sub">${scopeLabel}</div>
 
@@ -2982,7 +3322,7 @@ function renderCardioChoice() {
   const tC = CARDIO_TARGETS.course[currentPhase()];
   return `
     <div class="view">
-      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      ${renderTopBar({ back: "goto('training')" })}
       <div class="preview-hero">
         <div class="preview-focus-tag cardio">Cardio · ${phaseLabel(currentPhase())}</div>
         <h1 class="preview-title">Vélo ou course.</h1>
@@ -3084,7 +3424,7 @@ function renderPreview() {
 
   return `
     <div class="view">
-      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      ${renderTopBar({ back: "goto('training')" })}
       <div class="preview-hero">
         <div class="preview-focus-tag ${s.focusClass || 'bonus'}">${s.focus || 'Séance'}</div>
         <h1 class="preview-title">${s.title}</h1>
@@ -3256,7 +3596,7 @@ function renderCardioRecap() {
   const label = c.type === 'velo' ? 'Vélo maison' : 'Course à pied';
   return `
     <div class="view">
-      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      ${renderTopBar({ back: "goto('training')" })}
       <div class="preview-hero">
         <div class="preview-focus-tag cardio">Validée · ${label}</div>
         <h1 class="preview-title">Cette semaine.</h1>
@@ -3331,7 +3671,7 @@ function renderBonusList() {
     </button>`).join('');
   return `
     <div class="view">
-      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      ${renderTopBar({ back: "goto('training')" })}
       <h1 class="list-title">Bonus.</h1>
       <p class="list-intro">Séances full-body de 20 min avec des angles différents. Comptent dans les stats renfo.</p>
       <div class="list-items">${itemsHTML}</div>
@@ -3348,7 +3688,7 @@ function renderLexiqueList() {
     </button>`).join('');
   return `
     <div class="view">
-      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      ${renderTopBar({ back: "goto('training')" })}
       <h1 class="list-title">Parasportif.</h1>
       <p class="list-intro">Respi · apnée · froid · mental.</p>
       <div class="list-items">${itemsHTML}</div>
@@ -3367,7 +3707,7 @@ function renderLexiqueDetail() {
     </div>` : '';
   return `
     <div class="view">
-      <button class="back-btn" onclick="goto('lexique-list')">← Retour</button>
+      ${renderTopBar({ back: "goto('lexique-list')" })}
       <div class="lex-cat">${item.cat}</div>
       <h1 class="lex-title">${item.title}</h1>
       <p class="lex-intro">${item.intro}</p>
@@ -3386,9 +3726,10 @@ async function initAuth() {
     if (session) {
       state.user = session.user;
       state.syncStatus = 'syncing';
-      // Sync startDate from user_metadata if present
-      if (session.user.user_metadata && session.user.user_metadata.startDate) {
-        state.settings.startDate = session.user.user_metadata.startDate;
+      // Sync settings from user_metadata if present
+      if (session.user.user_metadata) {
+        if (session.user.user_metadata.startDate) state.settings.startDate = session.user.user_metadata.startDate;
+        if (session.user.user_metadata.manualPhase) state.settings.manualPhase = session.user.user_metadata.manualPhase;
       }
     }
   } catch (e) { console.warn('Auth check failed:', e.message); }
@@ -3405,14 +3746,15 @@ async function initAuth() {
     if (event === 'SIGNED_IN' && session) {
       state.user = session.user;
       state.loginMessage = null;
-      // Sync startDate from user_metadata
-      if (session.user.user_metadata && session.user.user_metadata.startDate) {
-        state.settings.startDate = session.user.user_metadata.startDate;
+      // Sync settings from user_metadata
+      if (session.user.user_metadata) {
+        if (session.user.user_metadata.startDate) state.settings.startDate = session.user.user_metadata.startDate;
+        if (session.user.user_metadata.manualPhase) state.settings.manualPhase = session.user.user_metadata.manualPhase;
       }
       // Don't auto-navigate if user is in the middle of a password reset flow
       if (state.view === 'reset-password-form' || state.view === 'reset-password-done') return;
       await syncPull();
-      state.view = 'home';
+      state.view = 'training';
       render();
     }
     if (event === 'SIGNED_OUT') {
@@ -3651,7 +3993,7 @@ function renderAccount() {
 
   return `
     <div class="view">
-      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      ${renderTopBar({ back: "goto('training')" })}
       <h1 class="list-title">Compte.</h1>
       <p class="list-intro">Ton historique et ta sync.</p>
 
@@ -3771,8 +4113,10 @@ function render() {
     case 'reset-password-form': html = renderResetPasswordForm(); break;
     case 'reset-password-done': html = renderResetPasswordDone(); break;
     case 'account': html = renderAccount(); break;
-    case 'home': html = renderHome(); break;
-    case 'stats': html = renderStats(); break;
+    case 'home':
+    case 'training': html = renderTraining(); break;
+    case 'stats':
+    case 'cockpit': html = renderCockpit(); break;
     case 'cardio-choice': html = renderCardioChoice(); break;
     case 'cardio-stats': html = renderCardioStats(); break;
     case 'cardio-recap': html = renderCardioRecap(); break;
@@ -3782,7 +4126,7 @@ function render() {
     case 'bonus-list': html = renderBonusList(); break;
     case 'lexique-list': html = renderLexiqueList(); break;
     case 'lexique-detail': html = renderLexiqueDetail(); break;
-    default: html = renderHome();
+    default: html = renderTraining();
   }
   app.innerHTML = html;
 }
@@ -3807,7 +4151,8 @@ async function init() {
       state.view = 'reset-password-form';
       render();
     } else if (state.user) {
-      // Show home immediately with local data, then pull remote in background
+      // Show training immediately with local data, then pull remote in background
+      state.view = 'training';
       render();
       await syncPull();
       render();
@@ -3818,6 +4163,7 @@ async function init() {
     }
   } else {
     // Supabase not configured, local-only mode
+    state.view = 'training';
     render();
   }
 
