@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v12 · Tabs Entrainement/Cockpit + phase override + sticky counter
-const CACHE = 'shaolin-v12-cervin';
+// v13 · Renfo refonte + composite score + NET
+const CACHE = 'shaolin-v13-cervin';
 const ASSETS = [
   './',
   './index.html',
