@@ -16,7 +16,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:SOFT,WONK,opsz,wght,YOPQ@0..100,0..1,9..144,600..900,25..208&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 
@@ -44,12 +44,12 @@
     --pine: #1F5234;
     --indigo: #243757;
 
-    --font-display: 'Fraunces', Georgia, serif;
-    --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-display: 'Bricolage Grotesque', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
 
-    --display-max: "opsz" 144, "SOFT" 0, "WONK" 0, "YOPQ" 208;
-    --display-strong: "opsz" 100, "SOFT" 0, "WONK" 0, "YOPQ" 180;
+    --display-max: "opsz" 96, "wdth" 100, "wght" 800;
+    --display-strong: "opsz" 60, "wdth" 100, "wght" 700;
 
     --safe-top: env(safe-area-inset-top, 0);
     --safe-bottom: env(safe-area-inset-bottom, 0);
@@ -298,6 +298,8 @@
   }
   .week-cell.current .week-label { color: var(--ink); font-weight: 700; }
   .week-cell.full .week-label { color: var(--gold-deep); font-weight: 700; }
+  .week-cell.before-start { opacity: 0.3; }
+  .week-cell.before-start .week-dot { border-style: dashed; }
 
   /* ============ SECTION TITLE ============ */
   .section-title {
@@ -642,6 +644,75 @@
     font-size: 11px;
     color: var(--ink-soft);
     font-weight: 600;
+  }
+
+  /* ============ FULL STEPS DETAIL ============ */
+  .steps-detail {
+    background: var(--paper-elev);
+    border-radius: 12px;
+    padding: 4px 0;
+    margin-bottom: 24px;
+  }
+  .steps-detail-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .steps-detail-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+  }
+  .steps-detail-count {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gold-deep);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .steps-detail-list {
+    padding: 4px 0;
+    max-height: 320px;
+    overflow-y: auto;
+  }
+  .step-line {
+    display: flex;
+    align-items: center;
+    padding: 6px 16px;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .step-line.rest {
+    background: transparent;
+    color: var(--ink-faint);
+    font-size: 11px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+  .step-line-num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    font-weight: 700;
+    min-width: 22px;
+  }
+  .step-line-name {
+    flex: 1;
+    color: var(--ink);
+  }
+  .step-line-info {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    white-space: nowrap;
   }
 
   /* CTA */
@@ -1805,145 +1876,164 @@ function getCurrentRenfo() { return RENFO_ROTATION[getWeekRenfoIdx()]; }
 //  BONUS (compact)
 // ============================================================
 const BONUS = [
-  { id: 'bonus-jambes-power', focus: 'Bonus · Jambes', focusClass: 'bonus', title: 'Step-ups intensifs', duration: '20 min', durationMin: 20,
-    intro: 'Focus vertical : step-ups avec charge + excentrique.',
+  { id: 'bonus-full-classique', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Classique', duration: '20 min', durationMin: 20,
+    intro: 'Circuit full-body équilibré : jambes, poussée, tirage, core, mollets. Le go-to par défaut.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Mobilité + activation', t: '4 min' }] },
+      { head: 'Circuit 3 tours', items: [{ n: 'Squats', t: '15' }, { n: 'Pompes', t: '10' }, { n: 'Rowing élastique', t: '12' }, { n: 'Planche', t: '30 s' }, { n: 'Fentes alternées', t: '10' }, { n: 'Mollets', t: '15' }] },
+      { head: 'Étirements', items: [{ n: 'Retour au calme', t: '2 min' }] }
+    ],
     steps: [
-      { type: 'time', name: 'Échauffement', duration: 180, label: 'préparation', cues: ['Mobilité chevilles + hanches', '20 squats à vide'] },
-      { type: 'reps', name: 'Step-ups sac lesté', reps: '15 / jambe', label: 'bloc 1/4', cues: ['Sac ~5-10 kg', 'Marche haute'] },
-      { type: 'rest', duration: 40 },
-      { type: 'reps', name: 'Fentes marchées', reps: '12 / jambe', label: 'bloc 2/4', cues: ['Avancer en fentes'] },
-      { type: 'rest', duration: 40 },
-      { type: 'reps', name: 'Step-ups excentriques', reps: '10 / jambe', label: 'bloc 3/4', cues: ['Descente très lente 4 sec'] },
-      { type: 'rest', duration: 40 },
-      { type: 'time', name: 'Wall sit', duration: 60, label: 'bloc 4/4', cues: ['Cuisses parallèles', 'Respire'] },
-      { type: 'rest', duration: 30 },
-      { type: 'time', name: 'Mollets excentriques', duration: 45, label: 'finisher', cues: ['Descente lente 3 sec'] }
+      { type: 'time', name: 'Mobilité', duration: 120, label: 'échauffement', cues: ['Rotations articulaires', 'Cat-cow', 'Cercles chevilles'] },
+      { type: 'time', name: 'Activation', duration: 120, label: 'échauffement', cues: ['10 squats à vide', '5 pompes lentes', '10 fentes'] },
+      ...[1,2,3].flatMap(tour => [
+        { type: 'reps', name: 'Squats', reps: '15 reps', label: `circuit — tour ${tour}/3`, cues: ['Amplitude complète', 'Dos droit'] },
+        { type: 'rest', duration: 10 },
+        { type: 'reps', name: 'Pompes', reps: '10 reps', label: `circuit — tour ${tour}/3`, cues: ['Corps en ligne', 'Descente 2s'] },
+        { type: 'rest', duration: 10 },
+        { type: 'reps', name: 'Rowing élastique', reps: '12 reps', label: `circuit — tour ${tour}/3`, cues: ['Rétracte l\'omoplate', 'Coude près du corps'] },
+        { type: 'rest', duration: 10 },
+        { type: 'time', name: 'Planche', duration: 30, label: `circuit — tour ${tour}/3`, cues: ['Corps en ligne', 'Respire'] },
+        { type: 'rest', duration: 10 },
+        { type: 'reps', name: 'Fentes alternées', reps: '10 reps', label: `circuit — tour ${tour}/3`, cues: ['Genou avant aligné', 'Contrôle'] },
+        { type: 'rest', duration: 10 },
+        { type: 'reps', name: 'Mollets', reps: '15 reps', label: `circuit — tour ${tour}/3`, cues: ['Amplitude', 'Contrôlé'] },
+        { type: 'rest', duration: tour < 3 ? 45 : 0 }
+      ]),
+      { type: 'time', name: 'Étirements', duration: 120, label: 'récup', cues: ['Quadri, ischios, mollets', 'Pigeon G puis D'] }
     ] },
-  { id: 'bonus-gainage', focus: 'Bonus · Tronc', focusClass: 'bonus', title: 'Gainage complet', duration: '20 min', durationMin: 20,
-    intro: 'Circuit varié : planches, anti-rotation, hollow, dead bugs.',
+
+  { id: 'bonus-full-cardio', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Cardio-force', duration: '20 min', durationMin: 20,
+    intro: 'Mix cardio et force. Burpees, sauts, pompes, gainage — tout le corps en mode gaz.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Dynamique + activation', t: '3 min' }] },
+      { head: 'Circuit 4 tours', items: [{ n: 'Squats sautés', t: '10' }, { n: 'Pompes', t: '8' }, { n: 'Burpees', t: '8' }, { n: 'Mountain climbers', t: '20 s' }, { n: 'Superman', t: '12' }] },
+      { head: 'Récup', items: [{ n: 'Retour au calme', t: '2 min' }] }
+    ],
     steps: [
-      { type: 'time', name: 'Cat-cow', duration: 60, label: 'échauffement', cues: ['Alterne dos rond / creux'] },
-      { type: 'time', name: 'Planche', duration: 60, label: 'circuit 1', cues: ['Coudes sous épaules'] },
-      { type: 'rest', duration: 20 },
-      { type: 'time', name: 'Planche latérale G', duration: 40, label: 'circuit 1', cues: ['Hanches hautes'] },
-      { type: 'rest', duration: 15 },
-      { type: 'time', name: 'Planche latérale D', duration: 40, label: 'circuit 1', cues: ['Hanches hautes'] },
-      { type: 'rest', duration: 40 },
-      { type: 'reps', name: 'Dead bug', reps: '15 / côté', label: 'circuit 2', cues: ['Dos plaqué'] },
-      { type: 'rest', duration: 20 },
-      { type: 'reps', name: 'Bird dog', reps: '12 / côté', label: 'circuit 2', cues: ['Bras + jambe opposés'] },
-      { type: 'rest', duration: 20 },
-      { type: 'time', name: 'Hollow hold', duration: 30, label: 'circuit 2', cues: ['Bas du dos plaqué'] },
-      { type: 'rest', duration: 40 },
-      { type: 'time', name: 'Planche + rotation hanches', duration: 40, label: 'circuit 3', cues: ['Descend les hanches'] },
-      { type: 'rest', duration: 20 },
-      { type: 'reps', name: 'Superman', reps: '15 reps', label: 'circuit 3', cues: ['Décolle bras et jambes'] },
-      { type: 'rest', duration: 20 },
-      { type: 'time', name: 'Planche finale', duration: 45, label: 'finisher', cues: ['Qualité'] }
+      { type: 'time', name: 'Mobilité dynamique', duration: 90, label: 'échauffement', cues: ['Jumping jacks 30s', 'Rotations épaules', 'Squats à vide'] },
+      { type: 'time', name: 'Activation', duration: 90, label: 'échauffement', cues: ['High knees 20s', '5 burpees lents', 'Petits sauts'] },
+      ...[1,2,3,4].flatMap(tour => [
+        { type: 'reps', name: 'Squats sautés', reps: '10 reps', label: `circuit — tour ${tour}/4`, cues: ['Squat complet', 'Amortis en squat'] },
+        { type: 'rest', duration: 10 },
+        { type: 'reps', name: 'Pompes', reps: '8 reps', label: `circuit — tour ${tour}/4`, cues: ['Contrôle la descente'] },
+        { type: 'rest', duration: 10 },
+        { type: 'reps', name: 'Burpees', reps: '8 reps', label: `circuit — tour ${tour}/4`, cues: ['Rythme régulier', 'Ne bâcle pas'] },
+        { type: 'rest', duration: 10 },
+        { type: 'time', name: 'Mountain climbers', duration: 20, label: `circuit — tour ${tour}/4`, cues: ['Rythme max', 'Gainage actif'] },
+        { type: 'rest', duration: 10 },
+        { type: 'reps', name: 'Superman', reps: '12 reps', label: `circuit — tour ${tour}/4`, cues: ['Décolle bras et jambes', 'Pause 1s en haut'] },
+        { type: 'rest', duration: tour < 4 ? 40 : 0 }
+      ]),
+      { type: 'time', name: 'Retour au calme', duration: 120, label: 'récup', cues: ['Marche', 'Respiration profonde'] }
     ] },
-  { id: 'bonus-haut', focus: 'Bonus · Haut', focusClass: 'bonus', title: 'Tirage & pompes', duration: '20 min', durationMin: 20,
-    intro: 'Focus tirage et poussée.',
+
+  { id: 'bonus-full-tempo', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Tempo lent', duration: '20 min', durationMin: 20,
+    intro: 'Tout en tempo 3s. Endurance musculaire, contrôle, force lente. Ça fait plus mal qu\'il n\'y paraît.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Mobilité', t: '3 min' }] },
+      { head: 'Circuit 3 tours', items: [{ n: 'Squats lents', t: '10 · 3s' }, { n: 'Pompes lentes', t: '6 · 3s' }, { n: 'Rowing lent', t: '8 · 3s' }, { n: 'Wall sit', t: '45 s' }, { n: 'Dead bug', t: '10/c' }, { n: 'Fentes lentes', t: '6/j · 3s' }] },
+      { head: 'Étirements', items: [{ n: 'Retour au calme', t: '2 min' }] }
+    ],
     steps: [
-      { type: 'time', name: 'Mobilité épaules', duration: 180, label: 'échauffement', cues: ['Wall angels', 'Rétractions scapulaires'] },
-      { type: 'reps', name: 'Pompes classiques', reps: '10-15 reps', label: 'bloc 1', cues: ['Corps en ligne'] },
-      { type: 'rest', duration: 30 },
-      { type: 'reps', name: 'Tractions ou négatives', reps: '5-8 reps', label: 'bloc 1', cues: ['Négatives 5 sec'] },
-      { type: 'rest', duration: 45 },
-      { type: 'reps', name: 'Pompes déclinées', reps: '8-12 reps', label: 'bloc 2', cues: ['Pieds surélevés'] },
-      { type: 'rest', duration: 30 },
-      { type: 'reps', name: 'Rowing haltère / sac', reps: '12 / bras', label: 'bloc 2', cues: ['Buste à 45°'] },
-      { type: 'rest', duration: 45 },
-      { type: 'reps', name: 'Pompes diamant', reps: '8-10 reps', label: 'bloc 3', cues: ['Mains en losange'] },
-      { type: 'rest', duration: 30 },
-      { type: 'reps', name: 'Curl + développé', reps: '10 reps', label: 'bloc 3', cues: ['Curl bras, pousse au-dessus'] },
-      { type: 'rest', duration: 45 },
-      { type: 'time', name: 'Dead hang', duration: 30, label: 'finisher', cues: ['Épaules engagées'] }
+      { type: 'time', name: 'Mobilité', duration: 120, label: 'échauffement', cues: ['Cat-cow', 'Rotations hanches', 'Squats à vide'] },
+      { type: 'time', name: 'Activation', duration: 60, label: 'échauffement', cues: ['5 pompes tempo normal', '10 squats amplitude'] },
+      ...[1,2,3].flatMap(tour => [
+        { type: 'reps', name: 'Squats lents', reps: '10 reps · 3s descente', label: `circuit — tour ${tour}/3`, cues: ['3 sec vraies', 'Pause 1s en bas'] },
+        { type: 'rest', duration: 15 },
+        { type: 'reps', name: 'Pompes lentes', reps: '6 reps · 3s', label: `circuit — tour ${tour}/3`, cues: ['Descente lente', 'Pousse contrôlé'] },
+        { type: 'rest', duration: 15 },
+        { type: 'reps', name: 'Rowing lent', reps: '8 reps · 3s', label: `circuit — tour ${tour}/3`, cues: ['Tire lentement', 'Contrôle le retour'] },
+        { type: 'rest', duration: 15 },
+        { type: 'time', name: 'Wall sit', duration: 45, label: `circuit — tour ${tour}/3`, cues: ['Cuisses parallèles', 'Respire calmement'] },
+        { type: 'rest', duration: 15 },
+        { type: 'reps', name: 'Dead bug', reps: '10 / côté', label: `circuit — tour ${tour}/3`, cues: ['Dos plaqué', 'Lent'] },
+        { type: 'rest', duration: 15 },
+        { type: 'reps', name: 'Fentes lentes', reps: '6 / jambe · 3s', label: `circuit — tour ${tour}/3`, cues: ['Descente 3 sec', 'Contrôle'] },
+        { type: 'rest', duration: tour < 3 ? 45 : 0 }
+      ]),
+      { type: 'time', name: 'Étirements', duration: 120, label: 'récup', cues: ['Quadri, ischios', 'Pigeon G puis D'] }
     ] },
-  { id: 'bonus-mobilite', focus: 'Bonus · Mobilité', focusClass: 'bonus', title: 'Hanches & chevilles', duration: '20 min', durationMin: 20,
-    intro: 'Hanches ouvertes, chevilles mobiles.',
+
+  { id: 'bonus-full-unilateral', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Unilatéral', duration: '20 min', durationMin: 20,
+    intro: 'Un membre à la fois. Corrige les asymétries et sollicite la stabilisation — parfait pour la montagne.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Mobilité', t: '3 min' }] },
+      { head: 'Circuit 3 tours', items: [{ n: 'Step-ups', t: '10/j' }, { n: 'Pompes archer', t: '5/c' }, { n: 'Rowing 1 bras', t: '10/c' }, { n: 'Planche latérale', t: '20s/c' }, { n: 'Fentes bulgares', t: '8/j' }, { n: 'Bird dog', t: '10/c' }] },
+      { head: 'Étirements', items: [{ n: 'Retour au calme', t: '2 min' }] }
+    ],
     steps: [
-      { type: 'time', name: 'Cat-cow', duration: 90, label: 'ouverture', cues: ['Alterne dos rond / creux'] },
-      { type: 'time', name: 'Rotations hanches', duration: 90, label: 'ouverture', cues: ['Genou décrit un cercle'] },
-      { type: 'time', name: 'Fente basse + rotation', duration: 90, label: 'hanches', cues: ['Rotation buste'] },
-      { type: 'time', name: 'Grenouille (frog)', duration: 90, label: 'hanches', cues: ['Genoux écartés', 'Recule doucement'] },
-      { type: 'time', name: 'Pigeon G', duration: 90, label: 'hanches', cues: ['Descend le buste'] },
-      { type: 'time', name: 'Pigeon D', duration: 90, label: 'hanches', cues: ['Autre côté'] },
-      { type: 'time', name: 'Genoux au mur', duration: 90, label: 'chevilles', cues: ['Sans lever le talon'] },
-      { type: 'time', name: 'Mollets contre mur', duration: 90, label: 'chevilles', cues: ['Talon planté'] },
-      { type: 'time', name: 'Squat profond tenu', duration: 90, label: 'intégration', cues: ['Coudes contre intérieur des genoux'] },
-      { type: 'time', name: 'Enfant + torsion', duration: 90, label: 'récup', cues: ['Passe un bras sous l\'autre'] }
+      { type: 'time', name: 'Mobilité', duration: 120, label: 'échauffement', cues: ['Rotations hanches', 'Épaules', 'Chevilles'] },
+      { type: 'time', name: 'Activation', duration: 60, label: 'échauffement', cues: ['5 squats', '5 pompes', '10 fentes alternées'] },
+      ...[1,2,3].flatMap(tour => [
+        { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: `circuit — tour ${tour}/3`, cues: ['Marche haute', 'Pousse dans le talon'] },
+        { type: 'rest', duration: 10 },
+        { type: 'reps', name: 'Pompes archer', reps: '5 / côté', label: `circuit — tour ${tour}/3`, cues: ['Bras tendu côté', 'Poids sur l\'autre bras', 'Sur les genoux si besoin'] },
+        { type: 'rest', duration: 10 },
+        { type: 'reps', name: 'Rowing 1 bras', reps: '10 / côté', label: `circuit — tour ${tour}/3`, cues: ['Sac lesté', 'Buste 45°', 'Rétracte'] },
+        { type: 'rest', duration: 10 },
+        { type: 'time', name: 'Planche latérale G', duration: 20, label: `circuit — tour ${tour}/3`, cues: ['Coude sous épaule', 'Hanches hautes'] },
+        { type: 'rest', duration: 5 },
+        { type: 'time', name: 'Planche latérale D', duration: 20, label: `circuit — tour ${tour}/3`, cues: ['Autre côté'] },
+        { type: 'rest', duration: 10 },
+        { type: 'reps', name: 'Fentes bulgares', reps: '8 / jambe', label: `circuit — tour ${tour}/3`, cues: ['Pied arrière surélevé', 'Descente contrôlée'] },
+        { type: 'rest', duration: 10 },
+        { type: 'reps', name: 'Bird dog', reps: '10 / côté', label: `circuit — tour ${tour}/3`, cues: ['Bras + jambe opposés', 'Pause 1s'] },
+        { type: 'rest', duration: tour < 3 ? 45 : 0 }
+      ]),
+      { type: 'time', name: 'Étirements', duration: 120, label: 'récup', cues: ['Pigeon, quadri, fléchisseurs'] }
     ] },
-  { id: 'bonus-hiit', focus: 'Bonus · Cardio', focusClass: 'bonus', title: 'HIIT court', duration: '20 min', durationMin: 20,
-    intro: 'Cardio explosif.',
+
+  { id: 'bonus-full-explo', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Explosif', duration: '20 min', durationMin: 20,
+    intro: 'Puissance et réactivité. Sauts, pompes plyo, sprints, gainage dynamique — pour la vraie montagne.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Dynamique', t: '3 min' }] },
+      { head: 'Circuit 3 tours', items: [{ n: 'Squats sautés', t: '8' }, { n: 'Pompes plyo', t: '6' }, { n: 'Burpees', t: '6' }, { n: 'High knees', t: '20 s' }, { n: 'Hollow hold', t: '20 s' }, { n: 'Fentes sautées', t: '6/j' }] },
+      { head: 'Récup', items: [{ n: 'Retour au calme', t: '3 min' }] }
+    ],
     steps: [
-      { type: 'time', name: 'Échauffement', duration: 240, label: 'préparation', cues: ['Jumping jacks', 'Montées de genoux'] },
-      { type: 'time', name: 'Burpees', duration: 20, label: 'round 1 · 1/4', cues: ['Intensité max'] },
-      { type: 'rest', duration: 10 },
-      { type: 'time', name: 'Mountain climbers', duration: 20, label: 'round 1 · 2/4', cues: ['Rythme max'] },
-      { type: 'rest', duration: 10 },
-      { type: 'time', name: 'High knees', duration: 20, label: 'round 1 · 3/4', cues: ['Cadence max'] },
-      { type: 'rest', duration: 10 },
-      { type: 'time', name: 'Squats sautés', duration: 20, label: 'round 1 · 4/4', cues: ['Explosif'] },
-      { type: 'rest', duration: 60 },
-      { type: 'time', name: 'Burpees', duration: 20, label: 'round 2 · 1/4', cues: ['Deuxième round'] },
-      { type: 'rest', duration: 10 },
-      { type: 'time', name: 'Mountain climbers', duration: 20, label: 'round 2 · 2/4', cues: ['Gainage actif'] },
-      { type: 'rest', duration: 10 },
-      { type: 'time', name: 'High knees', duration: 20, label: 'round 2 · 3/4', cues: ['Cadence max'] },
-      { type: 'rest', duration: 10 },
-      { type: 'time', name: 'Squats sautés', duration: 20, label: 'round 2 · 4/4', cues: ['Explosif'] },
-      { type: 'rest', duration: 90 },
-      { type: 'time', name: 'Finisher · Burpees', duration: 60, label: 'finisher', cues: ['Vide le réservoir'] },
-      { type: 'time', name: 'Retour au calme', duration: 90, label: 'récup', cues: ['Marche'] }
+      { type: 'time', name: 'Mobilité dynamique', duration: 90, label: 'échauffement', cues: ['Jumping jacks', 'Rotations'] },
+      { type: 'time', name: 'Activation', duration: 90, label: 'échauffement', cues: ['Petits sauts sur place', '5 squats sautés progressifs'] },
+      ...[1,2,3].flatMap(tour => [
+        { type: 'reps', name: 'Squats sautés', reps: '8 reps', label: `circuit — tour ${tour}/3`, cues: ['Squat complet', 'Explosif', 'Amortis'] },
+        { type: 'rest', duration: 20 },
+        { type: 'reps', name: 'Pompes plyo', reps: '6 reps', label: `circuit — tour ${tour}/3`, cues: ['Descente contrôlée', 'Pousse explosif, mains décollent'] },
+        { type: 'rest', duration: 20 },
+        { type: 'reps', name: 'Burpees', reps: '6 reps', label: `circuit — tour ${tour}/3`, cues: ['Rythme, ne casse pas la forme'] },
+        { type: 'rest', duration: 20 },
+        { type: 'time', name: 'High knees', duration: 20, label: `circuit — tour ${tour}/3`, cues: ['Cadence max', 'Genoux hauts'] },
+        { type: 'rest', duration: 20 },
+        { type: 'time', name: 'Hollow hold', duration: 20, label: `circuit — tour ${tour}/3`, cues: ['Bas du dos plaqué', 'Bras et jambes décollés'] },
+        { type: 'rest', duration: 20 },
+        { type: 'reps', name: 'Fentes sautées', reps: '6 / jambe', label: `circuit — tour ${tour}/3`, cues: ['Alterne en sautant', 'Amortis'] },
+        { type: 'rest', duration: tour < 3 ? 60 : 0 }
+      ]),
+      { type: 'time', name: 'Retour au calme', duration: 180, label: 'récup', cues: ['Marche', 'Respiration profonde'] }
     ] },
-  { id: 'bonus-grip', focus: 'Bonus · Grip', focusClass: 'bonus', title: 'Farmer & suspension', duration: '20 min', durationMin: 20,
-    intro: 'Préhension pour cordes fixes du Hörnli et le portage.',
+
+  { id: 'bonus-full-endurance', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Endurance', duration: '20 min', durationMin: 20,
+    intro: 'Volume et endurance musculaire. 4 tours d\'un circuit court — accumule le tonnage, apprend à durer.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Mobilité', t: '3 min' }] },
+      { head: 'Circuit 4 tours', items: [{ n: 'Squats', t: '20' }, { n: 'Pompes', t: '10' }, { n: 'Rowing', t: '12' }, { n: 'Planche', t: '40 s' }, { n: 'Superman', t: '15' }] },
+      { head: 'Étirements', items: [{ n: 'Retour au calme', t: '2 min' }] }
+    ],
     steps: [
-      { type: 'time', name: 'Échauffement mains', duration: 120, label: 'préparation', cues: ['Rotations poignets'] },
-      { type: 'time', name: 'Dead hang', duration: 30, label: 'suspension 1/3', cues: ['Épaules engagées'] },
-      { type: 'rest', duration: 45 },
-      { type: 'time', name: 'Dead hang', duration: 30, label: 'suspension 2/3', cues: ['Tiens'] },
-      { type: 'rest', duration: 45 },
-      { type: 'time', name: 'Dead hang une main', duration: 15, label: 'suspension 3/3', cues: ['Alterne mains'] },
-      { type: 'rest', duration: 60 },
-      { type: 'reps', name: 'Farmer carry', reps: '40 mètres', label: 'portage 1/3', cues: ['Charge lourde par main'] },
-      { type: 'rest', duration: 45 },
-      { type: 'reps', name: 'Farmer carry unilatéral', reps: '20m / bras', label: 'portage 2/3', cues: ['Anti-rotation'] },
-      { type: 'rest', duration: 45 },
-      { type: 'reps', name: 'Farmer carry lourd', reps: '40 mètres', label: 'portage 3/3', cues: ['La plus grosse charge tenable'] },
-      { type: 'rest', duration: 60 },
-      { type: 'time', name: 'Serrage éponge/balle', duration: 45, label: 'finisher', cues: ['Serre 3 sec, relâche'] },
-      { type: 'time', name: 'Étirement avant-bras', duration: 90, label: 'récup', cues: ['Paumes au sol doigts vers toi'] }
-    ] },
-  { id: 'bonus-descente', focus: 'Bonus · Descente', focusClass: 'bonus', title: 'Excentrique jambes', duration: '20 min', durationMin: 20,
-    intro: 'Excentrique quadri + mollets pour préparer la descente.',
-    steps: [
-      { type: 'time', name: 'Mobilité genoux + chevilles', duration: 180, label: 'préparation', cues: ['Rotations, flexions'] },
-      { type: 'reps', name: 'Squats descente lente', reps: '10 reps', label: 'bloc 1', cues: ['Descente 4 sec'] },
-      { type: 'rest', duration: 30 },
-      { type: 'reps', name: 'Step-downs contrôlés', reps: '10 / jambe', label: 'bloc 1', cues: ['Descend contrôlé 3 sec'] },
-      { type: 'rest', duration: 45 },
-      { type: 'reps', name: 'Fentes descente lente', reps: '10 / jambe', label: 'bloc 2', cues: ['3 sec de descente'] },
-      { type: 'rest', duration: 30 },
-      { type: 'time', name: 'Wall sit', duration: 60, label: 'bloc 2', cues: ['Endurance statique'] },
-      { type: 'rest', duration: 60 },
-      { type: 'reps', name: 'Mollets excentriques G', reps: '15 reps', label: 'bloc 3', cues: ['Descend en 3 sec'] },
-      { type: 'rest', duration: 30 },
-      { type: 'reps', name: 'Mollets excentriques D', reps: '15 reps', label: 'bloc 3', cues: ['Autre jambe'] },
-      { type: 'rest', duration: 45 },
-      { type: 'time', name: 'Étirement quadri debout', duration: 90, label: 'étirements', cues: ['Talon vers les fesses'] },
-      { type: 'time', name: 'Étirement mollets', duration: 90, label: 'étirements', cues: ['Talon planté'] }
-    ] },
-  { id: 'bonus-respi', focus: 'Bonus · Mental', focusClass: 'bonus', title: 'Respi & visualisation', duration: '20 min', durationMin: 20,
-    intro: 'Cohérence cardiaque + box breathing + visualisation Cervin.',
-    steps: [
-      { type: 'time', name: 'Installation', duration: 60, label: 'préparation', cues: ['Assis droit', 'Yeux fermés'] },
-      { type: 'time', name: 'Cohérence cardiaque', duration: 300, label: 'bloc 1', cues: ['5 inspire · 5 expire', '6 respi / min'] },
-      { type: 'time', name: 'Transition', duration: 60, label: 'transition', cues: ['Respiration libre'] },
-      { type: 'time', name: 'Box breathing', duration: 300, label: 'bloc 2', cues: ['4 · 4 · 4 · 4', 'Rythme régulier'] },
-      { type: 'time', name: 'Transition', duration: 60, label: 'transition', cues: ['Retour naturel'] },
-      { type: 'time', name: 'Visualisation Cervin', duration: 420, label: 'bloc 3', cues: ['Départ du Hörnli à 4h', 'Sens le froid', 'Calme sur les ressauts'] },
-      { type: 'time', name: 'Ancrage', duration: 60, label: 'clôture', cues: ['Reviens ici et maintenant'] }
+      { type: 'time', name: 'Mobilité', duration: 120, label: 'échauffement', cues: ['Rotations articulaires', 'Squats à vide'] },
+      { type: 'time', name: 'Activation', duration: 60, label: 'échauffement', cues: ['10 pompes lentes', '10 fentes'] },
+      ...[1,2,3,4].flatMap(tour => [
+        { type: 'reps', name: 'Squats', reps: '20 reps', label: `circuit — tour ${tour}/4`, cues: ['Amplitude complète', 'Rythme régulier'] },
+        { type: 'rest', duration: 15 },
+        { type: 'reps', name: 'Pompes', reps: '10 reps', label: `circuit — tour ${tour}/4`, cues: ['Qualité, corps en ligne'] },
+        { type: 'rest', duration: 15 },
+        { type: 'reps', name: 'Rowing élastique', reps: '12 reps', label: `circuit — tour ${tour}/4`, cues: ['Rétracte l\'omoplate'] },
+        { type: 'rest', duration: 15 },
+        { type: 'time', name: 'Planche', duration: 40, label: `circuit — tour ${tour}/4`, cues: ['Corps en ligne', 'Respire'] },
+        { type: 'rest', duration: 15 },
+        { type: 'reps', name: 'Superman', reps: '15 reps', label: `circuit — tour ${tour}/4`, cues: ['Décolle bras et jambes'] },
+        { type: 'rest', duration: tour < 4 ? 40 : 0 }
+      ]),
+      { type: 'time', name: 'Étirements', duration: 120, label: 'récup', cues: ['Complet'] }
     ] }
 ];
 
@@ -2036,6 +2126,7 @@ const state = {
   lastSyncedAt: null,
   loginMessage: null,
   timer: { running: false, paused: false, stepIdx: 0, stepElapsed: 0, totalElapsed: 0, intervalId: null },
+  settings: { startDate: null },
   week: {
     id: getWeekId(),
     monday: getMondayOfWeek(new Date()).toISOString().slice(0, 10),
@@ -2092,6 +2183,7 @@ function loadState() {
     }
     state.weekHistory = saved.weekHistory || [];
     state.cardioHistory = saved.cardioHistory || [];
+    if (saved.settings) state.settings = { ...state.settings, ...saved.settings };
   } catch (e) {}
 }
 
@@ -2100,7 +2192,8 @@ function saveState() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       week: state.week,
       weekHistory: state.weekHistory,
-      cardioHistory: state.cardioHistory
+      cardioHistory: state.cardioHistory,
+      settings: state.settings
     }));
   } catch (e) {}
   // Also push to Supabase (fire-and-forget)
@@ -2467,11 +2560,13 @@ function getRecentWeeks(n = 8) {
   // Returns last N weeks with current week last, filling in empty weeks
   const now = new Date();
   const currentMonday = getMondayOfWeek(now);
+  const startDate = state.settings.startDate ? new Date(state.settings.startDate) : null;
   const weeks = [];
   for (let i = n - 1; i >= 0; i--) {
     const monday = new Date(currentMonday);
     monday.setDate(monday.getDate() - i * 7);
     const wkId = getWeekId(monday);
+    const beforeStart = startDate ? (monday < startDate) : false;
     let wk;
     if (wkId === state.week.id) {
       wk = state.week;
@@ -2481,42 +2576,62 @@ function getRecentWeeks(n = 8) {
     if (!wk) {
       wk = { id: wkId, monday: monday.toISOString().slice(0, 10), boxe: {done: false, score: 0}, cardio: {done: false}, renfo: {done: false}, bonusCount: 0, empty: true };
     }
+    wk.beforeStart = beforeStart;
     weeks.push(wk);
   }
   return weeks;
 }
 
+async function saveStartDate() {
+  const input = document.getElementById('start-date-input');
+  const date = input && input.value || null;
+  state.settings.startDate = date;
+  saveState();
+  if (sb && state.user) {
+    try {
+      await sb.auth.updateUser({ data: { startDate: date } });
+    } catch (e) { console.warn('Failed to sync startDate:', e.message); }
+  }
+  render();
+}
+
+function filterActiveWeeks(weeks) {
+  return weeks.filter(w => !w.beforeStart);
+}
+
 function computeBoxeStats(weeks) {
-  const scores = weeks.map(w => w.boxe && w.boxe.done ? (w.boxe.score || 3) : 0);
-  const target = weeks.map(() => 4);
+  const activeWeeks = filterActiveWeeks(weeks);
+  const scores = activeWeeks.map(w => w.boxe && w.boxe.done ? (w.boxe.score || 3) : 0);
+  const target = activeWeeks.map(() => 4);
   const total = scores.filter(s => s > 0).length;
   const withScores = scores.filter(s => s > 0);
   const avgScore = withScores.length ? (withScores.reduce((a, b) => a + b, 0) / withScores.length).toFixed(1) : '–';
-  return { scores, target, total, avgScore };
+  return { scores, target, total, avgScore, n: activeWeeks.length };
 }
 
 function computeCardioStats(weeks) {
-  // Compute % of target reached for each week
-  const pcts = weeks.map(w => {
+  const activeWeeks = filterActiveWeeks(weeks);
+  const pcts = activeWeeks.map(w => {
     if (!w.cardio || !w.cardio.done) return 0;
     const t = CARDIO_TARGETS[w.cardio.type][currentPhase()];
     const durPct = (w.cardio.duration / t.duration) * 100;
     const kmPct = (w.cardio.km / t.km) * 100;
     return Math.min(150, (durPct + kmPct) / 2);
   });
-  const target = weeks.map(() => 100);
+  const target = activeWeeks.map(() => 100);
   const totalDone = pcts.filter(p => p > 0).length;
-  const totalMin = weeks.reduce((sum, w) => sum + (w.cardio && w.cardio.done ? (w.cardio.duration || 0) : 0), 0);
-  const totalKm = weeks.reduce((sum, w) => sum + (w.cardio && w.cardio.done ? (w.cardio.km || 0) : 0), 0);
-  return { pcts, target, totalDone, totalMin, totalKm };
+  const totalMin = activeWeeks.reduce((sum, w) => sum + (w.cardio && w.cardio.done ? (w.cardio.duration || 0) : 0), 0);
+  const totalKm = activeWeeks.reduce((sum, w) => sum + (w.cardio && w.cardio.done ? (w.cardio.km || 0) : 0), 0);
+  return { pcts, target, totalDone, totalMin, totalKm, n: activeWeeks.length };
 }
 
 function computeRenfoStats(weeks) {
-  const counts = weeks.map(w => (w.renfo && w.renfo.done ? 1 : 0) + (w.bonusCount || 0));
-  const target = weeks.map(() => 1);
-  const totalRenfo = weeks.filter(w => w.renfo && w.renfo.done).length;
-  const totalBonus = weeks.reduce((sum, w) => sum + (w.bonusCount || 0), 0);
-  return { counts, target, totalRenfo, totalBonus };
+  const activeWeeks = filterActiveWeeks(weeks);
+  const counts = activeWeeks.map(w => (w.renfo && w.renfo.done ? 1 : 0) + (w.bonusCount || 0));
+  const target = activeWeeks.map(() => 1);
+  const totalRenfo = activeWeeks.filter(w => w.renfo && w.renfo.done).length;
+  const totalBonus = activeWeeks.reduce((sum, w) => sum + (w.bonusCount || 0), 0);
+  return { counts, target, totalRenfo, totalBonus, n: activeWeeks.length };
 }
 
 // ============================================================
@@ -2580,14 +2695,15 @@ function renderHome() {
   const currentId = state.week.id;
   const weekCellsHTML = recent.map(w => {
     const d = countDoneInWeek(w);
-    const isFull = d === 3;
+    const isFull = d === 3 && !w.beforeStart;
     const isCurrent = w.id === currentId;
+    const beforeStart = !!w.beforeStart;
     const dots = ['boxe', 'cardio', 'renfo'].map(slot => {
-      const doneSlot = w[slot] && w[slot].done;
+      const doneSlot = !beforeStart && w[slot] && w[slot].done;
       return `<div class="week-dot ${doneSlot ? 'done' : ''}"></div>`;
     }).join('');
     return `
-      <div class="week-cell ${isFull ? 'full' : ''} ${isCurrent ? 'current' : ''}">
+      <div class="week-cell ${isFull ? 'full' : ''} ${isCurrent ? 'current' : ''} ${beforeStart ? 'before-start' : ''}">
         <div class="week-cell-dots">${dots}</div>
         <div class="week-label">S${shortWeekLabel(w.id)}</div>
       </div>`;
@@ -2772,13 +2888,17 @@ function renderStats() {
 
   const boxeChart = drawLineChart(boxe.scores, boxe.target, { maxY: 5.5 });
   const cardioChart = drawLineChart(cardio.pcts, cardio.target, { maxY: 130 });
-  const renfoChart = drawLineChart(renfo.counts, renfo.target, { maxY: Math.max(3, Math.max(...renfo.counts) + 1) });
+  const renfoChart = drawLineChart(renfo.counts, renfo.target, { maxY: Math.max(3, Math.max(...renfo.counts, 0) + 1) });
+
+  const scopeLabel = state.settings.startDate 
+    ? `Depuis le ${new Date(state.settings.startDate).toLocaleDateString('fr-FR', { day:'numeric', month:'short', year:'numeric' })} · ${boxe.n} semaine${boxe.n > 1 ? 's' : ''}`
+    : `${N} dernières semaines · réel vs cible`;
 
   return `
     <div class="view">
       <button class="back-btn" onclick="goto('home')">← Retour</button>
       <h1 class="stats-page-title">Stats.</h1>
-      <div class="stats-page-sub">8 dernières semaines · réel vs cible</div>
+      <div class="stats-page-sub">${scopeLabel}</div>
 
       ${!hasAnyData ? `<div class="stat-empty">Pas encore de données. Valide tes premières séances pour voir la progression.</div>` : ''}
 
@@ -2789,7 +2909,7 @@ function renderStats() {
         </div>
         <div class="stat-figures">
           <div class="stat-figure">
-            <div class="stat-figure-val">${boxe.total}<span class="unit"> / ${N}</span></div>
+            <div class="stat-figure-val">${boxe.total}<span class="unit"> / ${boxe.n}</span></div>
             <div class="stat-figure-lbl">Séances</div>
           </div>
           <div class="stat-figure">
@@ -2811,7 +2931,7 @@ function renderStats() {
         </div>
         <div class="stat-figures">
           <div class="stat-figure">
-            <div class="stat-figure-val">${cardio.totalDone}<span class="unit"> / ${N}</span></div>
+            <div class="stat-figure-val">${cardio.totalDone}<span class="unit"> / ${cardio.n}</span></div>
             <div class="stat-figure-lbl">Séances</div>
           </div>
           <div class="stat-figure">
@@ -2837,7 +2957,7 @@ function renderStats() {
         </div>
         <div class="stat-figures">
           <div class="stat-figure">
-            <div class="stat-figure-val">${renfo.totalRenfo}<span class="unit"> / ${N}</span></div>
+            <div class="stat-figure-val">${renfo.totalRenfo}<span class="unit"> / ${renfo.n}</span></div>
             <div class="stat-figure-lbl">Renfo</div>
           </div>
           <div class="stat-figure">
@@ -2891,10 +3011,50 @@ function renderCardioChoice() {
 // ============================================================
 //  RENDER — PREVIEW
 // ============================================================
+function fmtDuration(sec) {
+  if (sec >= 60) {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return s > 0 ? `${m}:${String(s).padStart(2,'0')}` : `${m} min`;
+  }
+  return `${sec}s`;
+}
+
+function renderStepsDetail(session) {
+  if (!session.steps || !session.steps.length) return '';
+  const nbActive = session.steps.filter(s => s.type !== 'rest').length;
+  let stepNum = 0;
+  const linesHTML = session.steps.map(s => {
+    if (s.type === 'rest') {
+      return `<div class="step-line rest">↓ repos ${s.duration}s</div>`;
+    }
+    stepNum++;
+    let info = '';
+    if (s.type === 'reps') info = s.reps || '';
+    else if (s.type === 'time') info = fmtDuration(s.duration);
+    return `
+      <div class="step-line">
+        <div class="step-line-num">${String(stepNum).padStart(2,'0')}</div>
+        <div class="step-line-name">${s.name}</div>
+        <div class="step-line-info">${info}</div>
+      </div>`;
+  }).join('');
+  return `
+    <div class="steps-detail">
+      <div class="steps-detail-head">
+        <div class="steps-detail-title">Toutes les étapes</div>
+        <div class="steps-detail-count">${nbActive} exercices</div>
+      </div>
+      <div class="steps-detail-list">
+        ${linesHTML}
+      </div>
+    </div>`;
+}
+
 function renderPreview() {
   const s = getCurrentSession();
   if (!s) return renderHome();
-  const nbSteps = s.steps.filter(x => x.type !== 'section').length;
+  const nbSteps = s.steps.filter(x => x.type !== 'section' && x.type !== 'rest').length;
 
   let targetHTML = '';
   if (state.sessionKind === 'cardio' && s.target) {
@@ -2920,6 +3080,8 @@ function renderPreview() {
       </div>
     </div>`).join('');
 
+  const stepsDetailHTML = renderStepsDetail(s);
+
   return `
     <div class="view">
       <button class="back-btn" onclick="goto('home')">← Retour</button>
@@ -2930,11 +3092,12 @@ function renderPreview() {
       </div>
       <div class="preview-metrics">
         <div class="preview-metric"><div class="preview-metric-val">${s.durationMin}<span class="unit"> min</span></div><div class="preview-metric-lbl">Durée</div></div>
-        <div class="preview-metric"><div class="preview-metric-val">${nbSteps}</div><div class="preview-metric-lbl">Étapes</div></div>
+        <div class="preview-metric"><div class="preview-metric-val">${nbSteps}</div><div class="preview-metric-lbl">Exercices</div></div>
         <div class="preview-metric"><div class="preview-metric-val">${phaseShort(currentPhase())}</div><div class="preview-metric-lbl">Phase</div></div>
       </div>
       ${targetHTML}
       ${planHTML ? `<div class="plan-block">${planHTML}</div>` : ''}
+      ${stepsDetailHTML}
       <button class="cta-btn" onclick="startCurrentSession()">Démarrer</button>
     </div>`;
 }
@@ -3170,7 +3333,7 @@ function renderBonusList() {
     <div class="view">
       <button class="back-btn" onclick="goto('home')">← Retour</button>
       <h1 class="list-title">Bonus.</h1>
-      <p class="list-intro">Séances 20 min quand tu as la pêche. Comptées dans les stats renfo.</p>
+      <p class="list-intro">Séances full-body de 20 min avec des angles différents. Comptent dans les stats renfo.</p>
       <div class="list-items">${itemsHTML}</div>
     </div>`;
 }
@@ -3223,6 +3386,10 @@ async function initAuth() {
     if (session) {
       state.user = session.user;
       state.syncStatus = 'syncing';
+      // Sync startDate from user_metadata if present
+      if (session.user.user_metadata && session.user.user_metadata.startDate) {
+        state.settings.startDate = session.user.user_metadata.startDate;
+      }
     }
   } catch (e) { console.warn('Auth check failed:', e.message); }
   state.authChecked = true;
@@ -3238,6 +3405,10 @@ async function initAuth() {
     if (event === 'SIGNED_IN' && session) {
       state.user = session.user;
       state.loginMessage = null;
+      // Sync startDate from user_metadata
+      if (session.user.user_metadata && session.user.user_metadata.startDate) {
+        state.settings.startDate = session.user.user_metadata.startDate;
+      }
       // Don't auto-navigate if user is in the middle of a password reset flow
       if (state.view === 'reset-password-form' || state.view === 'reset-password-done') return;
       await syncPull();
@@ -3510,6 +3681,16 @@ function renderAccount() {
           <div class="account-block-meta">Supabase pas encore branché. Édite SUPABASE_CONFIG en haut du script pour activer.</div>
         </div>
       `}
+
+      <div class="account-block">
+        <div class="account-block-title">Date de départ du programme</div>
+        <div class="account-block-value">${state.settings.startDate ? new Date(state.settings.startDate).toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' }) : 'Non définie'}</div>
+        <div class="account-block-meta">Les semaines avant cette date sont grisées dans le semainier et exclues des stats.</div>
+        <div class="account-block-actions">
+          <input type="date" id="start-date-input" value="${state.settings.startDate || ''}" style="flex:2; padding: 12px 14px; background: var(--paper-elev); border: 1px solid var(--line); border-radius: 10px; font-family: var(--font-mono); font-size: 13px; color: var(--ink);">
+          <button class="gold" onclick="saveStartDate()">Enregistrer</button>
+        </div>
+      </div>
 
       <div class="account-block">
         <div class="account-block-title">Historique local</div>
