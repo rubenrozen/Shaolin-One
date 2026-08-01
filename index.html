@@ -1205,6 +1205,153 @@
     margin-top: 6px;
   }
 
+  /* ============ CARDIO SCORE BREAKDOWN ============ */
+  .cardio-score {
+    background: var(--paper-elev);
+    border-radius: 16px;
+    padding: 18px;
+    margin: 14px 0 12px;
+    border: 1px solid var(--line);
+  }
+  .cardio-score-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .cardio-score-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+  }
+  .cardio-score-phase {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gold-deep);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .cardio-score-main {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin: 6px 0 14px;
+    flex-wrap: wrap;
+  }
+  .cardio-score-num {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 800;
+    color: var(--ink);
+    font-variation-settings: var(--display-max);
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+  }
+  .cardio-score-num.above { color: var(--pine); }
+  .cardio-score-num.on-target { color: var(--gold-deep); }
+  .cardio-score-num.below { color: var(--rust); }
+  .cardio-score-unit {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .cardio-score-verdict {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-left: 6px;
+  }
+  .cardio-score-verdict.above { background: rgba(31,82,52,0.10); color: var(--pine); }
+  .cardio-score-verdict.on-target { background: var(--gold-bg); color: var(--gold-deep); }
+  .cardio-score-verdict.below { background: rgba(178,58,31,0.08); color: var(--rust); }
+  .cardio-score-breakdown {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .cardio-sub { text-align: center; }
+  .cardio-sub-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .cardio-sub-weight {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--gold-deep);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-left: 4px;
+  }
+  .cardio-sub-val {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--ink);
+    font-variation-settings: var(--display-strong);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin: 2px 0;
+  }
+  .cardio-sub-val span { font-size: 11px; color: var(--ink-faint); font-weight: 600; }
+
+  .cardio-net {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--paper-elev);
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid var(--line);
+  }
+  .cardio-net-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+  }
+  .cardio-net-hint {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-faint);
+    letter-spacing: 0.03em;
+    margin-top: 3px;
+    text-transform: none;
+  }
+  .cardio-net-val {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ink);
+    font-variation-settings: var(--display-strong);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-align: right;
+  }
+  .cardio-net-val span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+
   /* ============ STATS PAGE (progression graphs) ============ */
   .stats-page-title {
     font-family: var(--font-display);
@@ -1856,9 +2003,9 @@ function shortWeekLabel(weekId) {
 const CARDIO_TARGETS = {
   course: {
     'phase-0': { duration: 45, km: 5.0, deniv: 50 },
-    'phase-1': { duration: 60, km: 7.5, deniv: 100 },
-    'phase-2': { duration: 90, km: 11.0, deniv: 200 },
-    'phase-3': { duration: 60, km: 8.0, deniv: 300 }
+    'phase-1': { duration: 60, km: 7.5, deniv: 200 },
+    'phase-2': { duration: 90, km: 11.0, deniv: 500 },
+    'phase-3': { duration: 60, km: 8.0, deniv: 800 }
   },
   velo: {
     'phase-0': { duration: 60, km: 18.0, deniv: 0 },
@@ -1867,6 +2014,16 @@ const CARDIO_TARGETS = {
     'phase-3': { duration: 45, km: 15.0, deniv: 0 }
   }
 };
+
+// Score composite pondéré par phase (Uphill Athlete methodology)
+// Le poids du vertical augmente à mesure que le Cervin approche
+const PHASE_WEIGHTS = {
+  'phase-0': { endurance: 0.60, volume: 0.30, vertical: 0.10 },
+  'phase-1': { endurance: 0.45, volume: 0.30, vertical: 0.25 },
+  'phase-2': { endurance: 0.30, volume: 0.20, vertical: 0.50 },
+  'phase-3': { endurance: 0.20, volume: 0.20, vertical: 0.60 }
+};
+
 function cardioTarget(type) { return CARDIO_TARGETS[type][currentPhase()]; }
 
 function buildCardioSession(type) {
@@ -1905,131 +2062,299 @@ function buildCardioSession(type) {
 //  RENFO ROTATION
 // ============================================================
 const RENFO_ROTATION = [
-  { id: 'renfo-fondation', variant: 'A', focus: 'Renfo · Renfo', focusClass: 'renfo',
-    title: 'Renfo', duration: '45 min', durationMin: 45,
-    intro: 'Bases classiques : squats, pompes, tirages, planche.',
+  { id: 'renfo-fondation', variant: 'A', focus: 'Renfo · Fondamental', focusClass: 'renfo',
+    title: 'Renfo', duration: '~48 min', durationMin: 48,
+    intro: 'Force full-body : squats, pompes, tirages, chaîne postérieure. La base.',
     plan: [
-      { head: 'Échauffement', items: [{ n: 'Mobilité + activation', t: '5 min' }] },
-      { head: 'Circuit 3 tours', items: [{ n: 'Squats', t: '15' }, { n: 'Pompes', t: '10' }, { n: 'Rowing', t: '12' }, { n: 'Planche', t: '45 s' }] },
-      { head: 'Finisher', items: [{ n: 'Step-ups', t: '3 × 10/j' }] }
+      { head: 'Échauffement · 8 min', items: [{ n: 'Mobilité générale', t: '5 min' }, { n: 'Activation', t: '3 min' }] },
+      { head: 'Corps · 30 min', items: [{ n: 'Squats', t: '4 × 12' }, { n: 'Pompes', t: '4 × 10' }, { n: 'Rowing élastique', t: '4 × 12' }, { n: 'Step-ups', t: '3 × 10/j' }, { n: 'Glute bridge', t: '3 × 15' }, { n: 'Mollets', t: '3 × 20' }, { n: 'Planche', t: '3 × 40 s' }] },
+      { head: 'Étirements · 7 min', items: [{ n: 'Quadri, ischios, fléchisseurs', t: '30 s / côté' }, { n: 'Mollets, pec, cross-body', t: '30 s / côté' }, { n: 'Enfant', t: '1 min' }] }
     ],
     steps: [
-      { type: 'time', name: 'Mobilité générale', duration: 180, label: 'échauffement', cues: ['Rotations cervicales, épaules, hanches', 'Cercles chevilles', 'Cat-cow 5 cycles'] },
-      { type: 'time', name: 'Activation', duration: 120, label: 'échauffement', cues: ['10 squats à vide', '10 fentes alternées', '10 rotations bras'] },
-      { type: 'reps', name: 'Squats', reps: '15 reps', label: 'circuit — tour 1/3', cues: ['Fesses vers l\'arrière', 'Sous parallèles', 'Dos droit'] },
-      { type: 'rest', duration: 15 },
-      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'circuit — tour 1/3', cues: ['Corps en ligne', 'Descente 2 sec'] },
-      { type: 'rest', duration: 15 },
-      { type: 'reps', name: 'Rowing', reps: '12 reps', label: 'circuit — tour 1/3', cues: ['Buste penché, dos droit', 'Coude près du corps'] },
-      { type: 'rest', duration: 15 },
-      { type: 'time', name: 'Planche', duration: 45, label: 'circuit — tour 1/3', cues: ['Coudes sous épaules', 'Corps en ligne'] },
+      { type: 'time', name: 'Mobilité générale', duration: 300, label: 'échauffement', cues: ['Rotations articulaires', 'Cat-cow', 'Cercles chevilles + hanches', 'Squats à vide'] },
+      { type: 'time', name: 'Activation', duration: 180, label: 'échauffement', cues: ['10 squats à vide', '5 pompes lentes', '10 fentes alternées'] },
+      { type: 'reps', name: 'Squats', reps: '12 reps', label: 'squats · 4×12 · série 1/4', cues: ['Amplitude complète', 'Dos droit', 'Poids sur les talons'] },
       { type: 'rest', duration: 45 },
-      { type: 'reps', name: 'Squats', reps: '15 reps', label: 'circuit — tour 2/3', cues: ['Contrôle la descente', 'Amplitude complète'] },
-      { type: 'rest', duration: 15 },
-      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'circuit — tour 2/3', cues: ['Gainage permanent', 'Qualité'] },
-      { type: 'rest', duration: 15 },
-      { type: 'reps', name: 'Rowing', reps: '12 reps', label: 'circuit — tour 2/3', cues: ['Rétracte à chaque rep'] },
-      { type: 'rest', duration: 15 },
-      { type: 'time', name: 'Planche', duration: 45, label: 'circuit — tour 2/3', cues: ['Tiens la forme'] },
+      { type: 'reps', name: 'Squats', reps: '12 reps', label: 'squats · 4×12 · série 2/4', cues: ['Amplitude complète', 'Dos droit', 'Poids sur les talons'] },
       { type: 'rest', duration: 45 },
-      { type: 'reps', name: 'Squats', reps: '15 reps', label: 'circuit — tour 3/3', cues: ['Dernier tour', 'Termine fort'] },
-      { type: 'rest', duration: 15 },
-      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'circuit — tour 3/3', cues: ['Amplitude', 'Tenir la forme'] },
-      { type: 'rest', duration: 15 },
-      { type: 'reps', name: 'Rowing', reps: '12 reps', label: 'circuit — tour 3/3', cues: ['Rétracte fort'] },
-      { type: 'rest', duration: 15 },
-      { type: 'time', name: 'Planche', duration: 45, label: 'circuit — tour 3/3', cues: ['Termine solide'] },
+      { type: 'reps', name: 'Squats', reps: '12 reps', label: 'squats · 4×12 · série 3/4', cues: ['Amplitude complète', 'Dos droit', 'Poids sur les talons'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Squats', reps: '12 reps', label: 'squats · 4×12 · série 4/4', cues: ['Amplitude complète', 'Dos droit', 'Poids sur les talons'] },
       { type: 'rest', duration: 60 },
-      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'finisher — 1/3', cues: ['Marche haute', 'Pousse dans le talon'] },
-      { type: 'rest', duration: 30 },
-      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'finisher — 2/3', cues: ['Contrôle la descente'] },
-      { type: 'rest', duration: 30 },
-      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'finisher — 3/3', cues: ['Dernière série'] }
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'pompes · 4×10 · série 1/4', cues: ['Corps en ligne', 'Descente 2s', 'Coudes à 45°'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'pompes · 4×10 · série 2/4', cues: ['Corps en ligne', 'Descente 2s', 'Coudes à 45°'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'pompes · 4×10 · série 3/4', cues: ['Corps en ligne', 'Descente 2s', 'Coudes à 45°'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'pompes · 4×10 · série 4/4', cues: ['Corps en ligne', 'Descente 2s', 'Coudes à 45°'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Rowing élastique', reps: '12 reps', label: 'rowing · 4×12 · série 1/4', cues: ['Rétracte l\'omoplate', 'Coude près du corps'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Rowing élastique', reps: '12 reps', label: 'rowing · 4×12 · série 2/4', cues: ['Rétracte l\'omoplate', 'Coude près du corps'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Rowing élastique', reps: '12 reps', label: 'rowing · 4×12 · série 3/4', cues: ['Rétracte l\'omoplate', 'Coude près du corps'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Rowing élastique', reps: '12 reps', label: 'rowing · 4×12 · série 4/4', cues: ['Rétracte l\'omoplate', 'Coude près du corps'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'step-ups · 3×10/j · série 1/3', cues: ['Marche haute', 'Pousse dans le talon', 'Alterne jambes'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'step-ups · 3×10/j · série 2/3', cues: ['Marche haute', 'Pousse dans le talon', 'Alterne jambes'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'step-ups · 3×10/j · série 3/3', cues: ['Marche haute', 'Pousse dans le talon', 'Alterne jambes'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Glute bridge', reps: '15 reps', label: 'glute bridge · 3×15 · série 1/3', cues: ['Pousse dans les talons', 'Contracte les fessiers en haut'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Glute bridge', reps: '15 reps', label: 'glute bridge · 3×15 · série 2/3', cues: ['Pousse dans les talons', 'Contracte les fessiers en haut'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Glute bridge', reps: '15 reps', label: 'glute bridge · 3×15 · série 3/3', cues: ['Pousse dans les talons', 'Contracte les fessiers en haut'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Mollets', reps: '20 reps', label: 'mollets · 3×20 · série 1/3', cues: ['Amplitude max', 'Contrôlé'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Mollets', reps: '20 reps', label: 'mollets · 3×20 · série 2/3', cues: ['Amplitude max', 'Contrôlé'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Mollets', reps: '20 reps', label: 'mollets · 3×20 · série 3/3', cues: ['Amplitude max', 'Contrôlé'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Planche', duration: 40, label: 'planche · 3×40s · série 1/3', cues: ['Corps en ligne', 'Respire', 'Bassin engagé'] },
+      { type: 'rest', duration: 40 },
+      { type: 'time', name: 'Planche', duration: 40, label: 'planche · 3×40s · série 2/3', cues: ['Corps en ligne', 'Respire', 'Bassin engagé'] },
+      { type: 'rest', duration: 40 },
+      { type: 'time', name: 'Planche', duration: 40, label: 'planche · 3×40s · série 3/3', cues: ['Corps en ligne', 'Respire', 'Bassin engagé'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Quadriceps G', duration: 30, label: 'étirements', cues: ['Talon vers les fesses', 'Genoux côte à côte'] },
+      { type: 'time', name: 'Quadriceps D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Ischios G', duration: 30, label: 'étirements', cues: ['Assis, jambe tendue', 'Buste vers le pied'] },
+      { type: 'time', name: 'Ischios D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Fléchisseurs G', duration: 30, label: 'étirements', cues: ['Fente basse', 'Bassin vers avant, pas de cambrure'] },
+      { type: 'time', name: 'Fléchisseurs D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Mollets G', duration: 30, label: 'étirements', cues: ['Talon planté au sol', 'Hanche vers avant'] },
+      { type: 'time', name: 'Mollets D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Pec G', duration: 30, label: 'étirements', cues: ['Avant-bras contre mur', 'Tourne le buste'] },
+      { type: 'time', name: 'Pec D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Cross-body G', duration: 30, label: 'étirements', cues: ['Bras tendu en travers'] },
+      { type: 'time', name: 'Cross-body D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Enfant', duration: 60, label: 'étirements', cues: ['Fesses sur les talons', 'Front au sol', 'Respire'] },
     ] },
-  { id: 'renfo-endurance', variant: 'B', focus: 'Renfo · Endurance musculaire', focusClass: 'renfo',
-    title: 'Tempo lent', duration: '45 min', durationMin: 45,
-    intro: 'Circuit long à tempo contrôlé. Tenir sous effort.',
+
+  { id: 'renfo-tempo', variant: 'B', focus: 'Renfo · Tempo lent', focusClass: 'renfo',
+    title: 'Tempo lent', duration: '~50 min', durationMin: 50,
+    intro: 'Temps sous tension. Tempo 3s descente / 1s pause. Contrôle et endurance musculaire.',
     plan: [
-      { head: 'Échauffement', items: [{ n: 'Mobilité dynamique', t: '5 min' }] },
-      { head: 'Circuit 4 tours', items: [{ n: 'Pompes lentes', t: '8 · 3s' }, { n: 'Squats lents', t: '12 · 3s' }, { n: 'Planche', t: '30 s' }, { n: 'Fentes', t: '8/j' }, { n: 'Superman', t: '15' }] }
+      { head: 'Échauffement · 8 min', items: [{ n: 'Mobilité dynamique', t: '5 min' }, { n: 'Activation', t: '3 min' }] },
+      { head: 'Corps · 30 min · tempo 3s', items: [{ n: 'Squats lents', t: '4 × 8' }, { n: 'Pompes lentes', t: '4 × 8' }, { n: 'Rowing lent', t: '4 × 10' }, { n: 'Fentes lentes', t: '3 × 8/j' }, { n: 'Glute bridge lent', t: '3 × 12' }, { n: 'Superman', t: '3 × 12' }, { n: 'Planche', t: '3 × 45 s' }] },
+      { head: 'Étirements · 7 min', items: [{ n: 'Quadri, ischios, fléchisseurs', t: '30 s / côté' }, { n: 'Pec, cross-body', t: '30 s / côté' }, { n: 'Enfant, cobra', t: 'récup' }] }
     ],
     steps: [
-      { type: 'time', name: 'Mobilité dynamique', duration: 180, label: 'échauffement', cues: ['Cat-cow', 'Rotations tronc'] },
-      { type: 'time', name: 'Activation', duration: 120, label: 'échauffement', cues: ['5 pompes tempo normal', '10 fentes alternées'] },
-      ...[1,2,3,4].flatMap(tour => [
-        { type: 'reps', name: 'Pompes lentes', reps: '8 reps · 3s', label: `circuit — tour ${tour}/4`, cues: ['Descente 3 sec vraie', 'Pause 1 sec en bas'] },
-        { type: 'rest', duration: 20 },
-        { type: 'reps', name: 'Squats lents', reps: '12 reps · 3s', label: `circuit — tour ${tour}/4`, cues: ['3 sec à descendre', 'Amplitude'] },
-        { type: 'rest', duration: 20 },
-        { type: 'time', name: 'Planche', duration: 30, label: `circuit — tour ${tour}/4`, cues: ['Corps en ligne'] },
-        { type: 'rest', duration: 20 },
-        { type: 'reps', name: 'Fentes alternées', reps: '8 / jambe', label: `circuit — tour ${tour}/4`, cues: ['Contrôle la descente'] },
-        { type: 'rest', duration: 20 },
-        { type: 'reps', name: 'Superman', reps: '15 reps', label: `circuit — tour ${tour}/4`, cues: ['Décolle bras et jambes', 'Pause 1 sec'] },
-        { type: 'rest', duration: tour < 4 ? 60 : 0 }
-      ])
+      { type: 'time', name: 'Mobilité dynamique', duration: 300, label: 'échauffement', cues: ['Rotations amples', 'World\'s greatest stretch', 'Swings de jambes'] },
+      { type: 'time', name: 'Activation', duration: 180, label: 'échauffement', cues: ['Petits sauts', '10 squats à vide', '5 pompes lentes'] },
+      { type: 'reps', name: 'Squats lents', reps: '8 reps · 3s descente', label: 'squats lents · 4×8 · série 1/4', cues: ['Descente 3s vraies', 'Pause 1s en bas', 'Remontée normale'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Squats lents', reps: '8 reps · 3s descente', label: 'squats lents · 4×8 · série 2/4', cues: ['Descente 3s vraies', 'Pause 1s en bas', 'Remontée normale'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Squats lents', reps: '8 reps · 3s descente', label: 'squats lents · 4×8 · série 3/4', cues: ['Descente 3s vraies', 'Pause 1s en bas', 'Remontée normale'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Squats lents', reps: '8 reps · 3s descente', label: 'squats lents · 4×8 · série 4/4', cues: ['Descente 3s vraies', 'Pause 1s en bas', 'Remontée normale'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Pompes lentes', reps: '8 reps · 3s descente', label: 'pompes lentes · 4×8 · série 1/4', cues: ['3s vraies pour descendre', 'Pause 1s en bas'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Pompes lentes', reps: '8 reps · 3s descente', label: 'pompes lentes · 4×8 · série 2/4', cues: ['3s vraies pour descendre', 'Pause 1s en bas'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Pompes lentes', reps: '8 reps · 3s descente', label: 'pompes lentes · 4×8 · série 3/4', cues: ['3s vraies pour descendre', 'Pause 1s en bas'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Pompes lentes', reps: '8 reps · 3s descente', label: 'pompes lentes · 4×8 · série 4/4', cues: ['3s vraies pour descendre', 'Pause 1s en bas'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Rowing lent', reps: '10 reps · 3s', label: 'rowing lent · 4×10 · série 1/4', cues: ['Tire lentement', 'Contrôle le retour 3s'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Rowing lent', reps: '10 reps · 3s', label: 'rowing lent · 4×10 · série 2/4', cues: ['Tire lentement', 'Contrôle le retour 3s'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Rowing lent', reps: '10 reps · 3s', label: 'rowing lent · 4×10 · série 3/4', cues: ['Tire lentement', 'Contrôle le retour 3s'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Rowing lent', reps: '10 reps · 3s', label: 'rowing lent · 4×10 · série 4/4', cues: ['Tire lentement', 'Contrôle le retour 3s'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Fentes lentes', reps: '8 / jambe · 3s', label: 'fentes · 3×8/j · série 1/3', cues: ['Descente 3s', 'Genou avant aligné'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Fentes lentes', reps: '8 / jambe · 3s', label: 'fentes · 3×8/j · série 2/3', cues: ['Descente 3s', 'Genou avant aligné'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Fentes lentes', reps: '8 / jambe · 3s', label: 'fentes · 3×8/j · série 3/3', cues: ['Descente 3s', 'Genou avant aligné'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Glute bridge lent', reps: '12 reps · 3s', label: 'glute bridge · 3×12 · série 1/3', cues: ['Monte contrôlé', 'Pause 1s en haut', 'Descente 3s'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Glute bridge lent', reps: '12 reps · 3s', label: 'glute bridge · 3×12 · série 2/3', cues: ['Monte contrôlé', 'Pause 1s en haut', 'Descente 3s'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Glute bridge lent', reps: '12 reps · 3s', label: 'glute bridge · 3×12 · série 3/3', cues: ['Monte contrôlé', 'Pause 1s en haut', 'Descente 3s'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Superman', reps: '12 reps', label: 'superman · 3×12 · série 1/3', cues: ['Décolle bras + jambes', 'Pause 1s en haut'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Superman', reps: '12 reps', label: 'superman · 3×12 · série 2/3', cues: ['Décolle bras + jambes', 'Pause 1s en haut'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Superman', reps: '12 reps', label: 'superman · 3×12 · série 3/3', cues: ['Décolle bras + jambes', 'Pause 1s en haut'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Planche', duration: 45, label: 'planche · 3×45s · série 1/3', cues: ['Corps en ligne', 'Respire calmement'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Planche', duration: 45, label: 'planche · 3×45s · série 2/3', cues: ['Corps en ligne', 'Respire calmement'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Planche', duration: 45, label: 'planche · 3×45s · série 3/3', cues: ['Corps en ligne', 'Respire calmement'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Quadriceps G', duration: 30, label: 'étirements', cues: ['Talon vers les fesses'] },
+      { type: 'time', name: 'Quadriceps D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Ischios G', duration: 30, label: 'étirements', cues: ['Assis, jambe tendue'] },
+      { type: 'time', name: 'Ischios D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Fléchisseurs G', duration: 30, label: 'étirements', cues: ['Fente basse, bassin avant'] },
+      { type: 'time', name: 'Fléchisseurs D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Pec G', duration: 30, label: 'étirements', cues: ['Avant-bras contre mur'] },
+      { type: 'time', name: 'Pec D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Cross-body G', duration: 30, label: 'étirements', cues: ['Bras en travers'] },
+      { type: 'time', name: 'Cross-body D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Enfant', duration: 45, label: 'étirements', cues: ['Décompression lombaire'] },
+      { type: 'time', name: 'Cobra', duration: 40, label: 'étirements', cues: ['Pousse le buste, hanches au sol'] },
     ] },
-  { id: 'renfo-explosivite', variant: 'C', focus: 'Renfo · Explosivité', focusClass: 'renfo',
-    title: 'Puissance', duration: '40 min', durationMin: 40,
-    intro: 'Réactivité et puissance : sauts, burpees, pompes explosives.',
+
+  { id: 'renfo-puissance', variant: 'C', focus: 'Renfo · Puissance', focusClass: 'renfo',
+    title: 'Puissance', duration: '~50 min', durationMin: 50,
+    intro: 'Explosif et pliométrie. Explosif en début quand tu es frais, repos généreux pour garder la qualité.',
     plan: [
-      { head: 'Échauffement', items: [{ n: 'Dynamique + activation', t: '5 min' }] },
-      { head: 'Circuit 3 tours', items: [{ n: 'Squats sautés', t: '10' }, { n: 'Pompes explo', t: '8' }, { n: 'Burpees', t: '10' }, { n: 'Mountain climbers', t: '20 s' }] },
-      { head: 'Finisher', items: [{ n: 'Planche', t: '3 × 30 s' }] }
+      { head: 'Échauffement · 8 min', items: [{ n: 'Mobilité dynamique', t: '4 min' }, { n: 'Activation cardio', t: '3 min' }, { n: 'Petits sauts', t: '1 min' }] },
+      { head: 'Corps · 28 min', items: [{ n: 'Squats sautés', t: '4 × 8' }, { n: 'Fentes sautées', t: '3 × 8/j' }, { n: 'Pompes explosives', t: '4 × 6' }, { n: 'Burpees', t: '4 × 8' }, { n: 'Mountain climbers', t: '3 × 30 s' }, { n: 'Hollow hold', t: '3 × 25 s' }, { n: 'Planche', t: '2 × 40 s' }] },
+      { head: 'Étirements · 6 min', items: [{ n: 'Quadri, ischios, mollets, fléchisseurs', t: '30 s / côté' }, { n: 'Pec, enfant', t: 'récup' }] }
     ],
     steps: [
-      { type: 'time', name: 'Mobilité dynamique', duration: 120, label: 'échauffement', cues: ['Rotations articulaires', 'Squats à vide'] },
-      { type: 'time', name: 'Activation cardio', duration: 90, label: 'échauffement', cues: ['Jumping jacks', 'High knees'] },
-      { type: 'time', name: 'Petits sauts', duration: 60, label: 'échauffement', cues: ['Sur place, doux', 'Prépare les tendons'] },
-      ...[1,2,3].flatMap(tour => [
-        { type: 'reps', name: 'Squats sautés', reps: '10 reps', label: `circuit — tour ${tour}/3`, cues: ['Squat complet', 'Explosif', 'Amortis'] },
-        { type: 'rest', duration: 25 },
-        { type: 'reps', name: 'Pompes explosives', reps: '8 reps', label: `circuit — tour ${tour}/3`, cues: ['Descente 2 sec', 'Pousse explosif'] },
-        { type: 'rest', duration: 25 },
-        { type: 'reps', name: 'Burpees', reps: '10 reps', label: `circuit — tour ${tour}/3`, cues: ['Planche, pompe, saut'] },
-        { type: 'rest', duration: 25 },
-        { type: 'time', name: 'Mountain climbers', duration: 20, label: `circuit — tour ${tour}/3`, cues: ['Rythme max', 'Gainage'] },
-        { type: 'rest', duration: 60 }
-      ]),
-      { type: 'time', name: 'Planche', duration: 30, label: 'finisher — 1/3', cues: ['Corps en ligne'] },
+      { type: 'time', name: 'Mobilité dynamique', duration: 240, label: 'échauffement', cues: ['Rotations amples', 'Jumping jacks doux'] },
+      { type: 'time', name: 'Activation cardio', duration: 180, label: 'échauffement', cues: ['High knees 20s', 'Jumping jacks 20s', '5 squats sautés progressifs'] },
+      { type: 'time', name: 'Petits sauts', duration: 60, label: 'échauffement', cues: ['Sur la pointe des pieds', 'Potentiation tendineuse'] },
+      { type: 'reps', name: 'Squats sautés', reps: '8 reps', label: 'squats sautés · 4×8 · série 1/4', cues: ['Squat complet', 'Explosion max', 'Amortis en position squat'] },
+      { type: 'rest', duration: 75 },
+      { type: 'reps', name: 'Squats sautés', reps: '8 reps', label: 'squats sautés · 4×8 · série 2/4', cues: ['Squat complet', 'Explosion max', 'Amortis en position squat'] },
+      { type: 'rest', duration: 75 },
+      { type: 'reps', name: 'Squats sautés', reps: '8 reps', label: 'squats sautés · 4×8 · série 3/4', cues: ['Squat complet', 'Explosion max', 'Amortis en position squat'] },
+      { type: 'rest', duration: 75 },
+      { type: 'reps', name: 'Squats sautés', reps: '8 reps', label: 'squats sautés · 4×8 · série 4/4', cues: ['Squat complet', 'Explosion max', 'Amortis en position squat'] },
+      { type: 'rest', duration: 75 },
+      { type: 'reps', name: 'Fentes sautées', reps: '8 / jambe', label: 'fentes sautées · 3×8/j · série 1/3', cues: ['Alterne en sautant', 'Amortis contrôlé'] },
+      { type: 'rest', duration: 75 },
+      { type: 'reps', name: 'Fentes sautées', reps: '8 / jambe', label: 'fentes sautées · 3×8/j · série 2/3', cues: ['Alterne en sautant', 'Amortis contrôlé'] },
+      { type: 'rest', duration: 75 },
+      { type: 'reps', name: 'Fentes sautées', reps: '8 / jambe', label: 'fentes sautées · 3×8/j · série 3/3', cues: ['Alterne en sautant', 'Amortis contrôlé'] },
+      { type: 'rest', duration: 75 },
+      { type: 'reps', name: 'Pompes explosives', reps: '6 reps', label: 'pompes plyo · 4×6 · série 1/4', cues: ['Descente contrôlée', 'Poussée max, mains peuvent décoller'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Pompes explosives', reps: '6 reps', label: 'pompes plyo · 4×6 · série 2/4', cues: ['Descente contrôlée', 'Poussée max, mains peuvent décoller'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Pompes explosives', reps: '6 reps', label: 'pompes plyo · 4×6 · série 3/4', cues: ['Descente contrôlée', 'Poussée max, mains peuvent décoller'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Pompes explosives', reps: '6 reps', label: 'pompes plyo · 4×6 · série 4/4', cues: ['Descente contrôlée', 'Poussée max, mains peuvent décoller'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Burpees', reps: '8 reps', label: 'burpees · 4×8 · série 1/4', cues: ['Rythme, ne bâcle pas la forme'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Burpees', reps: '8 reps', label: 'burpees · 4×8 · série 2/4', cues: ['Rythme, ne bâcle pas la forme'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Burpees', reps: '8 reps', label: 'burpees · 4×8 · série 3/4', cues: ['Rythme, ne bâcle pas la forme'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Burpees', reps: '8 reps', label: 'burpees · 4×8 · série 4/4', cues: ['Rythme, ne bâcle pas la forme'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Mountain climbers', duration: 30, label: 'mountain climbers · 3×30s · série 1/3', cues: ['Cadence max', 'Gainage actif'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Mountain climbers', duration: 30, label: 'mountain climbers · 3×30s · série 2/3', cues: ['Cadence max', 'Gainage actif'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Mountain climbers', duration: 30, label: 'mountain climbers · 3×30s · série 3/3', cues: ['Cadence max', 'Gainage actif'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Hollow hold', duration: 25, label: 'hollow · 3×25s · série 1/3', cues: ['Bas du dos plaqué', 'Bras et jambes décollés'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Hollow hold', duration: 25, label: 'hollow · 3×25s · série 2/3', cues: ['Bas du dos plaqué', 'Bras et jambes décollés'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Hollow hold', duration: 25, label: 'hollow · 3×25s · série 3/3', cues: ['Bas du dos plaqué', 'Bras et jambes décollés'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Planche', duration: 40, label: 'planche · 2×40s · série 1/2', cues: ['Gainage complet'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Planche', duration: 40, label: 'planche · 2×40s · série 2/2', cues: ['Gainage complet'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Quadriceps G', duration: 30, label: 'étirements', cues: ['Après sauts, essentiel'] },
+      { type: 'time', name: 'Quadriceps D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Ischios G', duration: 30, label: 'étirements', cues: ['Assis, jambe tendue'] },
+      { type: 'time', name: 'Ischios D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Mollets G', duration: 30, label: 'étirements', cues: ['Talon planté, mollets sollicités par les sauts'] },
+      { type: 'time', name: 'Mollets D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Fléchisseurs G', duration: 30, label: 'étirements', cues: ['Fente basse'] },
+      { type: 'time', name: 'Fléchisseurs D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Pec G', duration: 30, label: 'étirements', cues: ['Contre mur'] },
+      { type: 'time', name: 'Pec D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Enfant', duration: 60, label: 'étirements', cues: ['Récup finale'] },
+    ] },
+
+  { id: 'renfo-dos-fessiers', variant: 'D', focus: 'Renfo · Dos & fessiers', focusClass: 'renfo',
+    title: 'Dos & fessiers', duration: '~50 min', durationMin: 50,
+    intro: 'Chaîne postérieure + anti-rotation. Dos, fessiers, ischios et core stabilisateur.',
+    plan: [
+      { head: 'Échauffement · 7 min', items: [{ n: 'Cat-cow', t: '2 min' }, { n: 'Bird dog', t: '2 × 8/c' }, { n: 'Activation fessiers', t: '3 min' }] },
+      { head: 'Corps · 30 min', items: [{ n: 'Rowing sac lesté', t: '4 × 10/b' }, { n: 'Glute bridge', t: '4 × 15' }, { n: 'Superman', t: '3 × 12' }, { n: 'Pallof press G/D', t: '3 × 10/c' }, { n: 'Dead bug', t: '3 × 10/c' }, { n: 'Planche latérale G/D', t: '3 × 30 s/c' }] },
+      { head: 'Étirements · 7 min', items: [{ n: 'Pigeon, ischios, twist', t: 'sol' }, { n: 'Cross-body, enfant, cobra', t: 'récup' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Cat-cow', duration: 120, label: 'échauffement', cues: ['À quatre pattes', 'Alterne dos rond / dos creux'] },
+      { type: 'reps', name: 'Bird dog', reps: '8 / côté', label: 'bird dog · 2×8/c · série 1/2', cues: ['Bras + jambe opposés', 'Pause 1s en extension'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Bird dog', reps: '8 / côté', label: 'bird dog · 2×8/c · série 2/2', cues: ['Bras + jambe opposés', 'Pause 1s en extension'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Activation fessiers', duration: 180, label: 'échauffement', cues: ['15 glute bridges lents', '10 clam shells / côté', 'Mini-élastique optionnel'] },
+      { type: 'reps', name: 'Rowing sac lesté', reps: '10 / bras', label: 'rowing sac · 4×10/b · série 1/4', cues: ['Buste 45°', 'Rétracte l\'omoplate', 'Coude près du corps'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Rowing sac lesté', reps: '10 / bras', label: 'rowing sac · 4×10/b · série 2/4', cues: ['Buste 45°', 'Rétracte l\'omoplate', 'Coude près du corps'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Rowing sac lesté', reps: '10 / bras', label: 'rowing sac · 4×10/b · série 3/4', cues: ['Buste 45°', 'Rétracte l\'omoplate', 'Coude près du corps'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Rowing sac lesté', reps: '10 / bras', label: 'rowing sac · 4×10/b · série 4/4', cues: ['Buste 45°', 'Rétracte l\'omoplate', 'Coude près du corps'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Glute bridge', reps: '15 reps', label: 'glute bridge · 4×15 · série 1/4', cues: ['Pousse dans les talons', 'Contracte fessiers en haut'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Glute bridge', reps: '15 reps', label: 'glute bridge · 4×15 · série 2/4', cues: ['Pousse dans les talons', 'Contracte fessiers en haut'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Glute bridge', reps: '15 reps', label: 'glute bridge · 4×15 · série 3/4', cues: ['Pousse dans les talons', 'Contracte fessiers en haut'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Glute bridge', reps: '15 reps', label: 'glute bridge · 4×15 · série 4/4', cues: ['Pousse dans les talons', 'Contracte fessiers en haut'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Superman', reps: '12 reps', label: 'superman · 3×12 · série 1/3', cues: ['Décolle bras + jambes', 'Pause 1s en haut'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Superman', reps: '12 reps', label: 'superman · 3×12 · série 2/3', cues: ['Décolle bras + jambes', 'Pause 1s en haut'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Superman', reps: '12 reps', label: 'superman · 3×12 · série 3/3', cues: ['Décolle bras + jambes', 'Pause 1s en haut'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Pallof press G', reps: '10 reps', label: 'pallof G · 3×10 · série 1/3', cues: ['Élastique fixé à droite', 'Pousse devant, résiste rotation'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Pallof press G', reps: '10 reps', label: 'pallof G · 3×10 · série 2/3', cues: ['Élastique fixé à droite', 'Pousse devant, résiste rotation'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Pallof press G', reps: '10 reps', label: 'pallof G · 3×10 · série 3/3', cues: ['Élastique fixé à droite', 'Pousse devant, résiste rotation'] },
+      { type: 'reps', name: 'Pallof press D', reps: '10 reps', label: 'pallof D · 3×10 · série 1/3', cues: ['Élastique fixé à gauche', 'Autre côté'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Pallof press D', reps: '10 reps', label: 'pallof D · 3×10 · série 2/3', cues: ['Élastique fixé à gauche', 'Autre côté'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Pallof press D', reps: '10 reps', label: 'pallof D · 3×10 · série 3/3', cues: ['Élastique fixé à gauche', 'Autre côté'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Dead bug', reps: '10 / côté', label: 'dead bug · 3×10/c · série 1/3', cues: ['Dos plaqué au sol', 'Bras + jambe opposés lents'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Dead bug', reps: '10 / côté', label: 'dead bug · 3×10/c · série 2/3', cues: ['Dos plaqué au sol', 'Bras + jambe opposés lents'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Dead bug', reps: '10 / côté', label: 'dead bug · 3×10/c · série 3/3', cues: ['Dos plaqué au sol', 'Bras + jambe opposés lents'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Planche latérale G', duration: 30, label: 'planche lat G · 3×30s · série 1/3', cues: ['Coude sous épaule', 'Hanches hautes'] },
       { type: 'rest', duration: 20 },
-      { type: 'time', name: 'Planche', duration: 30, label: 'finisher — 2/3', cues: ['Tenir la forme'] },
+      { type: 'time', name: 'Planche latérale G', duration: 30, label: 'planche lat G · 3×30s · série 2/3', cues: ['Coude sous épaule', 'Hanches hautes'] },
       { type: 'rest', duration: 20 },
-      { type: 'time', name: 'Planche', duration: 30, label: 'finisher — 3/3', cues: ['Termine solide'] }
-    ] },
-  { id: 'renfo-posterieur', variant: 'D', focus: 'Renfo · Chaîne postérieure', focusClass: 'renfo',
-    title: 'Dos & fessiers', duration: '45 min', durationMin: 45,
-    intro: 'Dos, fessiers, ischios, antirotation — ce qui te porte sous le sac.',
-    plan: [
-      { head: 'Échauffement', items: [{ n: 'Activation postérieure', t: '5 min' }] },
-      { head: 'Circuit 3 tours', items: [{ n: 'Rowing lesté', t: '12' }, { n: 'Glute bridge', t: '15' }, { n: 'Pallof press', t: '10/c' }, { n: 'Superman', t: '12' }, { n: 'Dead bug', t: '15/c' }] },
-      { head: 'Finisher', items: [{ n: 'Planche latérale', t: '2 × 30/c' }] }
-    ],
-    steps: [
-      { type: 'time', name: 'Cat-cow', duration: 90, label: 'échauffement', cues: ['À quatre pattes', 'Dos rond / creux'] },
-      { type: 'time', name: 'Bird dog', duration: 90, label: 'échauffement', cues: ['Bras + jambe opposés', '10 par côté'] },
-      { type: 'time', name: 'Activation fessiers', duration: 120, label: 'échauffement', cues: ['15 glute bridges', '10 clam shells / côté'] },
-      ...[1,2,3].flatMap(tour => [
-        { type: 'reps', name: 'Rowing sac lesté', reps: '12 reps', label: `circuit — tour ${tour}/3`, cues: ['Buste 45°', 'Rétracte'] },
-        { type: 'rest', duration: 25 },
-        { type: 'reps', name: 'Glute bridge', reps: '15 reps', label: `circuit — tour ${tour}/3`, cues: ['Pousse dans les talons', 'Contracte en haut'] },
-        { type: 'rest', duration: 25 },
-        { type: 'reps', name: 'Pallof press G', reps: '10 reps', label: `circuit — tour ${tour}/3`, cues: ['Résiste à la rotation'] },
-        { type: 'rest', duration: 15 },
-        { type: 'reps', name: 'Pallof press D', reps: '10 reps', label: `circuit — tour ${tour}/3`, cues: ['Autre côté'] },
-        { type: 'rest', duration: 25 },
-        { type: 'reps', name: 'Superman', reps: '12 reps', label: `circuit — tour ${tour}/3`, cues: ['Décolle bras et jambes'] },
-        { type: 'rest', duration: 25 },
-        { type: 'reps', name: 'Dead bug', reps: '15 / côté', label: `circuit — tour ${tour}/3`, cues: ['Dos plaqué', 'Contrôlé'] },
-        { type: 'rest', duration: 60 }
-      ]),
-      { type: 'time', name: 'Planche latérale G', duration: 30, label: 'finisher — 1/2', cues: ['Coude sous épaule'] },
-      { type: 'rest', duration: 15 },
-      { type: 'time', name: 'Planche latérale D', duration: 30, label: 'finisher — 1/2', cues: ['Autre côté'] },
-      { type: 'rest', duration: 30 },
-      { type: 'time', name: 'Planche latérale G', duration: 30, label: 'finisher — 2/2', cues: ['Deuxième série'] },
-      { type: 'rest', duration: 15 },
-      { type: 'time', name: 'Planche latérale D', duration: 30, label: 'finisher — 2/2', cues: ['Termine solide'] }
+      { type: 'time', name: 'Planche latérale G', duration: 30, label: 'planche lat G · 3×30s · série 3/3', cues: ['Coude sous épaule', 'Hanches hautes'] },
+      { type: 'time', name: 'Planche latérale D', duration: 30, label: 'planche lat D · 3×30s · série 1/3', cues: ['Autre côté'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Planche latérale D', duration: 30, label: 'planche lat D · 3×30s · série 2/3', cues: ['Autre côté'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Planche latérale D', duration: 30, label: 'planche lat D · 3×30s · série 3/3', cues: ['Autre côté'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Pigeon G', duration: 45, label: 'étirements', cues: ['Fessier profond, piriforme'] },
+      { type: 'time', name: 'Pigeon D', duration: 45, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Ischios G', duration: 30, label: 'étirements', cues: ['Assis, jambe tendue'] },
+      { type: 'time', name: 'Ischios D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Twist allongé G', duration: 30, label: 'étirements', cues: ['Genou côté opposé', 'Épaules au sol'] },
+      { type: 'time', name: 'Twist allongé D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Cross-body G', duration: 30, label: 'étirements', cues: ['Après rowing, épaules'] },
+      { type: 'time', name: 'Cross-body D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Enfant', duration: 60, label: 'étirements', cues: ['Décompression dos'] },
+      { type: 'time', name: 'Cobra', duration: 40, label: 'étirements', cues: ['Contre-balance après superman'] },
     ] }
 ];
 
@@ -2046,164 +2371,329 @@ function getCurrentRenfo() { return RENFO_ROTATION[getWeekRenfoIdx()]; }
 //  BONUS (compact)
 // ============================================================
 const BONUS = [
-  { id: 'bonus-full-classique', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Classique', duration: '20 min', durationMin: 20,
-    intro: 'Circuit full-body équilibré : jambes, poussée, tirage, core, mollets. Le go-to par défaut.',
+  { id: 'bonus-classique', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Classique', duration: '20 min', durationMin: 20,
+    intro: 'Circuit full-body équilibré. Le go-to par défaut.',
     plan: [
-      { head: 'Échauffement', items: [{ n: 'Mobilité + activation', t: '4 min' }] },
-      { head: 'Circuit 3 tours', items: [{ n: 'Squats', t: '15' }, { n: 'Pompes', t: '10' }, { n: 'Rowing élastique', t: '12' }, { n: 'Planche', t: '30 s' }, { n: 'Fentes alternées', t: '10' }, { n: 'Mollets', t: '15' }] },
-      { head: 'Étirements', items: [{ n: 'Retour au calme', t: '2 min' }] }
+      { head: 'Échauffement · 3 min', items: [{ n: 'Mobilité + activation', t: '3 min' }] },
+      { head: 'Corps · ~13 min', items: [{ n: 'Squats', t: '3 × 12' }, { n: 'Pompes', t: '3 × 10' }, { n: 'Rowing élastique', t: '3 × 12' }, { n: 'Fentes alternées', t: '2 × 10/j' }, { n: 'Planche', t: '2 × 40 s' }] },
+      { head: 'Étirements · 4 min', items: [{ n: 'Quadri, ischios, pec, mollets', t: '30 s / côté' }, { n: 'Enfant', t: 'récup' }] }
     ],
     steps: [
-      { type: 'time', name: 'Mobilité', duration: 120, label: 'échauffement', cues: ['Rotations articulaires', 'Cat-cow', 'Cercles chevilles'] },
-      { type: 'time', name: 'Activation', duration: 120, label: 'échauffement', cues: ['10 squats à vide', '5 pompes lentes', '10 fentes'] },
-      ...[1,2,3].flatMap(tour => [
-        { type: 'reps', name: 'Squats', reps: '15 reps', label: `circuit — tour ${tour}/3`, cues: ['Amplitude complète', 'Dos droit'] },
-        { type: 'rest', duration: 10 },
-        { type: 'reps', name: 'Pompes', reps: '10 reps', label: `circuit — tour ${tour}/3`, cues: ['Corps en ligne', 'Descente 2s'] },
-        { type: 'rest', duration: 10 },
-        { type: 'reps', name: 'Rowing élastique', reps: '12 reps', label: `circuit — tour ${tour}/3`, cues: ['Rétracte l\'omoplate', 'Coude près du corps'] },
-        { type: 'rest', duration: 10 },
-        { type: 'time', name: 'Planche', duration: 30, label: `circuit — tour ${tour}/3`, cues: ['Corps en ligne', 'Respire'] },
-        { type: 'rest', duration: 10 },
-        { type: 'reps', name: 'Fentes alternées', reps: '10 reps', label: `circuit — tour ${tour}/3`, cues: ['Genou avant aligné', 'Contrôle'] },
-        { type: 'rest', duration: 10 },
-        { type: 'reps', name: 'Mollets', reps: '15 reps', label: `circuit — tour ${tour}/3`, cues: ['Amplitude', 'Contrôlé'] },
-        { type: 'rest', duration: tour < 3 ? 45 : 0 }
-      ]),
-      { type: 'time', name: 'Étirements', duration: 120, label: 'récup', cues: ['Quadri, ischios, mollets', 'Pigeon G puis D'] }
+      { type: 'time', name: 'Mobilité + activation', duration: 180, label: 'échauffement', cues: ['Rotations articulaires', 'Squats à vide'] },
+      { type: 'reps', name: 'Squats', reps: '12 reps', label: 'squats · série 1/3', cues: ['Amplitude complète'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Squats', reps: '12 reps', label: 'squats · série 2/3', cues: ['Amplitude complète'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Squats', reps: '12 reps', label: 'squats · série 3/3', cues: ['Amplitude complète'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'pompes · série 1/3', cues: ['Corps en ligne'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'pompes · série 2/3', cues: ['Corps en ligne'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'pompes · série 3/3', cues: ['Corps en ligne'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Rowing élastique', reps: '12 reps', label: 'rowing · série 1/3', cues: ['Rétracte omoplate'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Rowing élastique', reps: '12 reps', label: 'rowing · série 2/3', cues: ['Rétracte omoplate'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Rowing élastique', reps: '12 reps', label: 'rowing · série 3/3', cues: ['Rétracte omoplate'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Fentes alternées', reps: '10 / jambe', label: 'fentes · série 1/2', cues: ['Genou avant aligné'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Fentes alternées', reps: '10 / jambe', label: 'fentes · série 2/2', cues: ['Genou avant aligné'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Planche', duration: 40, label: 'planche · série 1/2', cues: ['Corps en ligne'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Planche', duration: 40, label: 'planche · série 2/2', cues: ['Corps en ligne'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Quadriceps G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Quadriceps D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Ischios G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Ischios D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Pec G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Pec D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Mollets G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Mollets D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Enfant', duration: 45, label: 'étirements', cues: ['Récup'] },
     ] },
 
-  { id: 'bonus-full-cardio', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Cardio-force', duration: '20 min', durationMin: 20,
-    intro: 'Mix cardio et force. Burpees, sauts, pompes, gainage — tout le corps en mode gaz.',
+  { id: 'bonus-cardio-force', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Cardio-force', duration: '20 min', durationMin: 20,
+    intro: 'Circuit 40s effort / 20s repos, 3 tours. Full body en mode gaz.',
     plan: [
-      { head: 'Échauffement', items: [{ n: 'Dynamique + activation', t: '3 min' }] },
-      { head: 'Circuit 4 tours', items: [{ n: 'Squats sautés', t: '10' }, { n: 'Pompes', t: '8' }, { n: 'Burpees', t: '8' }, { n: 'Mountain climbers', t: '20 s' }, { n: 'Superman', t: '12' }] },
-      { head: 'Récup', items: [{ n: 'Retour au calme', t: '2 min' }] }
-    ],
-    steps: [
-      { type: 'time', name: 'Mobilité dynamique', duration: 90, label: 'échauffement', cues: ['Jumping jacks 30s', 'Rotations épaules', 'Squats à vide'] },
-      { type: 'time', name: 'Activation', duration: 90, label: 'échauffement', cues: ['High knees 20s', '5 burpees lents', 'Petits sauts'] },
-      ...[1,2,3,4].flatMap(tour => [
-        { type: 'reps', name: 'Squats sautés', reps: '10 reps', label: `circuit — tour ${tour}/4`, cues: ['Squat complet', 'Amortis en squat'] },
-        { type: 'rest', duration: 10 },
-        { type: 'reps', name: 'Pompes', reps: '8 reps', label: `circuit — tour ${tour}/4`, cues: ['Contrôle la descente'] },
-        { type: 'rest', duration: 10 },
-        { type: 'reps', name: 'Burpees', reps: '8 reps', label: `circuit — tour ${tour}/4`, cues: ['Rythme régulier', 'Ne bâcle pas'] },
-        { type: 'rest', duration: 10 },
-        { type: 'time', name: 'Mountain climbers', duration: 20, label: `circuit — tour ${tour}/4`, cues: ['Rythme max', 'Gainage actif'] },
-        { type: 'rest', duration: 10 },
-        { type: 'reps', name: 'Superman', reps: '12 reps', label: `circuit — tour ${tour}/4`, cues: ['Décolle bras et jambes', 'Pause 1s en haut'] },
-        { type: 'rest', duration: tour < 4 ? 40 : 0 }
-      ]),
-      { type: 'time', name: 'Retour au calme', duration: 120, label: 'récup', cues: ['Marche', 'Respiration profonde'] }
-    ] },
-
-  { id: 'bonus-full-tempo', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Tempo lent', duration: '20 min', durationMin: 20,
-    intro: 'Tout en tempo 3s. Endurance musculaire, contrôle, force lente. Ça fait plus mal qu\'il n\'y paraît.',
-    plan: [
-      { head: 'Échauffement', items: [{ n: 'Mobilité', t: '3 min' }] },
-      { head: 'Circuit 3 tours', items: [{ n: 'Squats lents', t: '10 · 3s' }, { n: 'Pompes lentes', t: '6 · 3s' }, { n: 'Rowing lent', t: '8 · 3s' }, { n: 'Wall sit', t: '45 s' }, { n: 'Dead bug', t: '10/c' }, { n: 'Fentes lentes', t: '6/j · 3s' }] },
-      { head: 'Étirements', items: [{ n: 'Retour au calme', t: '2 min' }] }
-    ],
-    steps: [
-      { type: 'time', name: 'Mobilité', duration: 120, label: 'échauffement', cues: ['Cat-cow', 'Rotations hanches', 'Squats à vide'] },
-      { type: 'time', name: 'Activation', duration: 60, label: 'échauffement', cues: ['5 pompes tempo normal', '10 squats amplitude'] },
-      ...[1,2,3].flatMap(tour => [
-        { type: 'reps', name: 'Squats lents', reps: '10 reps · 3s descente', label: `circuit — tour ${tour}/3`, cues: ['3 sec vraies', 'Pause 1s en bas'] },
-        { type: 'rest', duration: 15 },
-        { type: 'reps', name: 'Pompes lentes', reps: '6 reps · 3s', label: `circuit — tour ${tour}/3`, cues: ['Descente lente', 'Pousse contrôlé'] },
-        { type: 'rest', duration: 15 },
-        { type: 'reps', name: 'Rowing lent', reps: '8 reps · 3s', label: `circuit — tour ${tour}/3`, cues: ['Tire lentement', 'Contrôle le retour'] },
-        { type: 'rest', duration: 15 },
-        { type: 'time', name: 'Wall sit', duration: 45, label: `circuit — tour ${tour}/3`, cues: ['Cuisses parallèles', 'Respire calmement'] },
-        { type: 'rest', duration: 15 },
-        { type: 'reps', name: 'Dead bug', reps: '10 / côté', label: `circuit — tour ${tour}/3`, cues: ['Dos plaqué', 'Lent'] },
-        { type: 'rest', duration: 15 },
-        { type: 'reps', name: 'Fentes lentes', reps: '6 / jambe · 3s', label: `circuit — tour ${tour}/3`, cues: ['Descente 3 sec', 'Contrôle'] },
-        { type: 'rest', duration: tour < 3 ? 45 : 0 }
-      ]),
-      { type: 'time', name: 'Étirements', duration: 120, label: 'récup', cues: ['Quadri, ischios', 'Pigeon G puis D'] }
-    ] },
-
-  { id: 'bonus-full-unilateral', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Unilatéral', duration: '20 min', durationMin: 20,
-    intro: 'Un membre à la fois. Corrige les asymétries et sollicite la stabilisation — parfait pour la montagne.',
-    plan: [
-      { head: 'Échauffement', items: [{ n: 'Mobilité', t: '3 min' }] },
-      { head: 'Circuit 3 tours', items: [{ n: 'Step-ups', t: '10/j' }, { n: 'Pompes archer', t: '5/c' }, { n: 'Rowing 1 bras', t: '10/c' }, { n: 'Planche latérale', t: '20s/c' }, { n: 'Fentes bulgares', t: '8/j' }, { n: 'Bird dog', t: '10/c' }] },
-      { head: 'Étirements', items: [{ n: 'Retour au calme', t: '2 min' }] }
-    ],
-    steps: [
-      { type: 'time', name: 'Mobilité', duration: 120, label: 'échauffement', cues: ['Rotations hanches', 'Épaules', 'Chevilles'] },
-      { type: 'time', name: 'Activation', duration: 60, label: 'échauffement', cues: ['5 squats', '5 pompes', '10 fentes alternées'] },
-      ...[1,2,3].flatMap(tour => [
-        { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: `circuit — tour ${tour}/3`, cues: ['Marche haute', 'Pousse dans le talon'] },
-        { type: 'rest', duration: 10 },
-        { type: 'reps', name: 'Pompes archer', reps: '5 / côté', label: `circuit — tour ${tour}/3`, cues: ['Bras tendu côté', 'Poids sur l\'autre bras', 'Sur les genoux si besoin'] },
-        { type: 'rest', duration: 10 },
-        { type: 'reps', name: 'Rowing 1 bras', reps: '10 / côté', label: `circuit — tour ${tour}/3`, cues: ['Sac lesté', 'Buste 45°', 'Rétracte'] },
-        { type: 'rest', duration: 10 },
-        { type: 'time', name: 'Planche latérale G', duration: 20, label: `circuit — tour ${tour}/3`, cues: ['Coude sous épaule', 'Hanches hautes'] },
-        { type: 'rest', duration: 5 },
-        { type: 'time', name: 'Planche latérale D', duration: 20, label: `circuit — tour ${tour}/3`, cues: ['Autre côté'] },
-        { type: 'rest', duration: 10 },
-        { type: 'reps', name: 'Fentes bulgares', reps: '8 / jambe', label: `circuit — tour ${tour}/3`, cues: ['Pied arrière surélevé', 'Descente contrôlée'] },
-        { type: 'rest', duration: 10 },
-        { type: 'reps', name: 'Bird dog', reps: '10 / côté', label: `circuit — tour ${tour}/3`, cues: ['Bras + jambe opposés', 'Pause 1s'] },
-        { type: 'rest', duration: tour < 3 ? 45 : 0 }
-      ]),
-      { type: 'time', name: 'Étirements', duration: 120, label: 'récup', cues: ['Pigeon, quadri, fléchisseurs'] }
-    ] },
-
-  { id: 'bonus-full-explo', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Explosif', duration: '20 min', durationMin: 20,
-    intro: 'Puissance et réactivité. Sauts, pompes plyo, sprints, gainage dynamique — pour la vraie montagne.',
-    plan: [
-      { head: 'Échauffement', items: [{ n: 'Dynamique', t: '3 min' }] },
-      { head: 'Circuit 3 tours', items: [{ n: 'Squats sautés', t: '8' }, { n: 'Pompes plyo', t: '6' }, { n: 'Burpees', t: '6' }, { n: 'High knees', t: '20 s' }, { n: 'Hollow hold', t: '20 s' }, { n: 'Fentes sautées', t: '6/j' }] },
-      { head: 'Récup', items: [{ n: 'Retour au calme', t: '3 min' }] }
+      { head: 'Échauffement · 3 min', items: [{ n: 'Mobilité dyn. + activation', t: '3 min' }] },
+      { head: 'Circuit 3 tours · 40s/20s', items: [{ n: 'Squats sautés', t: '40 s' }, { n: 'Pompes', t: '40 s' }, { n: 'Burpees', t: '40 s' }, { n: 'Mountain climbers', t: '40 s' }, { n: 'Superman', t: '40 s' }] },
+      { head: 'Étirements · 4 min', items: [{ n: 'Quadri, mollets, pec', t: '30 s / côté' }, { n: 'Cobra, enfant', t: 'récup' }] }
     ],
     steps: [
       { type: 'time', name: 'Mobilité dynamique', duration: 90, label: 'échauffement', cues: ['Jumping jacks', 'Rotations'] },
-      { type: 'time', name: 'Activation', duration: 90, label: 'échauffement', cues: ['Petits sauts sur place', '5 squats sautés progressifs'] },
-      ...[1,2,3].flatMap(tour => [
-        { type: 'reps', name: 'Squats sautés', reps: '8 reps', label: `circuit — tour ${tour}/3`, cues: ['Squat complet', 'Explosif', 'Amortis'] },
-        { type: 'rest', duration: 20 },
-        { type: 'reps', name: 'Pompes plyo', reps: '6 reps', label: `circuit — tour ${tour}/3`, cues: ['Descente contrôlée', 'Pousse explosif, mains décollent'] },
-        { type: 'rest', duration: 20 },
-        { type: 'reps', name: 'Burpees', reps: '6 reps', label: `circuit — tour ${tour}/3`, cues: ['Rythme, ne casse pas la forme'] },
-        { type: 'rest', duration: 20 },
-        { type: 'time', name: 'High knees', duration: 20, label: `circuit — tour ${tour}/3`, cues: ['Cadence max', 'Genoux hauts'] },
-        { type: 'rest', duration: 20 },
-        { type: 'time', name: 'Hollow hold', duration: 20, label: `circuit — tour ${tour}/3`, cues: ['Bas du dos plaqué', 'Bras et jambes décollés'] },
-        { type: 'rest', duration: 20 },
-        { type: 'reps', name: 'Fentes sautées', reps: '6 / jambe', label: `circuit — tour ${tour}/3`, cues: ['Alterne en sautant', 'Amortis'] },
-        { type: 'rest', duration: tour < 3 ? 60 : 0 }
-      ]),
-      { type: 'time', name: 'Retour au calme', duration: 180, label: 'récup', cues: ['Marche', 'Respiration profonde'] }
+      { type: 'time', name: 'Activation', duration: 90, label: 'échauffement', cues: ['High knees 20s', '5 burpees lents'] },
+      { type: 'time', name: 'Squats sautés', duration: 40, label: 'circuit · tour 1/3', cues: ['Explosif', 'Amortis'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Pompes', duration: 40, label: 'circuit · tour 1/3', cues: ['Rythme régulier'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Burpees', duration: 40, label: 'circuit · tour 1/3', cues: ['Full body'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Mountain climbers', duration: 40, label: 'circuit · tour 1/3', cues: ['Cadence max', 'Gainage actif'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Superman', duration: 40, label: 'circuit · tour 1/3', cues: ['Décolle bras + jambes'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Squats sautés', duration: 40, label: 'circuit · tour 2/3', cues: ['Explosif', 'Amortis'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Pompes', duration: 40, label: 'circuit · tour 2/3', cues: ['Rythme régulier'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Burpees', duration: 40, label: 'circuit · tour 2/3', cues: ['Full body'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Mountain climbers', duration: 40, label: 'circuit · tour 2/3', cues: ['Cadence max', 'Gainage actif'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Superman', duration: 40, label: 'circuit · tour 2/3', cues: ['Décolle bras + jambes'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Squats sautés', duration: 40, label: 'circuit · tour 3/3', cues: ['Explosif', 'Amortis'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Pompes', duration: 40, label: 'circuit · tour 3/3', cues: ['Rythme régulier'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Burpees', duration: 40, label: 'circuit · tour 3/3', cues: ['Full body'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Mountain climbers', duration: 40, label: 'circuit · tour 3/3', cues: ['Cadence max', 'Gainage actif'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Superman', duration: 40, label: 'circuit · tour 3/3', cues: ['Décolle bras + jambes'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Quadriceps G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Quadriceps D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Mollets G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Mollets D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Pec G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Pec D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Cobra', duration: 30, label: 'étirements', cues: ['Chaîne antérieure'] },
+      { type: 'time', name: 'Enfant', duration: 45, label: 'étirements', cues: ['Récup'] },
     ] },
 
-  { id: 'bonus-full-endurance', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Endurance', duration: '20 min', durationMin: 20,
-    intro: 'Volume et endurance musculaire. 4 tours d\'un circuit court — accumule le tonnage, apprend à durer.',
+  { id: 'bonus-tempo-lent', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Tempo lent', duration: '20 min', durationMin: 20,
+    intro: 'Contrôle et endurance musculaire. Tempo 3s partout.',
     plan: [
-      { head: 'Échauffement', items: [{ n: 'Mobilité', t: '3 min' }] },
-      { head: 'Circuit 4 tours', items: [{ n: 'Squats', t: '20' }, { n: 'Pompes', t: '10' }, { n: 'Rowing', t: '12' }, { n: 'Planche', t: '40 s' }, { n: 'Superman', t: '15' }] },
-      { head: 'Étirements', items: [{ n: 'Retour au calme', t: '2 min' }] }
+      { head: 'Échauffement · 3 min', items: [{ n: 'Mobilité + activation', t: '3 min' }] },
+      { head: 'Corps · ~13 min · tempo 3s', items: [{ n: 'Squats lents', t: '3 × 8' }, { n: 'Pompes lentes', t: '3 × 8' }, { n: 'Rowing lent', t: '3 × 10' }, { n: 'Wall sit', t: '3 × 40 s' }, { n: 'Dead bug', t: '2 × 10/c' }] },
+      { head: 'Étirements · 4 min', items: [{ n: 'Quadri, ischios, pec, cross-body', t: '30 s / côté' }, { n: 'Enfant', t: 'récup' }] }
     ],
     steps: [
-      { type: 'time', name: 'Mobilité', duration: 120, label: 'échauffement', cues: ['Rotations articulaires', 'Squats à vide'] },
-      { type: 'time', name: 'Activation', duration: 60, label: 'échauffement', cues: ['10 pompes lentes', '10 fentes'] },
-      ...[1,2,3,4].flatMap(tour => [
-        { type: 'reps', name: 'Squats', reps: '20 reps', label: `circuit — tour ${tour}/4`, cues: ['Amplitude complète', 'Rythme régulier'] },
-        { type: 'rest', duration: 15 },
-        { type: 'reps', name: 'Pompes', reps: '10 reps', label: `circuit — tour ${tour}/4`, cues: ['Qualité, corps en ligne'] },
-        { type: 'rest', duration: 15 },
-        { type: 'reps', name: 'Rowing élastique', reps: '12 reps', label: `circuit — tour ${tour}/4`, cues: ['Rétracte l\'omoplate'] },
-        { type: 'rest', duration: 15 },
-        { type: 'time', name: 'Planche', duration: 40, label: `circuit — tour ${tour}/4`, cues: ['Corps en ligne', 'Respire'] },
-        { type: 'rest', duration: 15 },
-        { type: 'reps', name: 'Superman', reps: '15 reps', label: `circuit — tour ${tour}/4`, cues: ['Décolle bras et jambes'] },
-        { type: 'rest', duration: tour < 4 ? 40 : 0 }
-      ]),
-      { type: 'time', name: 'Étirements', duration: 120, label: 'récup', cues: ['Complet'] }
+      { type: 'time', name: 'Mobilité + activation', duration: 180, label: 'échauffement', cues: ['Cat-cow', 'Squats à vide'] },
+      { type: 'reps', name: 'Squats lents', reps: '8 reps · 3s', label: 'squats lents · série 1/3', cues: ['3s descente vraies'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Squats lents', reps: '8 reps · 3s', label: 'squats lents · série 2/3', cues: ['3s descente vraies'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Squats lents', reps: '8 reps · 3s', label: 'squats lents · série 3/3', cues: ['3s descente vraies'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes lentes', reps: '8 reps · 3s', label: 'pompes lentes · série 1/3', cues: ['Contrôle'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes lentes', reps: '8 reps · 3s', label: 'pompes lentes · série 2/3', cues: ['Contrôle'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes lentes', reps: '8 reps · 3s', label: 'pompes lentes · série 3/3', cues: ['Contrôle'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Rowing lent', reps: '10 reps · 3s', label: 'rowing lent · série 1/3', cues: ['Tire lentement'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Rowing lent', reps: '10 reps · 3s', label: 'rowing lent · série 2/3', cues: ['Tire lentement'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Rowing lent', reps: '10 reps · 3s', label: 'rowing lent · série 3/3', cues: ['Tire lentement'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Wall sit', duration: 40, label: 'wall sit · série 1/3', cues: ['Cuisses parallèles au sol'] },
+      { type: 'rest', duration: 40 },
+      { type: 'time', name: 'Wall sit', duration: 40, label: 'wall sit · série 2/3', cues: ['Cuisses parallèles au sol'] },
+      { type: 'rest', duration: 40 },
+      { type: 'time', name: 'Wall sit', duration: 40, label: 'wall sit · série 3/3', cues: ['Cuisses parallèles au sol'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Dead bug', reps: '10 / côté', label: 'dead bug · série 1/2', cues: ['Dos plaqué', 'Lent'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Dead bug', reps: '10 / côté', label: 'dead bug · série 2/2', cues: ['Dos plaqué', 'Lent'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Quadriceps G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Quadriceps D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Ischios G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Ischios D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Pec G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Pec D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Cross-body G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Cross-body D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Enfant', duration: 45, label: 'étirements' },
+    ] },
+
+  { id: 'bonus-unilateral', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Unilatéral', duration: '20 min', durationMin: 20,
+    intro: 'Corrige les asymétries. Un membre à la fois, stabilisation.',
+    plan: [
+      { head: 'Échauffement · 3 min', items: [{ n: 'Mobilité + activation', t: '3 min' }] },
+      { head: 'Corps · ~13 min', items: [{ n: 'Step-ups', t: '3 × 10/j' }, { n: 'Pompes archer', t: '3 × 6/c' }, { n: 'Rowing 1 bras', t: '3 × 10/b' }, { n: 'Fentes bulgares', t: '2 × 8/j' }, { n: 'Planche latérale G/D', t: '2 × 30 s/c' }] },
+      { head: 'Étirements · 4 min', items: [{ n: 'Quadri, pigeon, pec, cross-body', t: '30 s / côté' }, { n: 'Enfant', t: 'récup' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Mobilité + activation', duration: 180, label: 'échauffement', cues: ['Rotations hanches, épaules', '5 squats, 5 pompes'] },
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'step-ups · série 1/3', cues: ['Marche haute', 'Pousse dans le talon'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'step-ups · série 2/3', cues: ['Marche haute', 'Pousse dans le talon'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'step-ups · série 3/3', cues: ['Marche haute', 'Pousse dans le talon'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes archer', reps: '6 / côté', label: 'pompes archer · série 1/3', cues: ['Bras tendu côté', 'Poids sur autre bras', 'Sur genoux si besoin'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes archer', reps: '6 / côté', label: 'pompes archer · série 2/3', cues: ['Bras tendu côté', 'Poids sur autre bras', 'Sur genoux si besoin'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes archer', reps: '6 / côté', label: 'pompes archer · série 3/3', cues: ['Bras tendu côté', 'Poids sur autre bras', 'Sur genoux si besoin'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Rowing 1 bras', reps: '10 / bras', label: 'rowing uni · série 1/3', cues: ['Sac lesté', 'Buste 45°'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Rowing 1 bras', reps: '10 / bras', label: 'rowing uni · série 2/3', cues: ['Sac lesté', 'Buste 45°'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Rowing 1 bras', reps: '10 / bras', label: 'rowing uni · série 3/3', cues: ['Sac lesté', 'Buste 45°'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Fentes bulgares', reps: '8 / jambe', label: 'fentes bulgares · série 1/2', cues: ['Pied arrière surélevé'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Fentes bulgares', reps: '8 / jambe', label: 'fentes bulgares · série 2/2', cues: ['Pied arrière surélevé'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Planche latérale G', duration: 30, label: 'planche lat G · série 1/2', cues: ['Coude sous épaule'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche latérale G', duration: 30, label: 'planche lat G · série 2/2', cues: ['Coude sous épaule'] },
+      { type: 'time', name: 'Planche latérale D', duration: 30, label: 'planche lat D · série 1/2', cues: ['Autre côté'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Planche latérale D', duration: 30, label: 'planche lat D · série 2/2', cues: ['Autre côté'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Quadriceps G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Quadriceps D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Pigeon G', duration: 45, label: 'étirements', cues: ['Fessier profond'] },
+      { type: 'time', name: 'Pigeon D', duration: 45, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Pec G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Pec D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Cross-body G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Cross-body D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Enfant', duration: 45, label: 'étirements' },
+    ] },
+
+  { id: 'bonus-explosif', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Explosif', duration: '20 min', durationMin: 20,
+    intro: 'Pliométrie. Puissance et réactivité pour la montagne.',
+    plan: [
+      { head: 'Échauffement · 3 min', items: [{ n: 'Mobilité dyn. + activation + petits sauts', t: '3 min' }] },
+      { head: 'Corps · ~13 min', items: [{ n: 'Squats sautés', t: '4 × 8' }, { n: 'Pompes plyo', t: '4 × 5' }, { n: 'Fentes sautées', t: '3 × 8/j' }, { n: 'High knees', t: '3 × 30 s' }, { n: 'Hollow hold', t: '3 × 25 s' }] },
+      { head: 'Étirements · 4 min', items: [{ n: 'Quadri, ischios, mollets, pec', t: '30 s / côté' }, { n: 'Enfant', t: 'récup' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Mobilité dynamique', duration: 90, label: 'échauffement', cues: ['Rotations amples'] },
+      { type: 'time', name: 'Activation', duration: 60, label: 'échauffement', cues: ['Jumping jacks', 'High knees'] },
+      { type: 'time', name: 'Petits sauts', duration: 30, label: 'échauffement', cues: ['Potentiation tendineuse'] },
+      { type: 'reps', name: 'Squats sautés', reps: '8 reps', label: 'squats sautés · série 1/4', cues: ['Explosion max', 'Amortis'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Squats sautés', reps: '8 reps', label: 'squats sautés · série 2/4', cues: ['Explosion max', 'Amortis'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Squats sautés', reps: '8 reps', label: 'squats sautés · série 3/4', cues: ['Explosion max', 'Amortis'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Squats sautés', reps: '8 reps', label: 'squats sautés · série 4/4', cues: ['Explosion max', 'Amortis'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Pompes plyo', reps: '5 reps', label: 'pompes plyo · série 1/4', cues: ['Poussée explosive, mains décollent'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Pompes plyo', reps: '5 reps', label: 'pompes plyo · série 2/4', cues: ['Poussée explosive, mains décollent'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Pompes plyo', reps: '5 reps', label: 'pompes plyo · série 3/4', cues: ['Poussée explosive, mains décollent'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Pompes plyo', reps: '5 reps', label: 'pompes plyo · série 4/4', cues: ['Poussée explosive, mains décollent'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Fentes sautées', reps: '8 / jambe', label: 'fentes sautées · série 1/3', cues: ['Alterne en sautant'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Fentes sautées', reps: '8 / jambe', label: 'fentes sautées · série 2/3', cues: ['Alterne en sautant'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Fentes sautées', reps: '8 / jambe', label: 'fentes sautées · série 3/3', cues: ['Alterne en sautant'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'High knees', duration: 30, label: 'high knees · série 1/3', cues: ['Cadence max'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'High knees', duration: 30, label: 'high knees · série 2/3', cues: ['Cadence max'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'High knees', duration: 30, label: 'high knees · série 3/3', cues: ['Cadence max'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Hollow hold', duration: 25, label: 'hollow · série 1/3', cues: ['Bas du dos plaqué'] },
+      { type: 'rest', duration: 25 },
+      { type: 'time', name: 'Hollow hold', duration: 25, label: 'hollow · série 2/3', cues: ['Bas du dos plaqué'] },
+      { type: 'rest', duration: 25 },
+      { type: 'time', name: 'Hollow hold', duration: 25, label: 'hollow · série 3/3', cues: ['Bas du dos plaqué'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Quadriceps G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Quadriceps D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Ischios G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Ischios D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Mollets G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Mollets D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Pec G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Pec D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Enfant', duration: 45, label: 'étirements' },
+    ] },
+
+  { id: 'bonus-endurance', focus: 'Bonus full-body', focusClass: 'bonus', title: 'Endurance', duration: '20 min', durationMin: 20,
+    intro: 'Volume et endurance musculaire. Hautes répétitions.',
+    plan: [
+      { head: 'Échauffement · 3 min', items: [{ n: 'Mobilité + activation', t: '3 min' }] },
+      { head: 'Corps · ~13 min', items: [{ n: 'Squats', t: '3 × 20' }, { n: 'Pompes', t: '3 × 15' }, { n: 'Rowing élastique', t: '3 × 15' }, { n: 'Superman', t: '3 × 15' }, { n: 'Planche', t: '2 × 60 s' }] },
+      { head: 'Étirements · 4 min', items: [{ n: 'Quadri, ischios, pec, twist', t: '30 s / côté' }, { n: 'Enfant', t: 'récup' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Mobilité + activation', duration: 180, label: 'échauffement', cues: ['Rotations', 'Squats à vide'] },
+      { type: 'reps', name: 'Squats', reps: '20 reps', label: 'squats · série 1/3', cues: ['Rythme régulier'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Squats', reps: '20 reps', label: 'squats · série 2/3', cues: ['Rythme régulier'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Squats', reps: '20 reps', label: 'squats · série 3/3', cues: ['Rythme régulier'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes', reps: '15 reps', label: 'pompes · série 1/3', cues: ['Qualité, corps en ligne'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes', reps: '15 reps', label: 'pompes · série 2/3', cues: ['Qualité, corps en ligne'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes', reps: '15 reps', label: 'pompes · série 3/3', cues: ['Qualité, corps en ligne'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Rowing élastique', reps: '15 reps', label: 'rowing · série 1/3', cues: ['Rétracte omoplate'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Rowing élastique', reps: '15 reps', label: 'rowing · série 2/3', cues: ['Rétracte omoplate'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Rowing élastique', reps: '15 reps', label: 'rowing · série 3/3', cues: ['Rétracte omoplate'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Superman', reps: '15 reps', label: 'superman · série 1/3', cues: ['Décolle bras + jambes'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Superman', reps: '15 reps', label: 'superman · série 2/3', cues: ['Décolle bras + jambes'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Superman', reps: '15 reps', label: 'superman · série 3/3', cues: ['Décolle bras + jambes'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Planche', duration: 60, label: 'planche · série 1/2', cues: ['Endurance gainage'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Planche', duration: 60, label: 'planche · série 2/2', cues: ['Endurance gainage'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Quadriceps G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Quadriceps D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Ischios G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Ischios D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Pec G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Pec D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Twist allongé G', duration: 30, label: 'étirements' },
+      { type: 'time', name: 'Twist allongé D', duration: 30, label: 'étirements', cues: ['Autre côté'] },
+      { type: 'time', name: 'Enfant', duration: 45, label: 'étirements' },
+    ] },
+
+  { id: 'bonus-stretching', focus: 'Bonus étirements', focusClass: 'stretching', title: 'Étirements complets', duration: '10 min', durationMin: 10,
+    intro: 'Séance de souplesse globale et récupération. Ordre logique debout → sol → haut du corps.',
+    plan: [
+      { head: 'Debout · 2 min', items: [{ n: 'Quadriceps G/D', t: '30 s / côté' }, { n: 'Mollets G/D', t: '30 s / côté' }] },
+      { head: 'Sol · 5 min', items: [{ n: 'Ischios G/D', t: '30 s / côté' }, { n: 'Pigeon G/D', t: '45 s / côté' }, { n: 'Fléchisseurs G/D', t: '30 s / côté' }, { n: 'Twist allongé G/D', t: '30 s / côté' }, { n: 'Cobra', t: '40 s' }, { n: 'Enfant', t: '1 min' }] },
+      { head: 'Haut du corps · 2 min', items: [{ n: 'Cross-body G/D', t: '30 s / côté' }, { n: 'Pec G/D', t: '30 s / côté' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Quadriceps G', duration: 30, label: 'debout', cues: ['Talon vers les fesses', 'Genoux côte à côte'] },
+      { type: 'time', name: 'Quadriceps D', duration: 30, label: 'debout', cues: ['Autre côté'] },
+      { type: 'time', name: 'Mollets G', duration: 30, label: 'debout', cues: ['Talon planté au sol', 'Hanche vers avant'] },
+      { type: 'time', name: 'Mollets D', duration: 30, label: 'debout', cues: ['Autre côté'] },
+      { type: 'time', name: 'Ischios G', duration: 30, label: 'sol', cues: ['Assis, jambe tendue', 'Buste vers le pied'] },
+      { type: 'time', name: 'Ischios D', duration: 30, label: 'sol', cues: ['Autre côté'] },
+      { type: 'time', name: 'Pigeon G', duration: 45, label: 'sol', cues: ['Genou avant plié', 'Buste vers le sol'] },
+      { type: 'time', name: 'Pigeon D', duration: 45, label: 'sol', cues: ['Autre côté'] },
+      { type: 'time', name: 'Fléchisseurs G', duration: 30, label: 'sol', cues: ['Fente basse', 'Bassin avant sans cambrer'] },
+      { type: 'time', name: 'Fléchisseurs D', duration: 30, label: 'sol', cues: ['Autre côté'] },
+      { type: 'time', name: 'Twist allongé G', duration: 30, label: 'sol', cues: ['Genou côté opposé', 'Épaules au sol'] },
+      { type: 'time', name: 'Twist allongé D', duration: 30, label: 'sol', cues: ['Autre côté'] },
+      { type: 'time', name: 'Cobra', duration: 40, label: 'sol', cues: ['Pousse le buste', 'Hanches au sol', 'Épaules basses'] },
+      { type: 'time', name: 'Enfant', duration: 60, label: 'sol', cues: ['Fesses sur talons', 'Bras tendus devant', 'Respire'] },
+      { type: 'time', name: 'Cross-body G', duration: 30, label: 'haut corps', cues: ['Bras tendu en travers', 'Épaule basse'] },
+      { type: 'time', name: 'Cross-body D', duration: 30, label: 'haut corps', cues: ['Autre côté'] },
+      { type: 'time', name: 'Pec G', duration: 30, label: 'haut corps', cues: ['Avant-bras contre mur', 'Tourne le buste'] },
+      { type: 'time', name: 'Pec D', duration: 30, label: 'haut corps', cues: ['Autre côté'] },
     ] }
 ];
 
@@ -2712,16 +3202,63 @@ function submitCardioStats() {
   state.view = 'complete';
   render();
 }
+function computeCardioScore(type, duration, km, deniv) {
+  const phase = currentPhase();
+  const t = CARDIO_TARGETS[type][phase];
+  const w = PHASE_WEIGHTS[phase];
+
+  // Sous-scores (% cible atteinte, capés à 150%)
+  const sEnd = Math.min(150, (duration / t.duration) * 100);
+  const sVol = t.km > 0 ? Math.min(150, (km / t.km) * 100) : 100;
+  const sVert = t.deniv > 0 ? Math.min(150, (deniv / t.deniv) * 100) : (deniv > 0 ? 100 : 100);
+
+  // Score composite pondéré. Si le vertical est 0 pour la cible (vélo), on redistribue.
+  let score;
+  if (t.deniv === 0) {
+    // Vélo : pas de vertical, on redistribue son poids sur endurance et volume
+    const wEnd = w.endurance + w.vertical * 0.7;
+    const wVol = w.volume + w.vertical * 0.3;
+    score = (sEnd * wEnd) + (sVol * wVol);
+  } else {
+    score = (sEnd * w.endurance) + (sVol * w.volume) + (sVert * w.vertical);
+  }
+
+  // NET = Naismith Equivalent Time (temps équivalent plat)
+  // 10m de D+ ≈ 1 min d'effort équivalent (règle de Naismith, 1892)
+  const net = Math.round(duration + (deniv / 10));
+
+  // Verdict class (pour couleur)
+  let cls, title;
+  if (score >= 100) { cls = 'above'; title = 'Au-dessus'; }
+  else if (score >= 85) { cls = 'on-target'; title = 'Dans la cible'; }
+  else { cls = 'below'; title = 'En-dessous'; }
+
+  return {
+    score: Math.round(score),
+    net,
+    sEnd: Math.round(sEnd),
+    sVol: Math.round(sVol),
+    sVert: Math.round(sVert),
+    weights: w,
+    target: t,
+    cls,
+    title
+  };
+}
+
+// Legacy alias kept for backward compat with any leftover callsites
 function computeVerdict(type, duration, km, deniv) {
-  const t = CARDIO_TARGETS[type][currentPhase()];
-  const durPct = (duration / t.duration) * 100;
-  const kmPct = (km / t.km) * 100;
-  const overall = (durPct + kmPct) / 2;
-  let cls, title, desc;
-  if (overall >= 100) { cls = 'above'; title = 'Au-dessus'; desc = `${Math.round(overall)}% de la cible · continue`; }
-  else if (overall >= 85) { cls = 'on-target'; title = 'Dans la cible'; desc = `${Math.round(overall)}% de la cible · tu progresses`; }
-  else { cls = 'below'; title = 'En-dessous'; desc = `${Math.round(overall)}% de la cible · c'est le début, ça vient`; }
-  return { cls, title, desc };
+  const r = computeCardioScore(type, duration, km, deniv);
+  return {
+    cls: r.cls,
+    title: r.title,
+    desc: `${r.score}% de la cible pondérée · NET ${r.net} min équivalent plat`,
+    score: r.score,
+    net: r.net,
+    sEnd: r.sEnd,
+    sVol: r.sVol,
+    sVert: r.sVert
+  };
 }
 
 // ============================================================
@@ -2802,16 +3339,18 @@ function computeCardioStats(weeks) {
   const activeWeeks = filterActiveWeeks(weeks);
   const pcts = activeWeeks.map(w => {
     if (!w.cardio || !w.cardio.done) return 0;
-    const t = CARDIO_TARGETS[w.cardio.type][currentPhase()];
-    const durPct = (w.cardio.duration / t.duration) * 100;
-    const kmPct = (w.cardio.km / t.km) * 100;
-    return Math.min(150, (durPct + kmPct) / 2);
+    const r = computeCardioScore(w.cardio.type, w.cardio.duration, w.cardio.km, w.cardio.deniv || 0);
+    return r.score;
   });
   const target = activeWeeks.map(() => 100);
   const totalDone = pcts.filter(p => p > 0).length;
   const totalMin = activeWeeks.reduce((sum, w) => sum + (w.cardio && w.cardio.done ? (w.cardio.duration || 0) : 0), 0);
   const totalKm = activeWeeks.reduce((sum, w) => sum + (w.cardio && w.cardio.done ? (w.cardio.km || 0) : 0), 0);
-  return { pcts, target, totalDone, totalMin, totalKm, n: activeWeeks.length };
+  const totalNET = activeWeeks.reduce((sum, w) => {
+    if (!w.cardio || !w.cardio.done) return sum;
+    return sum + (w.cardio.duration || 0) + ((w.cardio.deniv || 0) / 10);
+  }, 0);
+  return { pcts, target, totalDone, totalMin, totalKm, totalNET, n: activeWeeks.length };
 }
 
 function computeRenfoStats(weeks) {
@@ -3024,14 +3563,10 @@ function renderTraining() {
         ${boxeTile}
       </div>
 
-      <div class="library-row" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="library-row" style="grid-template-columns: 1fr 1fr;">
         <button class="lib-tile" onclick="goto('bonus-list')">
           <div class="lib-tile-count">${BONUS.length}</div>
           <div class="lib-tile-title">Bonus</div>
-        </button>
-        <button class="lib-tile" onclick="openStretching()">
-          <div class="lib-tile-count">10′</div>
-          <div class="lib-tile-title">Étirements</div>
         </button>
         <button class="lib-tile" onclick="goto('lexique-list')">
           <div class="lib-tile-count">${LEXIQUE.length}</div>
@@ -3152,8 +3687,8 @@ function renderCockpit() {
             <div class="stat-figure-lbl">Total</div>
           </div>
           <div class="stat-figure">
-            <div class="stat-figure-val">${cardio.totalKm.toFixed(1)}<span class="unit"> km</span></div>
-            <div class="stat-figure-lbl">Distance</div>
+            <div class="stat-figure-val">${Math.round(cardio.totalNET)}<span class="unit"> min</span></div>
+            <div class="stat-figure-lbl">NET équiv.</div>
           </div>
         </div>
         ${cardioChart}
@@ -3589,10 +4124,48 @@ function renderCardioStats() {
 // ============================================================
 //  RENDER — CARDIO RECAP
 // ============================================================
+function renderCardioScoreCard(c) {
+  const r = computeCardioScore(c.type, c.duration, c.km, c.deniv);
+  const phase = currentPhase();
+  const hasVertical = r.target.deniv > 0;
+  return `
+    <div class="cardio-score">
+      <div class="cardio-score-head">
+        <div class="cardio-score-title">Score composite pondéré</div>
+        <div class="cardio-score-phase">${phaseShort(phase)}</div>
+      </div>
+      <div class="cardio-score-main">
+        <div class="cardio-score-num ${r.cls}">${r.score}</div>
+        <div class="cardio-score-unit">%</div>
+        <div class="cardio-score-verdict ${r.cls}">${r.title}</div>
+      </div>
+      <div class="cardio-score-breakdown">
+        <div class="cardio-sub">
+          <div class="cardio-sub-label">Endurance<span class="cardio-sub-weight">${Math.round(r.weights.endurance*100)}%</span></div>
+          <div class="cardio-sub-val">${r.sEnd}<span>%</span></div>
+        </div>
+        <div class="cardio-sub">
+          <div class="cardio-sub-label">Volume<span class="cardio-sub-weight">${Math.round(r.weights.volume*100)}%</span></div>
+          <div class="cardio-sub-val">${r.sVol}<span>%</span></div>
+        </div>
+        <div class="cardio-sub">
+          <div class="cardio-sub-label">Vertical<span class="cardio-sub-weight">${Math.round(r.weights.vertical*100)}%</span></div>
+          <div class="cardio-sub-val">${hasVertical ? r.sVert : '–'}<span>${hasVertical ? '%' : ''}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="cardio-net">
+      <div>
+        <div class="cardio-net-label">NET</div>
+        <div class="cardio-net-hint">Temps équivalent plat (Naismith)</div>
+      </div>
+      <div class="cardio-net-val">${r.net}<span> min</span></div>
+    </div>`;
+}
+
 function renderCardioRecap() {
   const c = state.week.cardio;
   const target = CARDIO_TARGETS[c.type][currentPhase()];
-  const v = computeVerdict(c.type, c.duration, c.km, c.deniv);
   const label = c.type === 'velo' ? 'Vélo maison' : 'Course à pied';
   return `
     <div class="view">
@@ -3606,10 +4179,7 @@ function renderCardioRecap() {
         <div class="preview-metric"><div class="preview-metric-val">${c.km}<span class="unit"> km</span></div><div class="preview-metric-lbl">Km · cible ${target.km}</div></div>
         ${c.type === 'course' ? `<div class="preview-metric"><div class="preview-metric-val">${c.deniv}<span class="unit"> m</span></div><div class="preview-metric-lbl">D+ · cible ${target.deniv}</div></div>` : `<div class="preview-metric"><div class="preview-metric-val">–</div><div class="preview-metric-lbl">D+</div></div>`}
       </div>
-      <div class="stats-verdict ${v.cls}">
-        <div class="stats-verdict-title">${v.title}</div>
-        <div class="stats-verdict-desc">${v.desc}</div>
-      </div>
+      ${renderCardioScoreCard(c)}
       <button class="cta-btn secondary" onclick="editCardioStats()">Corriger les chiffres</button>
     </div>`;
 }
@@ -3638,9 +4208,7 @@ function renderComplete() {
   const showCounter = kind === 'cardio' || kind === 'renfo';
   let stats = '';
   if (kind === 'cardio' && state.week.cardio.done) {
-    const c = state.week.cardio;
-    const v = computeVerdict(c.type, c.duration, c.km, c.deniv);
-    stats = `<div class="stats-verdict ${v.cls}" style="margin: 0 8px 30px"><div class="stats-verdict-title">${v.title}</div><div class="stats-verdict-desc">${v.desc}</div></div>`;
+    stats = renderCardioScoreCard(state.week.cardio);
   }
   let progressHTML = '';
   if (showCounter) progressHTML = `<div class="complete-progress">${done}<span class="complete-arrow">/</span>3</div>`;
@@ -3651,8 +4219,7 @@ function renderComplete() {
       ${progressHTML}
       ${stats}
       <div class="complete-actions">
-        ${kind !== 'stretching' ? `<button class="primary" onclick="openStretching()">Étirements post-séance</button>` : ''}
-        <button class="secondary" onclick="goto('home')">Retour à l'accueil</button>
+        <button class="secondary" onclick="goto('training')">Retour à l'accueil</button>
       </div>
     </div>`;
 }
