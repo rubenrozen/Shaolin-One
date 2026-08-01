@@ -2031,6 +2031,7 @@ const state = {
   boxeRatingInDialog: 4,
   user: null,
   authChecked: false,
+  authMode: 'signin', // 'signin' | 'signup'
   syncStatus: 'offline', // 'offline' | 'syncing' | 'synced' | 'error'
   lastSyncedAt: null,
   loginMessage: null,
@@ -3243,27 +3244,64 @@ async function initAuth() {
   });
 }
 
-async function sendMagicLink() {
+async function signInPassword() {
   const emailEl = document.getElementById('login-email');
+  const passwordEl = document.getElementById('login-password');
   const email = (emailEl && emailEl.value || '').trim();
-  if (!email) {
-    state.loginMessage = { type: 'error', text: 'Entre ton email' };
+  const password = passwordEl && passwordEl.value || '';
+  if (!email || !password) {
+    state.loginMessage = { type: 'error', text: 'Email et mot de passe requis' };
     render();
     return;
   }
-  state.loginMessage = { type: 'info', text: 'Envoi en cours…' };
+  state.loginMessage = { type: 'info', text: 'Connexion…' };
   render();
   try {
-    const redirectTo = window.location.origin + window.location.pathname;
-    const { error } = await sb.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: redirectTo }
-    });
+    const { error } = await sb.auth.signInWithPassword({ email, password });
     if (error) throw error;
-    state.loginMessage = { type: 'success', text: 'Lien envoyé. Vérifie ta boîte mail et clique sur le lien.' };
+    // onAuthStateChange handles navigation to home
   } catch (e) {
     state.loginMessage = { type: 'error', text: 'Erreur : ' + e.message };
+    render();
   }
+}
+
+async function signUpPassword() {
+  const emailEl = document.getElementById('login-email');
+  const passwordEl = document.getElementById('login-password');
+  const email = (emailEl && emailEl.value || '').trim();
+  const password = passwordEl && passwordEl.value || '';
+  if (!email || !password) {
+    state.loginMessage = { type: 'error', text: 'Email et mot de passe requis' };
+    render();
+    return;
+  }
+  if (password.length < 8) {
+    state.loginMessage = { type: 'error', text: 'Mot de passe : 8 caractères minimum' };
+    render();
+    return;
+  }
+  state.loginMessage = { type: 'info', text: 'Création du compte…' };
+  render();
+  try {
+    const { data, error } = await sb.auth.signUp({ email, password });
+    if (error) throw error;
+    if (data.session) {
+      // Instant sign-in (email confirmation disabled in Supabase)
+      // onAuthStateChange handles it
+    } else {
+      state.loginMessage = { type: 'success', text: 'Compte créé. Confirme ton email dans ta boîte, puis reviens te connecter. Ou désactive "Confirm email" dans Supabase Auth.' };
+      render();
+    }
+  } catch (e) {
+    state.loginMessage = { type: 'error', text: 'Erreur : ' + e.message };
+    render();
+  }
+}
+
+function toggleAuthMode() {
+  state.authMode = state.authMode === 'signin' ? 'signup' : 'signin';
+  state.loginMessage = null;
   render();
 }
 
@@ -3290,17 +3328,24 @@ async function manualSync() {
 // ============================================================
 function renderLogin() {
   const msg = state.loginMessage;
+  const isSignup = state.authMode === 'signup';
   return `
     <div class="login-view">
       <div class="login-brand">Shaolin One<span class="login-brand-dot">.</span></div>
       <div class="login-tag">Cervin · été 2027</div>
-      <h1 class="login-title">Connecte-toi.</h1>
-      <p class="login-intro">Sync sur tous tes appareils. Tu recevras un lien magique par email — pas de mot de passe.</p>
-      <input type="email" class="login-input" id="login-email" placeholder="ton@email.com" autocomplete="email" inputmode="email">
-      <button class="cta-btn gold" onclick="sendMagicLink()">Recevoir le lien</button>
+      <h1 class="login-title">${isSignup ? 'Créer un compte.' : 'Connecte-toi.'}</h1>
+      <p class="login-intro">${isSignup ? 'Sync sur tous tes appareils. Le trousseau se souviendra du mot de passe.' : 'Ton historique, partout. Autofill activé.'}</p>
+      <form id="login-form" onsubmit="event.preventDefault(); ${isSignup ? 'signUpPassword()' : 'signInPassword()'}; return false;" autocomplete="on">
+        <input type="email" class="login-input" id="login-email" name="email" placeholder="email" autocomplete="email" inputmode="email" required>
+        <input type="password" class="login-input" id="login-password" name="password" placeholder="mot de passe" autocomplete="${isSignup ? 'new-password' : 'current-password'}" required minlength="${isSignup ? 8 : 1}">
+        <button type="submit" class="cta-btn gold">${isSignup ? 'Créer le compte' : 'Se connecter'}</button>
+      </form>
       ${msg ? `<div class="login-status ${msg.type}">${msg.text}</div>` : ''}
       <div class="login-skip">
-        <button onclick="skipAuth()">Continuer sans compte (local uniquement)</button>
+        <button onclick="toggleAuthMode()">${isSignup ? 'J\'ai déjà un compte' : 'Créer un compte'}</button>
+      </div>
+      <div class="login-skip">
+        <button onclick="skipAuth()">Continuer sans compte (local)</button>
       </div>
     </div>`;
 }
