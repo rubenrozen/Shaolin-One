@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v9 · Password reset via resetPasswordForEmail
-const CACHE = 'shaolin-v9-cervin';
+// v10 · Recovery URL detection fix
+const CACHE = 'shaolin-v10-cervin';
 const ASSETS = [
   './',
   './index.html',
