@@ -1,0 +1,2828 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#0A0908">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Shaolin One">
+<title>Shaolin One · Cervin 2027</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:SOFT,WONK,opsz,wght,YOPQ@0..100,0..1,9..144,600..900,25..208&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* Dark athletic base */
+    --bg: #0A0908;
+    --bg-elev: #17140F;
+    --bg-elev2: #1E1B15;
+    --paper: #F5F1EA;
+    --ink: #F5F1EA;
+    --ink-soft: #B0A79A;
+    --ink-faint: #6B655D;
+    --line: rgba(245, 241, 234, 0.08);
+    --line-strong: rgba(245, 241, 234, 0.16);
+
+    /* Rich tile colors */
+    --rust: #E85A2C;
+    --rust-tile: #C13E1B;
+    --rust-deep: #7A2812;
+    --rust-glow: rgba(232, 90, 44, 0.4);
+
+    --pine: #4EAF6F;
+    --pine-tile: #2A6844;
+    --pine-deep: #163D24;
+    --pine-glow: rgba(78, 175, 111, 0.35);
+
+    --indigo: #7896D8;
+    --indigo-tile: #384F80;
+    --indigo-deep: #1A2740;
+    --indigo-glow: rgba(120, 150, 216, 0.35);
+
+    --amber: #E8B04A;
+    --amber-tile: #A87720;
+    --amber-deep: #4A2D08;
+
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+    --display-max: "opsz" 144, "SOFT" 0, "WONK" 0, "YOPQ" 208;
+    --display-strong: "opsz" 100, "SOFT" 0, "WONK" 0, "YOPQ" 180;
+
+    --safe-top: env(safe-area-inset-top, 0);
+    --safe-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  html { color-scheme: dark; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+  }
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-bottom: calc(20px + var(--safe-bottom));
+    position: relative;
+  }
+
+  /* Subtle grain texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+  }
+  .app, .dialog-overlay { position: relative; z-index: 2; }
+
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  input, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    -webkit-appearance: none;
+  }
+
+  .app { max-width: 560px; margin: 0 auto; padding: 0 18px; }
+
+  /* ============ TOP BAR ============ */
+  .top-bar {
+    padding-top: calc(16px + var(--safe-top));
+    padding-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -0.04em;
+    font-variation-settings: var(--display-max);
+    color: var(--ink);
+  }
+  .brand-dot { color: var(--rust); }
+
+  .phase-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    background: var(--bg-elev);
+    border-radius: 100px;
+    border: 1px solid var(--line);
+  }
+  .phase-chip-dot {
+    width: 6px; height: 6px;
+    background: var(--rust);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--rust-glow);
+    animation: pulse-dot 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.1); }
+  }
+  .phase-chip-text {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-soft);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .back-btn {
+    padding-top: calc(16px + var(--safe-top));
+    padding-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .back-btn:active { color: var(--rust); }
+
+  /* ============ HERO POSTER ============ */
+  .hero {
+    padding: 30px 0 40px;
+    position: relative;
+  }
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .hero-counter {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .hero-num {
+    font-family: var(--font-display);
+    font-size: 180px;
+    font-weight: 900;
+    font-variation-settings: var(--display-max);
+    letter-spacing: -0.08em;
+    line-height: 0.82;
+    color: var(--ink);
+  }
+  .hero-num.complete { color: var(--rust); }
+  .hero-denom {
+    font-family: var(--font-display);
+    font-size: 60px;
+    font-weight: 900;
+    font-variation-settings: var(--display-max);
+    letter-spacing: -0.06em;
+    line-height: 0.82;
+    color: var(--ink-faint);
+  }
+  .hero-caption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .hero-dots {
+    display: flex;
+    gap: 10px;
+  }
+  .hero-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: transparent;
+    border: 2px solid var(--line-strong);
+    transition: all 0.3s;
+  }
+  .hero-dot.done {
+    background: var(--rust);
+    border-color: var(--rust);
+    box-shadow: 0 0 12px var(--rust-glow);
+  }
+
+  /* ============ SESSION TILES (COLORED POSTERS) ============ */
+  .tile-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+
+  .tile {
+    position: relative;
+    border-radius: 20px;
+    padding: 22px 22px 24px;
+    width: 100%;
+    text-align: left;
+    overflow: hidden;
+    transition: transform 0.12s ease;
+    border: none;
+    color: var(--paper);
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .tile:active { transform: scale(0.985); }
+
+  .tile::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(155deg, rgba(255,255,255,0.08) 0%, transparent 40%, rgba(0,0,0,0.15) 100%);
+    pointer-events: none;
+  }
+
+  .tile.cardio {
+    background: var(--rust-tile);
+    box-shadow: 0 12px 40px -12px var(--rust-glow);
+  }
+  .tile.renfo {
+    background: var(--pine-tile);
+    box-shadow: 0 12px 40px -12px var(--pine-glow);
+  }
+  .tile.boxe {
+    background: var(--indigo-tile);
+    box-shadow: 0 12px 40px -12px var(--indigo-glow);
+  }
+  .tile.done {
+    opacity: 0.85;
+  }
+
+  .tile-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .tile-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--paper);
+    opacity: 0.75;
+  }
+  .tile-status {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 100px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .tile-status.done {
+    background: var(--paper);
+    color: var(--bg);
+  }
+
+  .tile-body {
+    position: relative;
+  }
+  .tile-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 34px;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    font-variation-settings: var(--display-max);
+    margin-bottom: 8px;
+  }
+  .tile-meta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.85;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tile-meta-dot {
+    width: 3px; height: 3px;
+    background: currentColor;
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+
+  .tile-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 90px;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    font-variation-settings: var(--display-max);
+    color: rgba(255,255,255,0.10);
+    pointer-events: none;
+  }
+
+  /* ============ LIBRARY (small tiles at bottom) ============ */
+  .library-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 30px;
+  }
+  .lib-tile {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 12px;
+    text-align: left;
+    transition: background 0.15s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100px;
+  }
+  .lib-tile:active { background: var(--bg-elev2); }
+  .lib-tile-count {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--rust);
+    letter-spacing: -0.03em;
+    font-variation-settings: var(--display-strong);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+  .lib-tile-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* ============ JOURNEY INDICATOR ============ */
+  .journey {
+    margin-top: 12px;
+    padding: 16px 4px 20px;
+    border-top: 1px solid var(--line);
+  }
+  .journey-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .journey-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    margin: 0 8px;
+  }
+  .journey-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    z-index: 2;
+    flex: 0 0 auto;
+  }
+  .journey-dot {
+    width: 8px; height: 8px;
+    background: var(--line-strong);
+    border-radius: 50%;
+    transition: all 0.3s;
+  }
+  .journey-node.active .journey-dot {
+    width: 12px; height: 12px;
+    background: var(--rust);
+    box-shadow: 0 0 12px var(--rust-glow);
+  }
+  .journey-node.summit .journey-dot {
+    width: 0; height: 0;
+    background: transparent;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 10px solid var(--ink-faint);
+    border-radius: 0;
+  }
+  .journey-node.summit.active .journey-dot {
+    border-bottom-color: var(--rust);
+  }
+  .journey-node-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+  .journey-node.active .journey-node-label { color: var(--rust); }
+  .journey-track {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    height: 1px;
+    background: var(--line-strong);
+    z-index: 1;
+  }
+  .journey-track-fill {
+    height: 100%;
+    background: var(--rust);
+    opacity: 0.5;
+  }
+
+  /* ============ PREVIEW ============ */
+  .preview-hero {
+    padding: 20px 0 24px;
+  }
+  .preview-focus-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 100px;
+    margin-bottom: 14px;
+  }
+  .preview-focus-tag.cardio { background: var(--rust-deep); color: var(--rust); }
+  .preview-focus-tag.renfo { background: var(--pine-deep); color: var(--pine); }
+  .preview-focus-tag.bonus { background: var(--amber-deep); color: var(--amber); }
+  .preview-focus-tag.stretching { background: var(--indigo-deep); color: var(--indigo); }
+
+  .preview-title {
+    font-family: var(--font-display);
+    font-size: 58px;
+    font-weight: 900;
+    line-height: 0.88;
+    letter-spacing: -0.055em;
+    margin-bottom: 16px;
+    font-variation-settings: var(--display-max);
+  }
+  .preview-intro-short {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 22px;
+    max-width: 480px;
+  }
+
+  .preview-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .preview-metric {
+    background: var(--bg-elev);
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .preview-metric-val {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    font-variation-settings: var(--display-strong);
+  }
+  .preview-metric-val .unit {
+    font-size: 14px;
+    color: var(--ink-faint);
+  }
+  .preview-metric-lbl {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-faint);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  /* Target box for cardio (highlighted) */
+  .target-box {
+    background: linear-gradient(155deg, var(--rust-deep) 0%, #4A1608 100%);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .target-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(155deg, rgba(255,255,255,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .target-box-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--rust);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .target-box-metrics {
+    display: flex;
+    gap: 16px;
+  }
+  .target-box-metric {
+    flex: 1;
+  }
+  .target-box-val {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--paper);
+    letter-spacing: -0.035em;
+    font-variation-settings: var(--display-strong);
+    line-height: 1;
+  }
+  .target-box-val .unit {
+    font-size: 12px;
+    opacity: 0.7;
+  }
+  .target-box-lbl {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--paper);
+    opacity: 0.7;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+
+  /* Plan (timeline visual) */
+  .plan-block {
+    margin-bottom: 30px;
+  }
+  .plan-section {
+    margin-bottom: 12px;
+  }
+  .plan-section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .plan-section-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .plan-section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+  .plan-items {
+    background: var(--bg-elev);
+    border-radius: 10px;
+    padding: 4px 0;
+  }
+  .plan-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 13.5px;
+  }
+  .plan-item:last-child { border-bottom: none; }
+  .plan-item-name { color: var(--ink); }
+  .plan-item-time {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Big CTA button */
+  .cta-btn {
+    width: 100%;
+    padding: 22px;
+    background: var(--rust);
+    color: var(--paper);
+    border-radius: 16px;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    margin-bottom: 12px;
+    font-variation-settings: var(--display-strong);
+    box-shadow: 0 12px 40px -12px var(--rust-glow);
+    transition: transform 0.1s;
+  }
+  .cta-btn:active { transform: scale(0.98); background: var(--rust-tile); }
+
+  .cta-btn.secondary {
+    background: var(--bg-elev);
+    color: var(--ink);
+    box-shadow: none;
+    border: 1px solid var(--line-strong);
+  }
+
+  /* ============ CARDIO CHOICE ============ */
+  .choice-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .choice-card {
+    padding: 28px 24px;
+    border-radius: 20px;
+    text-align: left;
+    width: 100%;
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.12s;
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .choice-card:active { transform: scale(0.985); }
+  .choice-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(155deg, rgba(255,255,255,0.08) 0%, transparent 40%, rgba(0,0,0,0.15) 100%);
+    pointer-events: none;
+  }
+  .choice-card.velo {
+    background: var(--indigo-tile);
+    box-shadow: 0 12px 40px -12px var(--indigo-glow);
+  }
+  .choice-card.course {
+    background: var(--rust-tile);
+    box-shadow: 0 12px 40px -12px var(--rust-glow);
+  }
+  .choice-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .choice-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    opacity: 0.75;
+  }
+  .choice-name {
+    font-family: var(--font-display);
+    font-size: 46px;
+    font-weight: 900;
+    letter-spacing: -0.045em;
+    line-height: 0.9;
+    font-variation-settings: var(--display-max);
+    margin-bottom: 4px;
+  }
+  .choice-target {
+    display: flex;
+    gap: 18px;
+    margin-top: 20px;
+  }
+  .choice-target-item {
+    display: flex;
+    flex-direction: column;
+  }
+  .choice-target-val {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    font-variation-settings: var(--display-strong);
+    line-height: 1;
+  }
+  .choice-target-val .unit { font-size: 11px; opacity: 0.7; }
+  .choice-target-lbl {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    opacity: 0.7;
+    margin-top: 3px;
+  }
+
+  /* ============ RUNNING VIEW ============ */
+  .running-view {
+    padding-top: calc(12px + var(--safe-top));
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  .running-view.warmup { background: linear-gradient(180deg, var(--amber-deep) 0%, var(--bg) 40%); }
+  .running-view.exercise { background: linear-gradient(180deg, var(--rust-deep) 0%, var(--bg) 40%); }
+  .running-view.rest { background: linear-gradient(180deg, var(--pine-deep) 0%, var(--bg) 40%); }
+  .running-view.endurance { background: linear-gradient(180deg, var(--indigo-deep) 0%, var(--bg) 40%); }
+
+  .run-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+  }
+  .run-quit, .run-pause {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 700;
+    padding: 8px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--line);
+  }
+  .run-pause {
+    background: var(--bg-elev);
+    color: var(--ink);
+  }
+  .run-pause.paused {
+    background: var(--amber-deep);
+    color: var(--amber);
+    border-color: var(--amber);
+  }
+  .run-total {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .run-progress {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 40px;
+    height: 3px;
+  }
+  .run-progress-slot {
+    flex: 1;
+    background: var(--line);
+    border-radius: 2px;
+  }
+  .run-progress-slot.done { background: var(--rust); }
+  .run-progress-slot.current { background: var(--paper); }
+
+  .run-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .run-step-context {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .run-step-name {
+    font-family: var(--font-display);
+    font-size: 62px;
+    font-weight: 900;
+    line-height: 0.88;
+    letter-spacing: -0.055em;
+    text-align: center;
+    margin-bottom: 8px;
+    font-variation-settings: var(--display-max);
+    color: var(--paper);
+  }
+  .run-step-sub {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: 0.06em;
+  }
+
+  .run-timer {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .run-timer-value {
+    font-family: var(--font-display);
+    font-size: 140px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.075em;
+    font-variation-settings: var(--display-max);
+    font-variant-numeric: tabular-nums;
+    color: var(--paper);
+  }
+  .run-timer.rest .run-timer-value { color: var(--pine); }
+  .run-timer.warmup .run-timer-value { color: var(--amber); }
+
+  .run-timer-bar {
+    width: 100%;
+    max-width: 260px;
+    height: 3px;
+    background: var(--line);
+    border-radius: 2px;
+    margin: 20px auto 0;
+    overflow: hidden;
+  }
+  .run-timer-bar-fill {
+    height: 100%;
+    background: var(--paper);
+    transition: width 0.3s linear;
+  }
+  .run-timer.rest .run-timer-bar-fill { background: var(--pine); }
+  .run-timer.warmup .run-timer-bar-fill { background: var(--amber); }
+
+  .run-cues {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+  }
+  .run-cues-list {
+    list-style: none;
+    padding: 0;
+  }
+  .run-cues-list li {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .run-cues-list li:last-child { margin-bottom: 0; }
+  .run-cues-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 8px;
+    height: 2px;
+    background: var(--rust);
+    border-radius: 1px;
+  }
+
+  .run-next {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .run-next span { color: var(--ink-soft); }
+
+  .run-action-btn {
+    width: 100%;
+    padding: 22px;
+    background: var(--paper);
+    color: var(--bg);
+    border-radius: 16px;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    margin-bottom: 12px;
+    font-variation-settings: var(--display-strong);
+  }
+  .run-action-btn:active { background: var(--rust); color: var(--paper); }
+  .run-action-btn.done { background: var(--rust); color: var(--paper); box-shadow: 0 12px 40px -12px var(--rust-glow); }
+  .run-action-btn.skip {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--line-strong);
+    padding: 14px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-variation-settings: normal;
+  }
+
+  /* ============ CARDIO STATS ============ */
+  .stats-view {
+    padding-top: 30px;
+  }
+  .stats-title {
+    font-family: var(--font-display);
+    font-size: 54px;
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.055em;
+    margin-bottom: 8px;
+    font-variation-settings: var(--display-max);
+  }
+  .stats-sub {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    margin-bottom: 30px;
+    letter-spacing: 0.06em;
+  }
+  .stats-input-group {
+    margin-bottom: 16px;
+  }
+  .stats-input-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .stats-input-label .target { color: var(--rust); }
+  .stats-input {
+    width: 100%;
+    padding: 20px 22px;
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    font-variation-settings: var(--display-strong);
+  }
+  .stats-input:focus {
+    outline: none;
+    border-color: var(--rust);
+    background: var(--bg-elev2);
+  }
+
+  .stats-verdict {
+    padding: 22px 24px;
+    border-radius: 16px;
+    margin: 24px 0;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+  }
+  .stats-verdict::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(155deg, rgba(255,255,255,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .stats-verdict.above { background: var(--pine-tile); color: var(--paper); }
+  .stats-verdict.on-target { background: var(--amber-tile); color: var(--paper); }
+  .stats-verdict.below { background: var(--rust-tile); color: var(--paper); }
+  .stats-verdict-title {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    margin-bottom: 4px;
+    font-variation-settings: var(--display-strong);
+    line-height: 1;
+  }
+  .stats-verdict-desc {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.9;
+    line-height: 1.5;
+    margin-top: 8px;
+  }
+
+  /* ============ COMPLETE VIEW ============ */
+  .complete-view {
+    padding-top: 60px;
+    text-align: center;
+    min-height: calc(100vh - 100px);
+    min-height: calc(100dvh - 100px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .complete-mark {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--rust);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .complete-title {
+    font-family: var(--font-display);
+    font-size: 82px;
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -0.06em;
+    font-variation-settings: var(--display-max);
+    margin-bottom: 24px;
+  }
+  .complete-progress {
+    font-family: var(--font-display);
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--rust);
+    margin-bottom: 40px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.035em;
+    font-variation-settings: var(--display-strong);
+  }
+  .complete-arrow { color: var(--ink-faint); margin: 0 8px; }
+  .complete-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 8px;
+  }
+  .complete-actions button {
+    padding: 20px;
+    border-radius: 16px;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: -0.025em;
+    font-variation-settings: var(--display-strong);
+  }
+  .complete-actions .primary {
+    background: var(--pine);
+    color: var(--bg);
+    box-shadow: 0 12px 40px -12px var(--pine-glow);
+  }
+  .complete-actions .secondary {
+    background: var(--bg-elev);
+    border: 1px solid var(--line-strong);
+    color: var(--ink);
+  }
+
+  /* ============ LIST VIEW ============ */
+  .list-title {
+    font-family: var(--font-display);
+    font-size: 58px;
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.055em;
+    margin: 20px 0 8px;
+    font-variation-settings: var(--display-max);
+  }
+  .list-intro {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 26px;
+    line-height: 1.55;
+    max-width: 460px;
+  }
+  .list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .list-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    transition: background 0.15s;
+  }
+  .list-card:active { background: var(--bg-elev2); }
+  .list-card-body { flex: 1; padding-right: 12px; }
+  .list-card-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: -0.03em;
+    margin-bottom: 4px;
+    font-variation-settings: var(--display-strong);
+  }
+  .list-card-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+  .list-card-arrow {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--ink-faint);
+    font-weight: 900;
+    font-variation-settings: var(--display-strong);
+  }
+
+  /* ============ LEXIQUE DETAIL ============ */
+  .lex-cat {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--indigo);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 5px 12px;
+    background: var(--indigo-deep);
+    border-radius: 100px;
+    margin-bottom: 14px;
+  }
+  .lex-title {
+    font-family: var(--font-display);
+    font-size: 54px;
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.055em;
+    margin-bottom: 12px;
+    font-variation-settings: var(--display-max);
+  }
+  .lex-intro {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 26px;
+  }
+  .lex-section {
+    margin-bottom: 26px;
+  }
+  .lex-section-head {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .lex-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  .lex-section ul li {
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--ink);
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 6px;
+  }
+  .lex-section ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 8px;
+    height: 2px;
+    background: var(--indigo);
+    border-radius: 1px;
+  }
+  .lex-protocol {
+    background: var(--indigo-tile);
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-bottom: 26px;
+    position: relative;
+    overflow: hidden;
+  }
+  .lex-protocol::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(155deg, rgba(255,255,255,0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .lex-protocol .lex-section-head { color: rgba(245,241,234,0.7); margin-bottom: 8px; }
+  .lex-protocol-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -0.03em;
+    margin-bottom: 12px;
+    color: var(--paper);
+    font-variation-settings: var(--display-strong);
+  }
+  .lex-protocol p {
+    color: var(--paper);
+    font-size: 14.5px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .lex-protocol ul li {
+    color: var(--paper);
+    opacity: 0.85;
+  }
+  .lex-protocol ul li::before { background: var(--paper); opacity: 0.5; }
+
+  /* ============ ANIMATIONS ============ */
+  .view {
+    animation: fade-in 0.25s ease;
+  }
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  /* ============ DIALOG ============ */
+  .dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 9, 8, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .dialog-overlay.show { display: flex; }
+  .dialog {
+    background: var(--bg-elev);
+    border: 1px solid var(--line-strong);
+    border-radius: 20px;
+    padding: 26px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 20px 60px -12px rgba(0,0,0,0.6);
+  }
+  .dialog-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 28px;
+    letter-spacing: -0.035em;
+    margin-bottom: 8px;
+    font-variation-settings: var(--display-strong);
+    line-height: 1;
+  }
+  .dialog-text {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+  .dialog-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .dialog-actions button {
+    flex: 1;
+    padding: 14px;
+    border-radius: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .dialog-actions .primary { background: var(--rust); color: var(--paper); }
+  .dialog-actions .cancel { background: var(--bg-elev2); color: var(--ink); border: 1px solid var(--line); }
+  .dialog-actions .destructive { background: var(--rust); color: var(--paper); }
+
+  .boxe-dialog textarea {
+    width: 100%;
+    padding: 16px 18px;
+    background: var(--bg-elev2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--ink);
+    min-height: 100px;
+    resize: vertical;
+    margin-bottom: 16px;
+  }
+  .boxe-dialog textarea:focus {
+    outline: none;
+    border-color: var(--rust);
+  }
+  .boxe-dialog textarea::placeholder { color: var(--ink-faint); }
+</style>
+</head>
+<body>
+
+<div class="app" id="app"></div>
+<div class="dialog-overlay" id="dialog"></div>
+
+<script>
+// ============================================================
+//  PHASE DETECTION
+// ============================================================
+function currentPhase() {
+  const now = new Date();
+  if (now < new Date(2026, 9, 1)) return 'phase-0';
+  if (now < new Date(2027, 1, 1)) return 'phase-1';
+  if (now < new Date(2027, 4, 1)) return 'phase-2';
+  return 'phase-3';
+}
+function phaseLabel(p) {
+  return { 'phase-0': 'Phase 0 · Reprise', 'phase-1': 'Phase 1 · Développement', 'phase-2': 'Phase 2 · Spécifique', 'phase-3': 'Phase 3 · Terrain' }[p] || p;
+}
+function phaseShort(p) {
+  return { 'phase-0': 'Ph.0', 'phase-1': 'Ph.1', 'phase-2': 'Ph.2', 'phase-3': 'Ph.3' }[p] || p;
+}
+
+// ============================================================
+//  CARDIO TARGETS
+// ============================================================
+const CARDIO_TARGETS = {
+  course: {
+    'phase-0': { duration: 45, km: 5.0, deniv: 50 },
+    'phase-1': { duration: 60, km: 7.5, deniv: 100 },
+    'phase-2': { duration: 90, km: 11.0, deniv: 200 },
+    'phase-3': { duration: 60, km: 8.0, deniv: 300 }
+  },
+  velo: {
+    'phase-0': { duration: 60, km: 18.0, deniv: 0 },
+    'phase-1': { duration: 90, km: 28.0, deniv: 0 },
+    'phase-2': { duration: 120, km: 40.0, deniv: 0 },
+    'phase-3': { duration: 45, km: 15.0, deniv: 0 }
+  }
+};
+
+function cardioTarget(type) { return CARDIO_TARGETS[type][currentPhase()]; }
+
+function buildCardioSession(type) {
+  const t = cardioTarget(type);
+  const isVelo = type === 'velo';
+  const durationSec = t.duration * 60;
+
+  const warmup = isVelo
+    ? { type: 'time', name: 'Échauffement', duration: 300, label: 'préparation',
+        cues: ['Résistance très faible', 'Cadence 80-90 tr/min', 'Monte progressivement le cardiaque'] }
+    : { type: 'time', name: 'Échauffement', duration: 300, label: 'échauffement',
+        cues: ['Marche rapide 2 min', 'Rotations chevilles + hanches', 'Montées de genoux légères'] };
+
+  const body = isVelo
+    ? { type: 'time', name: 'Vélo zone 2', duration: durationSec, label: 'endurance',
+        cues: ['Résistance moyenne', 'Cadence 80-90 tr/min', 'Conversation possible'] }
+    : { type: 'time', name: 'Course zone 2', duration: durationSec, label: 'endurance',
+        cues: ['Nez qui respire, conversation possible', 'Cadence ~170-180 pas/min', 'Trop lent = c\'est bien'] };
+
+  const cooldown = isVelo
+    ? { type: 'time', name: 'Retour au calme', duration: 180, label: 'récup',
+        cues: ['Résistance très faible', 'Cadence libre', 'Descente cardiaque progressive'] }
+    : { type: 'time', name: 'Retour au calme', duration: 180, label: 'récup',
+        cues: ['Décélération progressive', 'Respiration profonde', 'Marche pas courue'] };
+
+  return {
+    id: type,
+    focus: isVelo ? 'Cardio · Vélo' : 'Cardio · Course',
+    focusClass: 'cardio',
+    title: isVelo ? 'Vélo zone 2' : 'Course zone 2',
+    duration: `${t.duration + 8} min`,
+    durationMin: t.duration + 8,
+    target: t,
+    type: type,
+    intro: isVelo
+      ? 'Moteur aérobie sans casser les articulations. Zone 2 = tenable, conversation possible.'
+      : 'Le moteur qu\'on construit lentement. Zone 2 = conversation possible.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: warmup.name, t: '5 min' }] },
+      { head: 'Corps', items: [{ n: body.name, t: `${t.duration} min` }] },
+      { head: 'Récup', items: [{ n: cooldown.name, t: '3 min' }] }
+    ],
+    steps: [warmup, body, cooldown]
+  };
+}
+
+// ============================================================
+//  RENFO ROTATION (unchanged data, focusClass added)
+// ============================================================
+const RENFO_ROTATION = [
+  {
+    id: 'renfo-fondation', variant: 'A',
+    focus: 'Renfo · Force fondation', focusClass: 'renfo',
+    title: 'Force fondation',
+    duration: '45 min', durationMin: 45,
+    intro: 'Bases classiques : squats, pompes, tirages, planche. La séance de référence.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Mobilité + activation', t: '5 min' }] },
+      { head: 'Circuit 3 tours', items: [{ n: 'Squats', t: '15' }, { n: 'Pompes', t: '10' }, { n: 'Rowing', t: '12' }, { n: 'Planche', t: '45 s' }] },
+      { head: 'Finisher', items: [{ n: 'Step-ups', t: '3 × 10/jambe' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Mobilité générale', duration: 180, label: 'échauffement',
+        cues: ['Rotations cervicales, épaules, hanches', 'Cercles chevilles', 'Cat-cow 5 cycles'] },
+      { type: 'time', name: 'Activation', duration: 120, label: 'échauffement',
+        cues: ['10 squats à vide', '10 fentes alternées', '10 rotations bras'] },
+      { type: 'reps', name: 'Squats', reps: '15 reps', label: 'circuit — tour 1/3',
+        cues: ['Fesses vers l\'arrière', 'Sous parallèles', 'Dos droit'] },
+      { type: 'rest', duration: 15 },
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'circuit — tour 1/3',
+        cues: ['Corps en ligne', 'Descente 2 sec', 'Sur les genoux si besoin'] },
+      { type: 'rest', duration: 15 },
+      { type: 'reps', name: 'Rowing', reps: '12 reps', label: 'circuit — tour 1/3',
+        cues: ['Buste penché, dos droit', 'Coude près du corps', 'Rétracte l\'omoplate'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche', duration: 45, label: 'circuit — tour 1/3',
+        cues: ['Coudes sous épaules', 'Corps en ligne', 'Respire'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Squats', reps: '15 reps', label: 'circuit — tour 2/3',
+        cues: ['Contrôle la descente', 'Amplitude complète'] },
+      { type: 'rest', duration: 15 },
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'circuit — tour 2/3',
+        cues: ['Gainage permanent', 'Qualité'] },
+      { type: 'rest', duration: 15 },
+      { type: 'reps', name: 'Rowing', reps: '12 reps', label: 'circuit — tour 2/3',
+        cues: ['Rétracte à chaque rep', 'Ne balance pas'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche', duration: 45, label: 'circuit — tour 2/3',
+        cues: ['Tiens la forme', 'Respire'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Squats', reps: '15 reps', label: 'circuit — tour 3/3',
+        cues: ['Dernier tour', 'Termine fort'] },
+      { type: 'rest', duration: 15 },
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'circuit — tour 3/3',
+        cues: ['Amplitude', 'Tenir la forme'] },
+      { type: 'rest', duration: 15 },
+      { type: 'reps', name: 'Rowing', reps: '12 reps', label: 'circuit — tour 3/3',
+        cues: ['Rétracte fort', 'Dernière série'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche', duration: 45, label: 'circuit — tour 3/3',
+        cues: ['Termine solide'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'finisher — série 1/3',
+        cues: ['Marche haute', 'Pousse dans le talon', 'Extension complète'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'finisher — série 2/3',
+        cues: ['Contrôle la descente'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'finisher — série 3/3',
+        cues: ['Dernière série', 'Qualité'] }
+    ]
+  },
+  {
+    id: 'renfo-endurance', variant: 'B',
+    focus: 'Renfo · Endurance musculaire', focusClass: 'renfo',
+    title: 'Tempo lent',
+    duration: '45 min', durationMin: 45,
+    intro: 'Circuit long à tempo contrôlé. Endurance musculaire = tenir sous effort.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Mobilité dynamique', t: '5 min' }] },
+      { head: 'Circuit 4 tours', items: [{ n: 'Pompes lentes', t: '8 · 3s' }, { n: 'Squats lents', t: '12 · 3s' }, { n: 'Planche', t: '30 s' }, { n: 'Fentes', t: '8/jambe' }, { n: 'Superman', t: '15' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Mobilité dynamique', duration: 180, label: 'échauffement',
+        cues: ['Cat-cow, world\'s greatest stretch', 'Rotations tronc', 'Squats à vide'] },
+      { type: 'time', name: 'Activation', duration: 120, label: 'échauffement',
+        cues: ['5 pompes tempo normal', '10 fentes alternées', '10 rotations bras'] },
+      ...[1,2,3,4].flatMap(tour => [
+        { type: 'reps', name: 'Pompes lentes', reps: '8 reps · 3s descente', label: `circuit — tour ${tour}/4`,
+          cues: ['Descente 3 sec vraie', 'Pause 1 sec en bas', 'Pousse contrôlé'] },
+        { type: 'rest', duration: 20 },
+        { type: 'reps', name: 'Squats lents', reps: '12 reps · 3s descente', label: `circuit — tour ${tour}/4`,
+          cues: ['3 sec à descendre', 'Pause 1 sec en bas', 'Amplitude complète'] },
+        { type: 'rest', duration: 20 },
+        { type: 'time', name: 'Planche', duration: 30, label: `circuit — tour ${tour}/4`,
+          cues: ['Coudes sous épaules', 'Corps en ligne'] },
+        { type: 'rest', duration: 20 },
+        { type: 'reps', name: 'Fentes alternées', reps: '8 / jambe', label: `circuit — tour ${tour}/4`,
+          cues: ['Contrôle la descente', 'Genou avant aligné'] },
+        { type: 'rest', duration: 20 },
+        { type: 'reps', name: 'Superman', reps: '15 reps', label: `circuit — tour ${tour}/4`,
+          cues: ['À plat ventre', 'Décolle bras et jambes', 'Pause 1 sec en haut'] },
+        { type: 'rest', duration: tour < 4 ? 60 : 0 }
+      ])
+    ]
+  },
+  {
+    id: 'renfo-explosivite', variant: 'C',
+    focus: 'Renfo · Explosivité', focusClass: 'renfo',
+    title: 'Puissance',
+    duration: '40 min', durationMin: 40,
+    intro: 'Réactivité et puissance : squats sautés, burpees, pompes explosives.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Dynamique + activation', t: '5 min' }] },
+      { head: 'Circuit 3 tours', items: [{ n: 'Squats sautés', t: '10' }, { n: 'Pompes explo', t: '8' }, { n: 'Burpees', t: '10' }, { n: 'Mountain climbers', t: '20 s' }] },
+      { head: 'Finisher', items: [{ n: 'Planche', t: '3 × 30 s' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Mobilité dynamique', duration: 120, label: 'échauffement',
+        cues: ['Rotations articulaires', 'Squats à vide', 'Mobilité épaules'] },
+      { type: 'time', name: 'Activation cardio', duration: 90, label: 'échauffement',
+        cues: ['20 sec jumping jacks', '20 sec high knees', 'Répète 2 fois'] },
+      { type: 'time', name: 'Petits sauts', duration: 60, label: 'échauffement',
+        cues: ['Sur place, doux', 'Prépare les tendons'] },
+      ...[1,2,3].flatMap(tour => [
+        { type: 'reps', name: 'Squats sautés', reps: '10 reps', label: `circuit — tour ${tour}/3`,
+          cues: ['Squat complet', 'Explosif vers le haut', 'Amortis en squat'] },
+        { type: 'rest', duration: 25 },
+        { type: 'reps', name: 'Pompes explosives', reps: '8 reps', label: `circuit — tour ${tour}/3`,
+          cues: ['Descente 2 sec', 'Pousse explosif', 'Mains décollent'] },
+        { type: 'rest', duration: 25 },
+        { type: 'reps', name: 'Burpees', reps: '10 reps', label: `circuit — tour ${tour}/3`,
+          cues: ['Planche, pompe, saut', 'Rythme constant'] },
+        { type: 'rest', duration: 25 },
+        { type: 'time', name: 'Mountain climbers', duration: 20, label: `circuit — tour ${tour}/3`,
+          cues: ['Rythme max', 'Gainage actif'] },
+        { type: 'rest', duration: 60 }
+      ]),
+      { type: 'time', name: 'Planche', duration: 30, label: 'finisher — 1/3',
+        cues: ['Corps en ligne'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Planche', duration: 30, label: 'finisher — 2/3',
+        cues: ['Tenir la forme'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Planche', duration: 30, label: 'finisher — 3/3',
+        cues: ['Termine solide'] }
+    ]
+  },
+  {
+    id: 'renfo-posterieur', variant: 'D',
+    focus: 'Renfo · Chaîne postérieure', focusClass: 'renfo',
+    title: 'Dos & fessiers',
+    duration: '45 min', durationMin: 45,
+    intro: 'Dos, fessiers, ischios, antirotation — ce qui te porte sous le sac.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Activation postérieure', t: '5 min' }] },
+      { head: 'Circuit 3 tours', items: [{ n: 'Rowing lesté', t: '12' }, { n: 'Glute bridge', t: '15' }, { n: 'Pallof press', t: '10/c' }, { n: 'Superman', t: '12' }, { n: 'Dead bug', t: '15/c' }] },
+      { head: 'Finisher', items: [{ n: 'Planche latérale', t: '2 × 30/c' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Cat-cow', duration: 90, label: 'échauffement',
+        cues: ['À quatre pattes', 'Alterne dos rond / dos creux'] },
+      { type: 'time', name: 'Bird dog', duration: 90, label: 'échauffement',
+        cues: ['Quatre pattes stable', 'Bras + jambe opposés', '10 par côté'] },
+      { type: 'time', name: 'Activation fessiers', duration: 120, label: 'échauffement',
+        cues: ['15 glute bridges lents', '10 clam shells / côté'] },
+      ...[1,2,3].flatMap(tour => [
+        { type: 'reps', name: 'Rowing sac lesté', reps: '12 reps', label: `circuit — tour ${tour}/3`,
+          cues: ['Buste 45°', 'Rétracte l\'omoplate', 'Coude près du corps'] },
+        { type: 'rest', duration: 25 },
+        { type: 'reps', name: 'Glute bridge', reps: '15 reps', label: `circuit — tour ${tour}/3`,
+          cues: ['Pousse dans les talons', 'Contracte en haut'] },
+        { type: 'rest', duration: 25 },
+        { type: 'reps', name: 'Pallof press G', reps: '10 reps', label: `circuit — tour ${tour}/3`,
+          cues: ['Résiste à la rotation', 'Le tronc ne bouge pas'] },
+        { type: 'rest', duration: 15 },
+        { type: 'reps', name: 'Pallof press D', reps: '10 reps', label: `circuit — tour ${tour}/3`,
+          cues: ['Autre côté'] },
+        { type: 'rest', duration: 25 },
+        { type: 'reps', name: 'Superman', reps: '12 reps', label: `circuit — tour ${tour}/3`,
+          cues: ['Décolle bras et jambes', 'Pause 1 sec en haut'] },
+        { type: 'rest', duration: 25 },
+        { type: 'reps', name: 'Dead bug', reps: '15 / côté', label: `circuit — tour ${tour}/3`,
+          cues: ['Dos plaqué au sol', 'Contrôlé'] },
+        { type: 'rest', duration: 60 }
+      ]),
+      { type: 'time', name: 'Planche latérale G', duration: 30, label: 'finisher — 1/2',
+        cues: ['Coude sous épaule', 'Hanches hautes'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche latérale D', duration: 30, label: 'finisher — 1/2',
+        cues: ['Autre côté'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Planche latérale G', duration: 30, label: 'finisher — 2/2',
+        cues: ['Deuxième série'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche latérale D', duration: 30, label: 'finisher — 2/2',
+        cues: ['Dernière', 'Termine solide'] }
+    ]
+  }
+];
+
+function getWeekRenfoIdx() {
+  const ref = new Date(2026, 6, 27);
+  const now = new Date();
+  const diffDays = Math.floor((now - ref) / (1000 * 60 * 60 * 24));
+  const weekNum = Math.floor(diffDays / 7);
+  return ((weekNum % RENFO_ROTATION.length) + RENFO_ROTATION.length) % RENFO_ROTATION.length;
+}
+function getCurrentRenfo() { return RENFO_ROTATION[getWeekRenfoIdx()]; }
+
+// ============================================================
+//  BONUS (compact data)
+// ============================================================
+const BONUS = [
+  { id: 'bonus-jambes-power', focus: 'Bonus · Jambes', focusClass: 'bonus', title: 'Step-ups intensifs', duration: '20 min', durationMin: 20,
+    intro: 'Focus vertical pur : step-ups avec charge + excentrique.',
+    steps: [
+      { type: 'time', name: 'Échauffement', duration: 180, label: 'préparation', cues: ['Mobilité chevilles + hanches', '20 squats à vide', '10 fentes alternées'] },
+      { type: 'reps', name: 'Step-ups sac lesté', reps: '15 / jambe', label: 'bloc 1/4', cues: ['Sac ~5-10 kg', 'Marche haute', 'Pousse dans le talon'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Fentes marchées', reps: '12 / jambe', label: 'bloc 2/4', cues: ['Avancer en fentes', 'Genou arrière proche du sol'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Step-ups excentriques', reps: '10 / jambe', label: 'bloc 3/4', cues: ['Descente très lente 4 sec', 'Contrôle'] },
+      { type: 'rest', duration: 40 },
+      { type: 'time', name: 'Wall sit', duration: 60, label: 'bloc 4/4', cues: ['Cuisses parallèles', 'Respire calmement'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Mollets excentriques', duration: 45, label: 'finisher', cues: ['Descente lente 3 sec', 'Amplitude max'] }
+    ] },
+  { id: 'bonus-gainage', focus: 'Bonus · Tronc', focusClass: 'bonus', title: 'Gainage complet', duration: '20 min', durationMin: 20,
+    intro: 'Circuit varié : planches, anti-rotation, hollow, dead bugs.',
+    steps: [
+      { type: 'time', name: 'Cat-cow', duration: 60, label: 'échauffement', cues: ['À quatre pattes', 'Alterne'] },
+      { type: 'time', name: 'Planche', duration: 60, label: 'circuit 1', cues: ['Coudes sous épaules', 'Corps en ligne'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Planche latérale G', duration: 40, label: 'circuit 1', cues: ['Coude sous épaule', 'Hanches hautes'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche latérale D', duration: 40, label: 'circuit 1', cues: ['Hanches hautes'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Dead bug', reps: '15 / côté', label: 'circuit 2', cues: ['Dos plaqué', 'Bras + jambe opposés'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Bird dog', reps: '12 / côté', label: 'circuit 2', cues: ['Bras + jambe opposés à l\'horizontale'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Hollow hold', duration: 30, label: 'circuit 2', cues: ['Bas du dos plaqué', 'Bras et jambes décollés'] },
+      { type: 'rest', duration: 40 },
+      { type: 'time', name: 'Planche + rotation hanches', duration: 40, label: 'circuit 3', cues: ['Descend les hanches G puis D', 'Ne relâche pas'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Superman', reps: '15 reps', label: 'circuit 3', cues: ['Décolle bras et jambes'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Planche finale', duration: 45, label: 'finisher', cues: ['Vraiment finir', 'Qualité'] }
+    ] },
+  { id: 'bonus-haut', focus: 'Bonus · Haut du corps', focusClass: 'bonus', title: 'Tirage & pompes', duration: '20 min', durationMin: 20,
+    intro: 'Focus tirage et poussée : tractions, pompes, rowing.',
+    steps: [
+      { type: 'time', name: 'Mobilité épaules', duration: 180, label: 'échauffement', cues: ['Rotations, wall angels', 'Rétractions scapulaires'] },
+      { type: 'reps', name: 'Pompes classiques', reps: '10-15 reps', label: 'bloc 1', cues: ['Corps en ligne', 'Descente 2 sec'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Tractions ou négatives', reps: '5-8 reps', label: 'bloc 1', cues: ['Négatives descente 5 sec', 'Ou rowing élastique'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes déclinées', reps: '8-12 reps', label: 'bloc 2', cues: ['Pieds surélevés', 'Focus haut pecs et épaules'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Rowing haltère / sac', reps: '12 / bras', label: 'bloc 2', cues: ['Buste à 45°', 'Rétracte l\'omoplate'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes diamant', reps: '8-10 reps', label: 'bloc 3', cues: ['Mains en losange', 'Focus triceps'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Curl + développé', reps: '10 reps', label: 'bloc 3', cues: ['Curl bras, pousse au-dessus'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Dead hang', duration: 30, label: 'finisher', cues: ['Suspendu, épaules engagées'] }
+    ] },
+  { id: 'bonus-mobilite', focus: 'Bonus · Mobilité', focusClass: 'bonus', title: 'Hanches & chevilles', duration: '20 min', durationMin: 20,
+    intro: 'Hanches ouvertes pour les enjambées, chevilles mobiles pour les appuis.',
+    steps: [
+      { type: 'time', name: 'Cat-cow', duration: 90, label: 'ouverture', cues: ['À quatre pattes', 'Alterne dos rond / creux'] },
+      { type: 'time', name: 'Rotations hanches', duration: 90, label: 'ouverture', cues: ['Genou qui décrit un cercle', '45 sec par côté'] },
+      { type: 'time', name: 'Fente basse + rotation', duration: 90, label: 'hanches', cues: ['Fente basse profonde', 'Rotation buste'] },
+      { type: 'time', name: 'Grenouille (frog)', duration: 90, label: 'hanches', cues: ['Genoux écartés', 'Recule doucement'] },
+      { type: 'time', name: 'Pigeon G', duration: 90, label: 'hanches', cues: ['Jambe avant pliée', 'Descend le buste'] },
+      { type: 'time', name: 'Pigeon D', duration: 90, label: 'hanches', cues: ['Autre côté'] },
+      { type: 'time', name: 'Genoux au mur', duration: 90, label: 'chevilles', cues: ['Pied à 10 cm du mur', 'Touche sans lever le talon'] },
+      { type: 'time', name: 'Mollets contre mur', duration: 90, label: 'chevilles', cues: ['Talon planté', 'Avance la hanche'] },
+      { type: 'time', name: 'Squat profond tenu', duration: 90, label: 'intégration', cues: ['Coudes contre l\'intérieur des genoux', 'Respire'] },
+      { type: 'time', name: 'Enfant + torsion', duration: 90, label: 'récup', cues: ['Passe un bras sous l\'autre'] }
+    ] },
+  { id: 'bonus-hiit', focus: 'Bonus · Cardio', focusClass: 'bonus', title: 'HIIT court', duration: '20 min', durationMin: 20,
+    intro: 'Cardio explosif quand tu veux mettre du gaz.',
+    steps: [
+      { type: 'time', name: 'Échauffement', duration: 240, label: 'préparation', cues: ['Jumping jacks doux', 'Montées de genoux'] },
+      { type: 'time', name: 'Burpees', duration: 20, label: 'round 1 · 1/4', cues: ['Intensité max'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'Mountain climbers', duration: 20, label: 'round 1 · 2/4', cues: ['Rythme max', 'Genoux vers la poitrine'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'High knees', duration: 20, label: 'round 1 · 3/4', cues: ['Cadence max'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'Squats sautés', duration: 20, label: 'round 1 · 4/4', cues: ['Explosif'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Burpees', duration: 20, label: 'round 2 · 1/4', cues: ['Deuxième round'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'Mountain climbers', duration: 20, label: 'round 2 · 2/4', cues: ['Gainage actif'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'High knees', duration: 20, label: 'round 2 · 3/4', cues: ['Cadence max'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'Squats sautés', duration: 20, label: 'round 2 · 4/4', cues: ['Explosif'] },
+      { type: 'rest', duration: 90 },
+      { type: 'time', name: 'Finisher · Burpees', duration: 60, label: 'finisher', cues: ['1 minute', 'Vide le réservoir'] },
+      { type: 'time', name: 'Retour au calme', duration: 90, label: 'récup', cues: ['Marche', 'Respiration profonde'] }
+    ] },
+  { id: 'bonus-grip', focus: 'Bonus · Grip', focusClass: 'bonus', title: 'Farmer & suspension', duration: '20 min', durationMin: 20,
+    intro: 'Préhension pour les cordes fixes du Hörnli et le portage.',
+    steps: [
+      { type: 'time', name: 'Échauffement mains', duration: 120, label: 'préparation', cues: ['Rotations poignets', 'Étire les avant-bras'] },
+      { type: 'time', name: 'Dead hang', duration: 30, label: 'suspension 1/3', cues: ['Épaules engagées'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Dead hang', duration: 30, label: 'suspension 2/3', cues: ['Tiens plus longtemps'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Dead hang une main', duration: 15, label: 'suspension 3/3', cues: ['Alterne mains'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Farmer carry', reps: '40 mètres', label: 'portage 1/3', cues: ['Charge lourde par main', 'Épaules basses'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Farmer carry unilatéral', reps: '20m / bras', label: 'portage 2/3', cues: ['Anti-rotation'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Farmer carry lourd', reps: '40 mètres', label: 'portage 3/3', cues: ['La plus grosse charge tenable'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Serrage éponge/balle', duration: 45, label: 'finisher', cues: ['Serre fort 3 sec, relâche'] },
+      { type: 'time', name: 'Étirement avant-bras', duration: 90, label: 'récup', cues: ['Paumes au sol doigts vers toi'] }
+    ] },
+  { id: 'bonus-descente', focus: 'Bonus · Descente', focusClass: 'bonus', title: 'Excentrique jambes', duration: '20 min', durationMin: 20,
+    intro: 'Descente = où arrivent les accidents. Excentrique quadri + mollets.',
+    steps: [
+      { type: 'time', name: 'Mobilité genoux + chevilles', duration: 180, label: 'préparation', cues: ['Rotations, flexions', 'Petits squats'] },
+      { type: 'reps', name: 'Squats descente lente', reps: '10 reps', label: 'bloc 1', cues: ['Descente 4 sec', 'Montée normale'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Step-downs contrôlés', reps: '10 / jambe', label: 'bloc 1', cues: ['Descend contrôlé 3 sec'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Fentes descente lente', reps: '10 / jambe', label: 'bloc 2', cues: ['3 sec de descente'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Wall sit', duration: 60, label: 'bloc 2', cues: ['Endurance statique'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Mollets excentriques G', reps: '15 reps', label: 'bloc 3', cues: ['Descend en 3 sec', 'Sur une jambe si possible'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Mollets excentriques D', reps: '15 reps', label: 'bloc 3', cues: ['Autre jambe'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Étirement quadri debout', duration: 90, label: 'étirements', cues: ['Talon vers les fesses'] },
+      { type: 'time', name: 'Étirement mollets', duration: 90, label: 'étirements', cues: ['Talon planté, avance la hanche'] }
+    ] },
+  { id: 'bonus-respi', focus: 'Bonus · Mental', focusClass: 'bonus', title: 'Respi & visualisation', duration: '20 min', durationMin: 20,
+    intro: 'Cohérence cardiaque + box breathing + visualisation Cervin.',
+    steps: [
+      { type: 'time', name: 'Installation', duration: 60, label: 'préparation', cues: ['Assis droit ou allongé', 'Yeux fermés'] },
+      { type: 'time', name: 'Cohérence cardiaque', duration: 300, label: 'bloc 1', cues: ['5 sec inspire nez', '5 sec expire bouche', '6 respi / min'] },
+      { type: 'time', name: 'Transition', duration: 60, label: 'transition', cues: ['Respiration libre'] },
+      { type: 'time', name: 'Box breathing 4-4-4-4', duration: 300, label: 'bloc 2', cues: ['4 inspire · 4 pause · 4 expire · 4 pause', 'Rythme militaire'] },
+      { type: 'time', name: 'Transition', duration: 60, label: 'transition', cues: ['Retour à une respiration naturelle'] },
+      { type: 'time', name: 'Visualisation Cervin', duration: 420, label: 'bloc 3', cues: ['Vois-toi partir du Hörnli à 4h', 'Sens le froid', 'Sois calme sur les ressauts', 'Vois la désescalade nette'] },
+      { type: 'time', name: 'Ancrage', duration: 60, label: 'clôture', cues: ['Reviens ici et maintenant', 'Emporte le calme'] }
+    ] }
+];
+
+// ============================================================
+//  LEXIQUE
+// ============================================================
+const LEXIQUE = [
+  { id: 'coherence', cat: 'Respiration', title: 'Cohérence cardiaque',
+    intro: 'Synchronise le cœur et la respiration. Bascule en parasympathique, baisse cortisol, améliore focus.',
+    when: ['Le matin', 'À midi', 'Le soir avant de dormir', 'Avant une séance de sport'],
+    protocol: { title: 'Protocole 3-6-5', body: '3 fois par jour, 6 respirations par minute (5 sec inspire nez, 5 sec expire bouche), pendant 5 minutes.', details: ['Assis dos droit ou allongé', '30 cycles = 5 minutes', 'Effet 3-4h, cumulatif si régulier', 'Yeux fermés ou regard doux'] } },
+  { id: 'box-breathing', cat: 'Respiration', title: 'Box breathing (4-4-4-4)',
+    intro: 'Technique militaire pour rester calme sous pression. Avant un effort engagé ou pour reprendre le contrôle.',
+    when: ['Avant les ressauts exposés', 'Avant un round de boxe difficile', 'En cas de pic de stress', 'Pour préparer un effort intense'],
+    protocol: { title: 'Le carré du souffle', body: '4 sec inspire · 4 sec pause poumons pleins · 4 sec expire · 4 sec pause poumons vides. 4 à 8 cycles.', details: ['Reste calme dans les pauses', 'Nasal si possible', 'Peut se pratiquer debout en marchant', 'Progression : 5-5-5-5 puis 6-6-6-6'] } },
+  { id: 'wim-hof', cat: 'Respiration', title: 'Méthode Wim Hof',
+    intro: 'Hyperventilation contrôlée + apnée. Tolérance CO2, immunité, préparation au froid. Jamais dans l\'eau.',
+    when: ['Le matin à jeun', 'Avant un défi mental', 'Avant douche/bain froid', 'Pas avant de dormir'],
+    protocol: { title: 'Cycle complet', body: '30 respirations rapides profondes puis apnée poumons vides jusqu\'au signal, puis inspire pleine + rétention 15 sec. 3 tours.', details: ['Jamais dans l\'eau ni au volant', 'Note tes temps d\'apnée', 'Après le 3ᵉ tour, respiration normale', '10-15 minutes total'] } },
+  { id: 'apnee-statique', cat: 'Apnée', title: 'Apnée statique',
+    intro: 'Tenir sa respiration au repos. Tolérance CO2, calme mental.',
+    when: ['Le soir avant de dormir', 'Après une séance', 'Jamais dans l\'eau seul, jamais debout'],
+    protocol: { title: 'Table CO2', body: '8 apnées avec repos qui diminuent : repos 2:00, apnée 1:00 ; repos 1:45, apnée 1:00 ; … jusqu\'à repos 0:15.', details: ['Allongé confortable', 'Bouche fermée, doigts pincent le nez', 'Adapte la durée à ton niveau', 'Progresse toutes les 2 semaines'] } },
+  { id: 'apnee-dynamique', cat: 'Apnée', title: 'Apnée dynamique',
+    intro: 'Marcher en apnée. Entraînement mental pour l\'altitude.',
+    when: ['En complément d\'une séance cardio', 'À l\'échauffement', 'Jamais dans l\'eau seul'],
+    protocol: { title: 'Marche en apnée', body: 'Inspire pleine, retiens, marche jusqu\'à l\'envie de respirer, 5 respirations, recommence. 5-10 tours.', details: ['Progression : 20 → 30 → 40 → 50 pas', 'Ne force jamais au-delà du besoin', 'Toujours en sécurité', 'Note tes progrès'] } },
+  { id: 'douche-froide', cat: 'Froid', title: 'Douche froide',
+    intro: 'Le déclencheur d\'inconfort volontaire le plus simple. Dopamine, mental, réduit inflammation.',
+    when: ['Chaque matin', 'Après séance de sport', 'Fin de la douche chaude'],
+    protocol: { title: 'Progressif sur 4 semaines', body: 'S1 : 30 sec. S2 : 1 min. S3 : 1:30. S4+ : 2-3 min. Respire calmement.', details: ['Le plus froid possible', 'Respire par le nez, lente et profonde', 'Le choc dure ~10 sec', 'Termine par la nuque et le visage'] } },
+  { id: 'bain-froid', cat: 'Froid', title: 'Bain froid',
+    intro: 'Immersion complète. Anti-inflammatoire puissant, boost mental énorme.',
+    when: ['Post-séance intense', '1 fois par semaine max', 'Jamais seul en eau naturelle'],
+    protocol: { title: 'Immersion contrôlée', body: 'Eau à 10-15°C. 3 à 5 minutes max. Immersion jusqu\'à la nuque, pas la tête.', details: ['Entre lentement', 'Respiration lente (box breathing)', 'Sortir avant le tremblement', 'Réchauffe-toi passivement'] } },
+  { id: 'meditation', cat: 'Mental', title: 'Méditation body scan',
+    intro: 'Ancre l\'attention dans le corps. Écoute des signaux, capacité à rester présent.',
+    when: ['Le soir avant de dormir', 'Le matin', 'Après une séance'],
+    protocol: { title: 'Scan pieds → tête', body: '10 à 20 min. Balaye l\'attention lentement des orteils au sommet du crâne, en notant les sensations.', details: ['Pas de but, juste observer', 'Si l\'esprit dérive, reviens au point corporel', 'Zones de tension : mâchoire, épaules, ventre', 'App : Insight Timer, Petit Bambou'] } },
+  { id: 'visualisation', cat: 'Mental', title: 'Visualisation Cervin',
+    intro: 'Répétition mentale de l\'itinéraire. Prépare le cerveau, ancre la lucidité.',
+    when: ['Le soir', 'Après une séance de respiration', 'De plus en plus fréquent à mesure que l\'échéance approche'],
+    protocol: { title: 'Le film mental', body: '5 à 15 min. Joue le film de l\'ascension complète : départ, arête, ressauts, sommet, descente. Calme et lucide.', details: ['Focus surtout sur la DESCENTE', 'Vois-toi calme dans les passages engagés', 'Sens le vent, le froid, la corde', 'Termine sur le retour au refuge'] } }
+];
+
+// ============================================================
+//  STRETCHING
+// ============================================================
+const STRETCHING = {
+  id: 'stretching', focusClass: 'stretching',
+  focus: 'Étirements',
+  title: 'Étirements complets',
+  duration: '10 min', durationMin: 10,
+  intro: 'Circuit post-séance. Prends ton temps, respire.',
+  steps: [
+    { type: 'time', name: 'Quadriceps G', duration: 30, label: 'jambes', cues: ['Debout, talon vers les fesses', 'Genoux côte à côte'] },
+    { type: 'time', name: 'Quadriceps D', duration: 30, label: 'jambes', cues: ['Autre côté'] },
+    { type: 'time', name: 'Ischios G', duration: 30, label: 'jambes', cues: ['Assis, jambe tendue', 'Buste vers le pied', 'Dos droit'] },
+    { type: 'time', name: 'Ischios D', duration: 30, label: 'jambes', cues: ['Autre côté'] },
+    { type: 'time', name: 'Pigeon G', duration: 45, label: 'hanches', cues: ['Genou avant plié', 'Buste vers l\'avant'] },
+    { type: 'time', name: 'Pigeon D', duration: 45, label: 'hanches', cues: ['Autre côté'] },
+    { type: 'time', name: 'Fléchisseurs G', duration: 30, label: 'hanches', cues: ['Fente basse, genou arrière au sol', 'Bassin vers l\'avant'] },
+    { type: 'time', name: 'Fléchisseurs D', duration: 30, label: 'hanches', cues: ['Autre côté'] },
+    { type: 'time', name: 'Mollets G', duration: 30, label: 'mollets', cues: ['Talon planté', 'Avance la hanche'] },
+    { type: 'time', name: 'Mollets D', duration: 30, label: 'mollets', cues: ['Autre côté'] },
+    { type: 'time', name: 'Twist allongé G', duration: 30, label: 'dos', cues: ['Genou ramené côté opposé', 'Épaules au sol'] },
+    { type: 'time', name: 'Twist allongé D', duration: 30, label: 'dos', cues: ['Autre côté'] },
+    { type: 'time', name: 'Cobra', duration: 40, label: 'dos', cues: ['Mains sous épaules', 'Pousse le buste'] },
+    { type: 'time', name: 'Enfant', duration: 60, label: 'récup', cues: ['Fesses sur les talons', 'Bras tendus'] },
+    { type: 'time', name: 'Cross-body G', duration: 20, label: 'épaules', cues: ['Bras en travers', 'Tire au coude'] },
+    { type: 'time', name: 'Cross-body D', duration: 20, label: 'épaules', cues: ['Autre côté'] },
+    { type: 'time', name: 'Pec G', duration: 30, label: 'épaules', cues: ['Avant-bras contre mur', 'Tourne à l\'opposé'] },
+    { type: 'time', name: 'Pec D', duration: 30, label: 'épaules', cues: ['Autre côté'] }
+  ]
+};
+
+// ============================================================
+//  STATE
+// ============================================================
+const STORAGE_KEY = 'shaolin-one-state-v2';
+
+const state = {
+  view: 'home',
+  sessionId: null,
+  sessionKind: null,
+  lexiqueId: null,
+  timer: { running: false, paused: false, stepIdx: 0, stepElapsed: 0, totalElapsed: 0, intervalId: null },
+  week: {
+    id: getWeekId(),
+    boxe: { done: false, note: '' },
+    cardio: { done: false, type: null, duration: null, km: null, deniv: null },
+    renfo: { done: false, variantId: null }
+  },
+  cardioHistory: [],
+  wakeLock: null,
+  audioCtx: null
+};
+
+function getWeekId() {
+  const d = new Date();
+  const year = d.getFullYear();
+  const start = new Date(year, 0, 1);
+  const diff = (d - start) / (1000 * 60 * 60 * 24);
+  const week = Math.ceil((diff + start.getDay() + 1) / 7);
+  return `${year}-W${week}`;
+}
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (saved.week && saved.week.id === state.week.id) Object.assign(state.week, saved.week);
+    state.cardioHistory = saved.cardioHistory || [];
+  } catch (e) {}
+}
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ week: state.week, cardioHistory: state.cardioHistory }));
+  } catch (e) {}
+}
+function countDone() {
+  let c = 0;
+  if (state.week.boxe.done) c++;
+  if (state.week.cardio.done) c++;
+  if (state.week.renfo.done) c++;
+  return c;
+}
+
+// ============================================================
+//  AUDIO + VIBRATION + WAKE LOCK
+// ============================================================
+function ensureAudio() {
+  if (!state.audioCtx) {
+    try { const AC = window.AudioContext || window.webkitAudioContext; if (AC) state.audioCtx = new AC(); } catch (e) {}
+  }
+  if (state.audioCtx && state.audioCtx.state === 'suspended') state.audioCtx.resume();
+}
+function beep(freq = 660, duration = 0.18) {
+  if (!state.audioCtx) return;
+  try {
+    const osc = state.audioCtx.createOscillator();
+    const gain = state.audioCtx.createGain();
+    osc.type = 'sine'; osc.frequency.value = freq;
+    gain.gain.value = 0.001;
+    osc.connect(gain); gain.connect(state.audioCtx.destination);
+    const now = state.audioCtx.currentTime;
+    osc.start(now);
+    gain.gain.exponentialRampToValueAtTime(0.3, now + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+    osc.stop(now + duration + 0.05);
+  } catch (e) {}
+}
+function vibrate(p) { if (navigator.vibrate) navigator.vibrate(p); }
+function signalTransition() { beep(660, 0.15); setTimeout(() => beep(880, 0.2), 180); vibrate([120, 60, 180]); }
+function signalCountdown() { beep(440, 0.08); vibrate(60); }
+function signalComplete() { beep(660, 0.15); setTimeout(() => beep(880, 0.15), 180); setTimeout(() => beep(1100, 0.3), 360); vibrate([200, 80, 200, 80, 400]); }
+async function requestWakeLock() {
+  if ('wakeLock' in navigator) { try { state.wakeLock = await navigator.wakeLock.request('screen'); } catch (e) {} }
+}
+function releaseWakeLock() { if (state.wakeLock) { state.wakeLock.release().catch(()=>{}); state.wakeLock = null; } }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && state.timer.running) requestWakeLock(); });
+
+// ============================================================
+//  TIMER
+// ============================================================
+function getCurrentSession() {
+  if (state.sessionKind === 'stretching') return STRETCHING;
+  if (state.sessionKind === 'bonus') return BONUS.find(b => b.id === state.sessionId);
+  if (state.sessionKind === 'cardio') return buildCardioSession(state.sessionId);
+  if (state.sessionKind === 'renfo') return RENFO_ROTATION.find(r => r.id === state.sessionId);
+  return null;
+}
+function activeSteps() { const s = getCurrentSession(); return s ? s.steps : []; }
+function currentStep() { return activeSteps()[state.timer.stepIdx]; }
+
+function startTimer() {
+  ensureAudio(); requestWakeLock();
+  state.timer.running = true; state.timer.paused = false;
+  state.timer.stepIdx = 0; state.timer.stepElapsed = 0; state.timer.totalElapsed = 0;
+  if (state.timer.intervalId) clearInterval(state.timer.intervalId);
+  state.timer.intervalId = setInterval(tick, 1000);
+  render();
+}
+function tick() {
+  if (!state.timer.running || state.timer.paused) return;
+  state.timer.totalElapsed += 1;
+  const step = currentStep();
+  if (!step) return;
+  if (step.type === 'time' || step.type === 'rest') {
+    state.timer.stepElapsed += 1;
+    const remaining = step.duration - state.timer.stepElapsed;
+    if (remaining <= 3 && remaining > 0) signalCountdown();
+    if (state.timer.stepElapsed >= step.duration) { advance(); return; }
+  }
+  updateTimerUI();
+}
+function togglePause() { state.timer.paused = !state.timer.paused; render(); }
+function advance() {
+  signalTransition();
+  state.timer.stepIdx += 1; state.timer.stepElapsed = 0;
+  if (state.timer.stepIdx >= activeSteps().length) { completeSession(); return; }
+  render();
+}
+function skipStep() {
+  state.timer.stepIdx += 1; state.timer.stepElapsed = 0;
+  if (state.timer.stepIdx >= activeSteps().length) { completeSession(); return; }
+  render();
+}
+function completeSession() {
+  if (state.timer.intervalId) clearInterval(state.timer.intervalId);
+  state.timer.intervalId = null; state.timer.running = false;
+  releaseWakeLock(); signalComplete();
+  if (state.sessionKind === 'cardio') { state.view = 'cardio-stats'; render(); return; }
+  if (state.sessionKind === 'renfo') {
+    state.week.renfo.done = true;
+    state.week.renfo.variantId = state.sessionId;
+    saveState();
+  }
+  state.view = 'complete';
+  render();
+}
+function quitSession() {
+  if (state.timer.intervalId) clearInterval(state.timer.intervalId);
+  state.timer.intervalId = null; state.timer.running = false; state.timer.paused = false;
+  releaseWakeLock();
+  state.view = 'home'; render();
+}
+
+// ============================================================
+//  DIALOG
+// ============================================================
+function showDialog(html) {
+  const el = document.getElementById('dialog');
+  el.innerHTML = `<div class="dialog">${html}</div>`;
+  el.classList.add('show');
+}
+function hideDialog() { document.getElementById('dialog').classList.remove('show'); }
+function confirmDialog(title, text, onConfirm, confirmLabel = 'Confirmer', destructive = false) {
+  showDialog(`
+    <div class="dialog-title">${title}</div>
+    <div class="dialog-text">${text}</div>
+    <div class="dialog-actions">
+      <button class="cancel" onclick="hideDialog()">Annuler</button>
+      <button class="${destructive ? 'destructive' : 'primary'}" id="dialog-confirm">${confirmLabel}</button>
+    </div>`);
+  setTimeout(() => {
+    const btn = document.getElementById('dialog-confirm');
+    if (btn) btn.addEventListener('click', () => { hideDialog(); onConfirm(); });
+  }, 0);
+}
+
+// ============================================================
+//  BOXE CHECK
+// ============================================================
+function openBoxeCheck() {
+  const done = state.week.boxe.done;
+  if (done) {
+    showDialog(`
+      <div class="dialog-title">Boxe · validée</div>
+      <div class="dialog-text">${state.week.boxe.note ? '« ' + state.week.boxe.note.replace(/</g, '&lt;') + ' »' : 'Pas d\'avis noté.'}</div>
+      <div class="dialog-actions">
+        <button class="cancel" onclick="hideDialog()">Fermer</button>
+        <button class="destructive" onclick="unmarkBoxe()">Retirer</button>
+      </div>`);
+  } else {
+    showDialog(`
+      <div class="dialog-title">Ta séance ?</div>
+      <div class="dialog-text">Un mot rapide sur comment ça s'est passé (optionnel).</div>
+      <div class="boxe-dialog">
+        <textarea id="boxe-note" placeholder="bonne séance, gros run, fatigué…" autofocus></textarea>
+      </div>
+      <div class="dialog-actions">
+        <button class="cancel" onclick="hideDialog()">Annuler</button>
+        <button class="primary" onclick="markBoxe()">Valider</button>
+      </div>`);
+    setTimeout(() => { const ta = document.getElementById('boxe-note'); if (ta) ta.focus(); }, 100);
+  }
+}
+function markBoxe() {
+  const noteEl = document.getElementById('boxe-note');
+  state.week.boxe.done = true;
+  state.week.boxe.note = noteEl ? noteEl.value.trim() : '';
+  saveState(); hideDialog(); render();
+}
+function unmarkBoxe() {
+  state.week.boxe.done = false; state.week.boxe.note = '';
+  saveState(); hideDialog(); render();
+}
+
+// ============================================================
+//  NAVIGATION
+// ============================================================
+function goto(view, opts = {}) {
+  if (state.timer.running && view !== 'running') {
+    confirmDialog('Séance en cours', 'Quitter la séance ? Elle ne sera pas validée.', () => {
+      quitSession();
+      Object.assign(state, opts);
+      state.view = view; render();
+    }, 'Quitter', true);
+    return;
+  }
+  Object.assign(state, opts);
+  state.view = view;
+  window.scrollTo({ top: 0 });
+  render();
+}
+function openCardioChoice() { state.view = 'cardio-choice'; window.scrollTo({top:0}); render(); }
+function openCardio(type) { state.sessionId = type; state.sessionKind = 'cardio'; state.view = 'preview'; window.scrollTo({top:0}); render(); }
+function openRenfo() { const r = getCurrentRenfo(); state.sessionId = r.id; state.sessionKind = 'renfo'; state.view = 'preview'; window.scrollTo({top:0}); render(); }
+function openBonus(id) { state.sessionId = id; state.sessionKind = 'bonus'; state.view = 'preview'; window.scrollTo({top:0}); render(); }
+function openStretching() { state.sessionId = null; state.sessionKind = 'stretching'; state.view = 'preview'; window.scrollTo({top:0}); render(); }
+function startCurrentSession() { state.view = 'running'; startTimer(); }
+
+// ============================================================
+//  CARDIO STATS
+// ============================================================
+function submitCardioStats() {
+  const type = state.sessionId;
+  const duration = parseFloat(document.getElementById('stats-duration').value) || 0;
+  const km = parseFloat(document.getElementById('stats-km').value) || 0;
+  const deniv = parseFloat(document.getElementById('stats-deniv').value) || 0;
+
+  state.week.cardio = { done: true, type, duration, km, deniv };
+  state.cardioHistory.push({ date: new Date().toISOString().slice(0,10), weekId: state.week.id, type, duration, km, deniv, phase: currentPhase() });
+  saveState();
+  state.view = 'complete';
+  render();
+}
+function computeVerdict(type, duration, km, deniv) {
+  const t = CARDIO_TARGETS[type][currentPhase()];
+  const durPct = (duration / t.duration) * 100;
+  const kmPct = (km / t.km) * 100;
+  const overall = (durPct + kmPct) / 2;
+  let cls, title, desc;
+  if (overall >= 100) { cls = 'above'; title = 'Au-dessus'; desc = `${Math.round(overall)}% de la cible · continue`; }
+  else if (overall >= 85) { cls = 'on-target'; title = 'Dans la cible'; desc = `${Math.round(overall)}% de la cible · tu progresses`; }
+  else { cls = 'below'; title = 'En-dessous'; desc = `${Math.round(overall)}% de la cible · c'est le début, ça vient`; }
+  return { cls, title, desc };
+}
+
+// ============================================================
+//  RENDER — HOME
+// ============================================================
+function renderHome() {
+  const done = countDone();
+  const target = 3;
+  const dots = Array.from({ length: target }, (_, i) => `<div class="hero-dot ${i < done ? 'done' : ''}"></div>`).join('');
+
+  const renfoVariant = getCurrentRenfo();
+  const cardio = state.week.cardio;
+  const boxe = state.week.boxe;
+  const renfo = state.week.renfo;
+
+  // Cardio tile
+  let cardioTile;
+  if (cardio.done) {
+    cardioTile = `
+      <button class="tile cardio done" onclick="goto('cardio-recap')">
+        <div class="tile-top">
+          <div class="tile-tag">Cardio · ${cardio.type === 'velo' ? 'Vélo' : 'Course'}</div>
+          <div class="tile-status done">Fait</div>
+        </div>
+        <div class="tile-body">
+          <div class="tile-title">${cardio.duration}′<span style="opacity:.6"> / ${cardio.km} km</span></div>
+          <div class="tile-meta">${cardio.deniv}m D+ <span class="tile-meta-dot"></span> voir détail</div>
+        </div>
+      </button>`;
+  } else {
+    const t = cardioTarget('course');
+    cardioTile = `
+      <button class="tile cardio" onclick="openCardioChoice()">
+        <div class="tile-top">
+          <div class="tile-tag">Cardio</div>
+          <div class="tile-badge">1</div>
+        </div>
+        <div class="tile-body">
+          <div class="tile-title">Vélo ou course</div>
+          <div class="tile-meta">Zone 2 <span class="tile-meta-dot"></span> au choix</div>
+        </div>
+      </button>`;
+  }
+
+  // Renfo tile
+  let renfoTile;
+  if (renfo.done) {
+    const doneVariant = RENFO_ROTATION.find(r => r.id === renfo.variantId) || renfoVariant;
+    renfoTile = `
+      <button class="tile renfo done" onclick="openRenfo()">
+        <div class="tile-top">
+          <div class="tile-tag">Renfo · ${doneVariant.variant}</div>
+          <div class="tile-status done">Fait</div>
+        </div>
+        <div class="tile-body">
+          <div class="tile-title">${doneVariant.title}</div>
+          <div class="tile-meta">Séance bouclée</div>
+        </div>
+      </button>`;
+  } else {
+    renfoTile = `
+      <button class="tile renfo" onclick="openRenfo()">
+        <div class="tile-top">
+          <div class="tile-tag">Renfo · Semaine ${renfoVariant.variant}</div>
+          <div class="tile-badge">${renfoVariant.variant}</div>
+        </div>
+        <div class="tile-body">
+          <div class="tile-title">${renfoVariant.title}</div>
+          <div class="tile-meta">${renfoVariant.duration} <span class="tile-meta-dot"></span> nouveau chaque semaine</div>
+        </div>
+      </button>`;
+  }
+
+  // Boxe tile
+  let boxeTile;
+  if (boxe.done) {
+    boxeTile = `
+      <button class="tile boxe done" onclick="openBoxeCheck()">
+        <div class="tile-top">
+          <div class="tile-tag">Combat</div>
+          <div class="tile-status done">Fait</div>
+        </div>
+        <div class="tile-body">
+          <div class="tile-title">Boxe</div>
+          <div class="tile-meta">${boxe.note ? '« ' + boxe.note.slice(0, 34) + (boxe.note.length > 34 ? '…' : '') + ' »' : 'Validée'}</div>
+        </div>
+      </button>`;
+  } else {
+    boxeTile = `
+      <button class="tile boxe" onclick="openBoxeCheck()">
+        <div class="tile-top">
+          <div class="tile-tag">Combat</div>
+        </div>
+        <div class="tile-body">
+          <div class="tile-title">Boxe</div>
+          <div class="tile-meta">Coche seule <span class="tile-meta-dot"></span> avec avis</div>
+        </div>
+      </button>`;
+  }
+
+  // Journey indicator
+  const phase = currentPhase();
+  const phaseIdx = { 'phase-0': 0, 'phase-1': 1, 'phase-2': 2, 'phase-3': 3 }[phase];
+  const journeyLabels = ['Ph. 0', 'Ph. 1', 'Ph. 2', 'Ph. 3', 'Cervin'];
+  const trackPct = (phaseIdx / 4) * 100;
+  const journeyNodes = journeyLabels.map((lbl, i) => {
+    const isSummit = i === 4;
+    const isActive = (i === phaseIdx) || (isSummit && phaseIdx === 4);
+    return `
+      <div class="journey-node ${isActive ? 'active' : ''} ${isSummit ? 'summit' : ''}">
+        <div class="journey-dot"></div>
+        <div class="journey-node-label">${lbl}</div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="view">
+      <header class="top-bar">
+        <div class="brand">Shaolin One<span class="brand-dot">.</span></div>
+        <div class="phase-chip">
+          <div class="phase-chip-dot"></div>
+          <div class="phase-chip-text">${phaseLabel(phase)}</div>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-label">Cette semaine</div>
+        <div class="hero-counter">
+          <div class="hero-num ${done === target ? 'complete' : ''}">${done}</div>
+          <div class="hero-denom">/${target}</div>
+        </div>
+        <div class="hero-caption">${done === target ? '· séances bouclées ·' : `${target - done} restante${target - done > 1 ? 's' : ''}`}</div>
+        <div class="hero-dots">${dots}</div>
+      </section>
+
+      <div class="tile-list">
+        ${cardioTile}
+        ${renfoTile}
+        ${boxeTile}
+      </div>
+
+      <div class="library-row">
+        <button class="lib-tile" onclick="goto('bonus-list')">
+          <div class="lib-tile-count">${BONUS.length}</div>
+          <div class="lib-tile-title">Bonus 20 min</div>
+        </button>
+        <button class="lib-tile" onclick="openStretching()">
+          <div class="lib-tile-count">10′</div>
+          <div class="lib-tile-title">Étirements</div>
+        </button>
+        <button class="lib-tile" onclick="goto('lexique-list')">
+          <div class="lib-tile-count">${LEXIQUE.length}</div>
+          <div class="lib-tile-title">Parasportif</div>
+        </button>
+      </div>
+
+      <div class="journey">
+        <div class="journey-label">Cervin · été 2027</div>
+        <div class="journey-line">
+          <div class="journey-track"><div class="journey-track-fill" style="width:${trackPct}%"></div></div>
+          ${journeyNodes}
+        </div>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — CARDIO CHOICE
+// ============================================================
+function renderCardioChoice() {
+  const tV = CARDIO_TARGETS.velo[currentPhase()];
+  const tC = CARDIO_TARGETS.course[currentPhase()];
+
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <div class="preview-hero">
+        <div class="preview-focus-tag cardio">Cardio · ${phaseLabel(currentPhase())}</div>
+        <h1 class="preview-title">Vélo ou course.</h1>
+        <p class="preview-intro-short">Choisis ta modalité. Cibles ajustées à la phase actuelle.</p>
+      </div>
+
+      <div class="choice-list">
+        <button class="choice-card velo" onclick="openCardio('velo')">
+          <div>
+            <div class="choice-head">
+              <div class="choice-tag">01</div>
+            </div>
+            <div class="choice-name">Vélo maison</div>
+          </div>
+          <div class="choice-target">
+            <div class="choice-target-item"><div class="choice-target-val">${tV.duration}<span class="unit"> min</span></div><div class="choice-target-lbl">Cible</div></div>
+            <div class="choice-target-item"><div class="choice-target-val">${tV.km}<span class="unit"> km</span></div><div class="choice-target-lbl">Distance</div></div>
+          </div>
+        </button>
+        <button class="choice-card course" onclick="openCardio('course')">
+          <div>
+            <div class="choice-head">
+              <div class="choice-tag">02</div>
+            </div>
+            <div class="choice-name">Course à pied</div>
+          </div>
+          <div class="choice-target">
+            <div class="choice-target-item"><div class="choice-target-val">${tC.duration}<span class="unit"> min</span></div><div class="choice-target-lbl">Cible</div></div>
+            <div class="choice-target-item"><div class="choice-target-val">${tC.km}<span class="unit"> km</span></div><div class="choice-target-lbl">Distance</div></div>
+            <div class="choice-target-item"><div class="choice-target-val">${tC.deniv}<span class="unit"> m</span></div><div class="choice-target-lbl">D+</div></div>
+          </div>
+        </button>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — PREVIEW
+// ============================================================
+function renderPreview() {
+  const s = getCurrentSession();
+  if (!s) return renderHome();
+
+  const nbSteps = s.steps.filter(x => x.type !== 'section').length;
+
+  let targetHTML = '';
+  if (state.sessionKind === 'cardio' && s.target) {
+    targetHTML = `
+      <div class="target-box">
+        <div class="target-box-label">Cible ${phaseLabel(currentPhase())}</div>
+        <div class="target-box-metrics">
+          <div class="target-box-metric">
+            <div class="target-box-val">${s.target.duration}<span class="unit"> min</span></div>
+            <div class="target-box-lbl">Durée</div>
+          </div>
+          <div class="target-box-metric">
+            <div class="target-box-val">${s.target.km}<span class="unit"> km</span></div>
+            <div class="target-box-lbl">Distance</div>
+          </div>
+          ${state.sessionId === 'course' ? `
+          <div class="target-box-metric">
+            <div class="target-box-val">${s.target.deniv}<span class="unit"> m</span></div>
+            <div class="target-box-lbl">D+</div>
+          </div>` : ''}
+        </div>
+      </div>`;
+  }
+
+  const planHTML = (s.plan || []).map(section => `
+    <div class="plan-section">
+      <div class="plan-section-head">
+        <div class="plan-section-tag">${section.head}</div>
+        <div class="plan-section-line"></div>
+      </div>
+      <div class="plan-items">
+        ${section.items.map(i => `<div class="plan-item"><div class="plan-item-name">${i.n}</div><div class="plan-item-time">${i.t}</div></div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <div class="preview-hero">
+        <div class="preview-focus-tag ${s.focusClass || 'bonus'}">${s.focus || 'Séance'}</div>
+        <h1 class="preview-title">${s.title}</h1>
+        ${s.intro ? `<p class="preview-intro-short">${s.intro}</p>` : ''}
+      </div>
+
+      <div class="preview-metrics">
+        <div class="preview-metric">
+          <div class="preview-metric-val">${s.durationMin}<span class="unit"> min</span></div>
+          <div class="preview-metric-lbl">Durée</div>
+        </div>
+        <div class="preview-metric">
+          <div class="preview-metric-val">${nbSteps}</div>
+          <div class="preview-metric-lbl">Étapes</div>
+        </div>
+        <div class="preview-metric">
+          <div class="preview-metric-val">${phaseShort(currentPhase())}</div>
+          <div class="preview-metric-lbl">Phase</div>
+        </div>
+      </div>
+
+      ${targetHTML}
+      ${planHTML ? `<div class="plan-block">${planHTML}</div>` : ''}
+
+      <button class="cta-btn" onclick="startCurrentSession()">Démarrer</button>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — RUNNING
+// ============================================================
+function renderRunning() {
+  const steps = activeSteps();
+  const step = currentStep();
+  if (!step) return renderComplete();
+
+  const totalMin = Math.floor(state.timer.totalElapsed / 60);
+  const totalSec = state.timer.totalElapsed % 60;
+  const totalStr = `${totalMin}:${String(totalSec).padStart(2, '0')}`;
+
+  const progressHTML = steps.map((_, i) => {
+    let cls = '';
+    if (i < state.timer.stepIdx) cls = 'done';
+    else if (i === state.timer.stepIdx) cls = 'current';
+    return `<div class="run-progress-slot ${cls}"></div>`;
+  }).join('');
+
+  // Determine tint based on step
+  let viewClass = 'exercise';
+  if (step.type === 'rest') viewClass = 'rest';
+  else if (step.label === 'échauffement' || step.label === 'préparation') viewClass = 'warmup';
+  else if (step.label === 'endurance') viewClass = 'endurance';
+
+  let timerHTML = '';
+  let actionHTML = '';
+  let stepNameHTML = '';
+  let stepSubHTML = '';
+  let contextHTML = '';
+
+  if (step.type === 'rest') {
+    const remaining = step.duration - state.timer.stepElapsed;
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const pct = Math.min(100, (state.timer.stepElapsed / step.duration) * 100);
+    contextHTML = `<div class="run-step-context">Repos</div>`;
+    stepNameHTML = `<div class="run-step-name">Récup</div>`;
+    const next = steps[state.timer.stepIdx + 1];
+    const nextName = next ? (next.name || 'Fin') : 'Fin';
+    stepSubHTML = `<div class="run-step-sub">Prochain · ${nextName}</div>`;
+    timerHTML = `
+      <div class="run-timer rest">
+        <div class="run-timer-value">${timeStr}</div>
+        <div class="run-timer-bar"><div class="run-timer-bar-fill" style="width:${pct}%"></div></div>
+      </div>`;
+    actionHTML = `<button class="run-action-btn skip" onclick="skipStep()">Passer le repos →</button>`;
+  }
+  else if (step.type === 'time') {
+    const remaining = step.duration - state.timer.stepElapsed;
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const pct = Math.min(100, (state.timer.stepElapsed / step.duration) * 100);
+    if (step.label) contextHTML = `<div class="run-step-context">${step.label}</div>`;
+    stepNameHTML = `<div class="run-step-name">${step.name}</div>`;
+    const cls = viewClass === 'warmup' ? 'warmup' : (viewClass === 'endurance' ? '' : '');
+    timerHTML = `
+      <div class="run-timer ${cls}">
+        <div class="run-timer-value">${timeStr}</div>
+        <div class="run-timer-bar"><div class="run-timer-bar-fill" style="width:${pct}%"></div></div>
+      </div>`;
+    actionHTML = `<button class="run-action-btn skip" onclick="skipStep()">Passer →</button>`;
+  }
+  else if (step.type === 'reps') {
+    if (step.label) contextHTML = `<div class="run-step-context">${step.label}</div>`;
+    stepNameHTML = `<div class="run-step-name">${step.name}</div>`;
+    stepSubHTML = `<div class="run-step-sub">${step.reps || ''}</div>`;
+    actionHTML = `<button class="run-action-btn done" onclick="advance()">✓ Fait</button>`;
+  }
+
+  let cuesHTML = '';
+  if (step.cues && step.cues.length) {
+    cuesHTML = `
+      <div class="run-cues">
+        <ul class="run-cues-list">
+          ${step.cues.map(c => `<li>${c}</li>`).join('')}
+        </ul>
+      </div>`;
+  }
+
+  let nextPreview = '';
+  if (step.type === 'reps') {
+    const next = steps[state.timer.stepIdx + 1];
+    if (next) {
+      const nextLabel = next.type === 'rest' ? `Repos ${next.duration}s` : (next.name + (next.reps ? ` · ${next.reps}` : ''));
+      nextPreview = `<div class="run-next">Prochain · <span>${nextLabel}</span></div>`;
+    }
+  }
+
+  return `
+    <div class="view running-view ${viewClass}">
+      <div class="run-top">
+        <button class="run-quit" onclick="askQuit()">← Quitter</button>
+        <div class="run-total">${totalStr}</div>
+        <button class="run-pause ${state.timer.paused ? 'paused' : ''}" onclick="togglePause()">
+          ${state.timer.paused ? '▶ Reprendre' : '⏸ Pause'}
+        </button>
+      </div>
+
+      <div class="run-progress">${progressHTML}</div>
+
+      <div class="run-content">
+        ${contextHTML}
+        ${stepNameHTML}
+        ${stepSubHTML}
+        ${timerHTML}
+        ${cuesHTML}
+        ${nextPreview}
+      </div>
+
+      ${actionHTML}
+    </div>`;
+}
+
+function askQuit() {
+  confirmDialog('Quitter la séance ?', 'La séance ne sera pas validée.', quitSession, 'Quitter', true);
+}
+
+function updateTimerUI() {
+  const step = currentStep();
+  if (!step) return;
+  if (step.type === 'time' || step.type === 'rest') {
+    const remaining = step.duration - state.timer.stepElapsed;
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const pct = Math.min(100, (state.timer.stepElapsed / step.duration) * 100);
+    const valEl = document.querySelector('.run-timer-value');
+    const fillEl = document.querySelector('.run-timer-bar-fill');
+    if (valEl) valEl.textContent = timeStr;
+    if (fillEl) fillEl.style.width = pct + '%';
+  }
+  const totalMin = Math.floor(state.timer.totalElapsed / 60);
+  const totalSec = state.timer.totalElapsed % 60;
+  const totalEl = document.querySelector('.run-total');
+  if (totalEl) totalEl.textContent = `${totalMin}:${String(totalSec).padStart(2, '0')}`;
+}
+
+// ============================================================
+//  RENDER — CARDIO STATS
+// ============================================================
+function renderCardioStats() {
+  const type = state.sessionId;
+  const target = CARDIO_TARGETS[type][currentPhase()];
+  const label = type === 'velo' ? 'Vélo maison' : 'Course à pied';
+
+  return `
+    <div class="view stats-view">
+      <div class="preview-focus-tag cardio">Terminé · ${label}</div>
+      <h1 class="stats-title">Tes chiffres.</h1>
+      <p class="stats-sub">Note-les pour voir où tu te situes sur la courbe.</p>
+
+      <div class="stats-input-group">
+        <div class="stats-input-label">
+          <span>Durée (min)</span>
+          <span class="target">Cible · ${target.duration}</span>
+        </div>
+        <input type="number" class="stats-input" id="stats-duration" inputmode="numeric" placeholder="${target.duration}">
+      </div>
+
+      <div class="stats-input-group">
+        <div class="stats-input-label">
+          <span>Distance (km)</span>
+          <span class="target">Cible · ${target.km}</span>
+        </div>
+        <input type="number" step="0.1" class="stats-input" id="stats-km" inputmode="decimal" placeholder="${target.km}">
+      </div>
+
+      ${type === 'course' ? `
+      <div class="stats-input-group">
+        <div class="stats-input-label">
+          <span>Dénivelé (m)</span>
+          <span class="target">Cible · ${target.deniv}</span>
+        </div>
+        <input type="number" class="stats-input" id="stats-deniv" inputmode="numeric" placeholder="${target.deniv}">
+      </div>` : `<input type="hidden" id="stats-deniv" value="0">`}
+
+      <button class="cta-btn" onclick="submitCardioStats()" style="margin-top:12px">Valider</button>
+      <button class="cta-btn secondary" onclick="goto('home')">Passer sans enregistrer</button>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — CARDIO RECAP
+// ============================================================
+function renderCardioRecap() {
+  const c = state.week.cardio;
+  const target = CARDIO_TARGETS[c.type][currentPhase()];
+  const v = computeVerdict(c.type, c.duration, c.km, c.deniv);
+  const label = c.type === 'velo' ? 'Vélo maison' : 'Course à pied';
+
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <div class="preview-hero">
+        <div class="preview-focus-tag cardio">Validée · ${label}</div>
+        <h1 class="preview-title">Cette semaine.</h1>
+      </div>
+
+      <div class="preview-metrics">
+        <div class="preview-metric">
+          <div class="preview-metric-val">${c.duration}<span class="unit"> min</span></div>
+          <div class="preview-metric-lbl">Durée · cible ${target.duration}</div>
+        </div>
+        <div class="preview-metric">
+          <div class="preview-metric-val">${c.km}<span class="unit"> km</span></div>
+          <div class="preview-metric-lbl">Km · cible ${target.km}</div>
+        </div>
+        ${c.type === 'course' ? `
+        <div class="preview-metric">
+          <div class="preview-metric-val">${c.deniv}<span class="unit"> m</span></div>
+          <div class="preview-metric-lbl">D+ · cible ${target.deniv}</div>
+        </div>` : `<div class="preview-metric"><div class="preview-metric-val">–</div><div class="preview-metric-lbl">D+</div></div>`}
+      </div>
+
+      <div class="stats-verdict ${v.cls}">
+        <div class="stats-verdict-title">${v.title}</div>
+        <div class="stats-verdict-desc">${v.desc}</div>
+      </div>
+
+      <button class="cta-btn secondary" onclick="editCardioStats()">Corriger les chiffres</button>
+    </div>`;
+}
+
+function editCardioStats() {
+  state.sessionId = state.week.cardio.type;
+  state.sessionKind = 'cardio';
+  state.view = 'cardio-stats';
+  state.week.cardio.done = false;
+  saveState();
+  render();
+  setTimeout(() => {
+    const dur = document.getElementById('stats-duration');
+    const km = document.getElementById('stats-km');
+    const den = document.getElementById('stats-deniv');
+    if (dur) dur.value = state.week.cardio.duration || '';
+    if (km) km.value = state.week.cardio.km || '';
+    if (den) den.value = state.week.cardio.deniv || '';
+  }, 30);
+}
+
+// ============================================================
+//  RENDER — COMPLETE
+// ============================================================
+function renderComplete() {
+  const kind = state.sessionKind;
+  const done = countDone();
+  const showCounter = kind === 'cardio' || kind === 'renfo';
+
+  let stats = '';
+  if (kind === 'cardio' && state.week.cardio.done) {
+    const c = state.week.cardio;
+    const v = computeVerdict(c.type, c.duration, c.km, c.deniv);
+    stats = `
+      <div class="stats-verdict ${v.cls}" style="margin: 0 8px 30px">
+        <div class="stats-verdict-title">${v.title}</div>
+        <div class="stats-verdict-desc">${v.desc}</div>
+      </div>`;
+  }
+
+  let progressHTML = '';
+  if (showCounter) {
+    progressHTML = `<div class="complete-progress">${done}<span class="complete-arrow">/</span>3</div>`;
+  }
+
+  return `
+    <div class="view complete-view">
+      <div class="complete-mark">Séance validée</div>
+      <div class="complete-title">Bien joué.</div>
+      ${progressHTML}
+      ${stats}
+      <div class="complete-actions">
+        ${kind !== 'stretching' ? `<button class="primary" onclick="openStretching()">Étirements post-séance</button>` : ''}
+        <button class="secondary" onclick="goto('home')">Retour à l'accueil</button>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — BONUS + LEXIQUE
+// ============================================================
+function renderBonusList() {
+  const itemsHTML = BONUS.map(b => `
+    <button class="list-card" onclick="openBonus('${b.id}')">
+      <div class="list-card-body">
+        <div class="list-card-title">${b.title}</div>
+        <div class="list-card-sub">${b.focus} · ${b.duration}</div>
+      </div>
+      <div class="list-card-arrow">→</div>
+    </button>`).join('');
+
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <h1 class="list-title">Bonus.</h1>
+      <p class="list-intro">Séances 20 min quand tu as la pêche. En plus du tronc principal.</p>
+      <div class="list-items">${itemsHTML}</div>
+    </div>`;
+}
+
+function renderLexiqueList() {
+  const itemsHTML = LEXIQUE.map(l => `
+    <button class="list-card" onclick="goto('lexique-detail', {lexiqueId: '${l.id}'})">
+      <div class="list-card-body">
+        <div class="list-card-title">${l.title}</div>
+        <div class="list-card-sub">${l.cat}</div>
+      </div>
+      <div class="list-card-arrow">→</div>
+    </button>`).join('');
+
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <h1 class="list-title">Parasportif.</h1>
+      <p class="list-intro">Le carburant qui fait tenir sur la longueur. Respi · apnée · froid · mental.</p>
+      <div class="list-items">${itemsHTML}</div>
+    </div>`;
+}
+
+function renderLexiqueDetail() {
+  const item = LEXIQUE.find(l => l.id === state.lexiqueId);
+  if (!item) return renderLexiqueList();
+
+  const whenHTML = item.when ? `
+    <div class="lex-section">
+      <div class="lex-section-head">Quand</div>
+      <ul>${item.when.map(w => `<li>${w}</li>`).join('')}</ul>
+    </div>` : '';
+
+  const protocolHTML = item.protocol ? `
+    <div class="lex-protocol">
+      <div class="lex-section-head">Protocole</div>
+      <div class="lex-protocol-title">${item.protocol.title}</div>
+      <p>${item.protocol.body}</p>
+      ${item.protocol.details ? `<ul>${item.protocol.details.map(d => `<li>${d}</li>`).join('')}</ul>` : ''}
+    </div>` : '';
+
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('lexique-list')">← Retour</button>
+      <div class="lex-cat">${item.cat}</div>
+      <h1 class="lex-title">${item.title}</h1>
+      <p class="lex-intro">${item.intro}</p>
+      ${whenHTML}
+      ${protocolHTML}
+    </div>`;
+}
+
+// ============================================================
+//  DISPATCH
+// ============================================================
+function render() {
+  const app = document.getElementById('app');
+  let html;
+  switch (state.view) {
+    case 'home': html = renderHome(); break;
+    case 'cardio-choice': html = renderCardioChoice(); break;
+    case 'cardio-stats': html = renderCardioStats(); break;
+    case 'cardio-recap': html = renderCardioRecap(); break;
+    case 'preview': html = renderPreview(); break;
+    case 'running': html = renderRunning(); break;
+    case 'complete': html = renderComplete(); break;
+    case 'bonus-list': html = renderBonusList(); break;
+    case 'lexique-list': html = renderLexiqueList(); break;
+    case 'lexique-detail': html = renderLexiqueDetail(); break;
+    default: html = renderHome();
+  }
+  app.innerHTML = html;
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+function init() {
+  loadState();
+  render();
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
