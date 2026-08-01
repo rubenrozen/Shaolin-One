@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v7 · Password auth
-const CACHE = 'shaolin-v7-cervin';
+// v9 · Password reset via resetPasswordForEmail
+const CACHE = 'shaolin-v9-cervin';
 const ASSETS = [
   './',
   './index.html',
