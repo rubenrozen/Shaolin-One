@@ -3352,6 +3352,10 @@ async function updatePasswordAndFinish() {
   try {
     const { error } = await sb.auth.updateUser({ password: newPassword });
     if (error) throw error;
+    // Clean URL hash so refreshing doesn't retrigger recovery flow
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
     state.loginMessage = null;
     state.view = 'reset-password-done';
     render();
@@ -3609,9 +3613,19 @@ async function init() {
   loadState();
   archiveIfNewWeek();
 
+  // Check if we're arriving via password recovery link BEFORE anything else
+  const hash = window.location.hash || '';
+  const search = window.location.search || '';
+  const isRecoveryLink = hash.includes('type=recovery') || search.includes('type=recovery');
+
   if (SUPABASE_ENABLED && sb) {
     await initAuth();
-    if (state.user) {
+
+    if (isRecoveryLink) {
+      // Force reset password form regardless of session state
+      state.view = 'reset-password-form';
+      render();
+    } else if (state.user) {
       // Show home immediately with local data, then pull remote in background
       render();
       await syncPull();
