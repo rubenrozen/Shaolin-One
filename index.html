@@ -1,0 +1,3480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Shaolin One">
+<title>Shaolin One · Cervin 2027</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:SOFT,WONK,opsz,wght,YOPQ@0..100,0..1,9..144,600..900,25..208&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --paper: #FAFAF7;
+    --paper-elev: #F2EFE9;
+    --paper-warm: #F9F5EC;
+    --ink: #0A0908;
+    --ink-soft: #55524D;
+    --ink-faint: #A19E97;
+    --line: rgba(10, 9, 8, 0.10);
+    --line-strong: rgba(10, 9, 8, 0.20);
+
+    --gold: #C9A44E;
+    --gold-light: #E4C77F;
+    --gold-deep: #8B6D2F;
+    --gold-bg: #FAF3E0;
+    --gold-glow: rgba(201, 164, 78, 0.5);
+    --gold-halo: rgba(201, 164, 78, 0.25);
+
+    /* Session accents kept for subtle differentiation */
+    --rust: #B23A1F;
+    --pine: #1F5234;
+    --indigo: #243757;
+
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+
+    --display-max: "opsz" 144, "SOFT" 0, "WONK" 0, "YOPQ" 208;
+    --display-strong: "opsz" 100, "SOFT" 0, "WONK" 0, "YOPQ" 180;
+
+    --safe-top: env(safe-area-inset-top, 0);
+    --safe-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  html { color-scheme: light; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+  }
+  body {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-bottom: calc(24px + var(--safe-bottom));
+  }
+
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  input, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    -webkit-appearance: none;
+  }
+
+  .app { max-width: 560px; margin: 0 auto; padding: 0 18px; }
+
+  /* ============ TOP BAR ============ */
+  .top-bar {
+    padding-top: calc(16px + var(--safe-top));
+    padding-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .brand {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: -0.035em;
+    font-variation-settings: var(--display-max);
+    color: var(--ink);
+  }
+  .brand-dot { color: var(--gold); }
+  .phase-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 10px;
+    background: var(--paper-elev);
+    border-radius: 100px;
+  }
+  .phase-chip-dot {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--gold-glow);
+    animation: pulse-dot 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.15); }
+  }
+  .phase-chip-text {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-soft);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .back-btn {
+    padding-top: calc(16px + var(--safe-top));
+    padding-bottom: 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .back-btn:active { color: var(--gold-deep); }
+
+  /* ============ HERO ============ */
+  .hero {
+    padding: 14px 0 22px;
+  }
+  .hero-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .hero-counter {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .hero-num {
+    font-family: var(--font-display);
+    font-size: 92px;
+    font-weight: 900;
+    font-variation-settings: var(--display-max);
+    letter-spacing: -0.055em;
+    line-height: 0.85;
+    color: var(--ink);
+  }
+  .hero-num.complete { color: var(--gold); }
+  .hero-denom {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 900;
+    font-variation-settings: var(--display-strong);
+    letter-spacing: -0.04em;
+    line-height: 0.85;
+    color: var(--ink-faint);
+  }
+  .hero-caption {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  /* ============ WEEKLY OVERVIEW (SEMAINIER) ============ */
+  .week-strip-wrap {
+    margin: 8px 0 24px;
+    padding: 14px 4px 12px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .week-strip-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 0 4px;
+  }
+  .week-strip-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+  }
+  .week-strip-hint {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-faint);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+  .week-strip {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+  }
+  .week-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    position: relative;
+    padding: 6px 0;
+    border-radius: 8px;
+  }
+  .week-cell.current { background: var(--paper-warm); }
+  .week-cell-dots {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    z-index: 2;
+  }
+  .week-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1.5px solid var(--line-strong);
+  }
+  .week-dot.done {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .week-cell.full {
+    position: relative;
+  }
+  .week-cell.full .week-dot {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 1px var(--gold-glow), 0 0 8px 2px var(--gold-halo);
+    animation: gold-radiate 3s ease-in-out infinite;
+  }
+  .week-cell.full::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 34px;
+    height: 34px;
+    background: radial-gradient(circle, var(--gold-halo) 0%, transparent 65%);
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+    animation: gold-pulse 3s ease-in-out infinite;
+  }
+  @keyframes gold-radiate {
+    0%, 100% { box-shadow: 0 0 0 1px var(--gold-glow), 0 0 8px 2px var(--gold-halo); }
+    50% { box-shadow: 0 0 0 2px var(--gold-glow), 0 0 14px 3px var(--gold-halo); }
+  }
+  @keyframes gold-pulse {
+    0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+  }
+  .week-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-faint);
+    letter-spacing: 0.02em;
+    font-weight: 600;
+    position: relative;
+    z-index: 2;
+  }
+  .week-cell.current .week-label { color: var(--ink); font-weight: 700; }
+  .week-cell.full .week-label { color: var(--gold-deep); font-weight: 700; }
+
+  /* ============ SECTION TITLE ============ */
+  .section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 12px;
+  }
+  .section-title-text {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+  }
+
+  /* ============ SESSION ROWS (minimalist tiles) ============ */
+  .session-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 26px;
+  }
+  .session-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    width: 100%;
+    text-align: left;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .session-row:active { transform: scale(0.99); background: var(--paper-elev); }
+  .session-row-marker {
+    width: 3px;
+    height: 42px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .session-row.cardio .session-row-marker { background: var(--rust); }
+  .session-row.renfo .session-row-marker { background: var(--pine); }
+  .session-row.boxe .session-row-marker { background: var(--indigo); }
+  .session-row.done { background: var(--gold-bg); border-color: var(--gold-light); }
+  .session-row.done .session-row-marker { background: var(--gold); }
+
+  .session-row-body { flex: 1; min-width: 0; }
+  .session-row-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .session-row.done .session-row-tag { color: var(--gold-deep); }
+  .session-row-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 21px;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    font-variation-settings: var(--display-strong);
+    margin-bottom: 2px;
+    color: var(--ink);
+  }
+  .session-row-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .session-row-status {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .session-row.done .session-row-status { color: var(--gold-deep); }
+  .session-row-arrow {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--ink-faint);
+    font-weight: 900;
+  }
+
+  /* ============ LIBRARY ============ */
+  .library-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+  .lib-tile {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 8px;
+    text-align: center;
+    transition: background 0.15s;
+  }
+  .lib-tile:active { background: var(--paper-elev); }
+  .lib-tile-count {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--gold-deep);
+    letter-spacing: -0.03em;
+    font-variation-settings: var(--display-strong);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .lib-tile-title {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* ============ JOURNEY ============ */
+  .journey {
+    margin-top: 16px;
+    padding: 16px 4px 8px;
+    border-top: 1px solid var(--line);
+  }
+  .journey-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .journey-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    margin: 0 12px;
+  }
+  .journey-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    z-index: 2;
+  }
+  .journey-dot {
+    width: 7px; height: 7px;
+    background: var(--line-strong);
+    border-radius: 50%;
+  }
+  .journey-node.active .journey-dot {
+    width: 10px; height: 10px;
+    background: var(--gold);
+    box-shadow: 0 0 10px var(--gold-glow);
+  }
+  .journey-node.summit .journey-dot {
+    width: 0; height: 0;
+    background: transparent;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 9px solid var(--ink-faint);
+    border-radius: 0;
+  }
+  .journey-node.summit.active .journey-dot { border-bottom-color: var(--gold); }
+  .journey-node-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink-faint);
+  }
+  .journey-node.active .journey-node-label { color: var(--gold-deep); }
+  .journey-track {
+    position: absolute;
+    top: 3px;
+    left: 4px;
+    right: 4px;
+    height: 1px;
+    background: var(--line);
+    z-index: 1;
+  }
+  .journey-track-fill {
+    height: 100%;
+    background: var(--gold);
+    opacity: 0.6;
+  }
+
+  /* ============ PREVIEW ============ */
+  .preview-hero { padding: 12px 0 20px; }
+  .preview-focus-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 100px;
+    margin-bottom: 12px;
+    background: var(--paper-elev);
+    color: var(--ink-soft);
+  }
+  .preview-focus-tag.cardio { background: rgba(178, 58, 31, 0.10); color: var(--rust); }
+  .preview-focus-tag.renfo { background: rgba(31, 82, 52, 0.10); color: var(--pine); }
+  .preview-focus-tag.bonus { background: var(--gold-bg); color: var(--gold-deep); }
+  .preview-focus-tag.stretching { background: rgba(36, 55, 87, 0.10); color: var(--indigo); }
+  .preview-title {
+    font-family: var(--font-display);
+    font-size: 38px;
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 12px;
+    font-variation-settings: var(--display-max);
+    color: var(--ink);
+  }
+  .preview-intro-short {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    max-width: 480px;
+  }
+  .preview-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .preview-metric {
+    background: var(--paper);
+    padding: 14px 12px;
+  }
+  .preview-metric-val {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    font-variation-settings: var(--display-strong);
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .preview-metric-val .unit { font-size: 12px; color: var(--ink-faint); font-weight: 700; }
+  .preview-metric-lbl {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-faint);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .target-box {
+    background: var(--gold-bg);
+    border: 1px solid var(--gold-light);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+  }
+  .target-box-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gold-deep);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .target-box-metrics { display: flex; gap: 16px; }
+  .target-box-metric { flex: 1; }
+  .target-box-val {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--gold-deep);
+    letter-spacing: -0.03em;
+    font-variation-settings: var(--display-strong);
+    line-height: 1;
+  }
+  .target-box-val .unit { font-size: 12px; opacity: 0.7; }
+  .target-box-lbl {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--gold-deep);
+    opacity: 0.8;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+
+  .plan-block { margin-bottom: 24px; }
+  .plan-section { margin-bottom: 10px; }
+  .plan-section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .plan-section-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-faint);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .plan-section-line { flex: 1; height: 1px; background: var(--line); }
+  .plan-items {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 3px 0;
+  }
+  .plan-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+  }
+  .plan-item:last-child { border-bottom: none; }
+  .plan-item-time {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  /* CTA */
+  .cta-btn {
+    width: 100%;
+    padding: 18px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 14px;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    margin-bottom: 10px;
+    font-variation-settings: var(--display-strong);
+    transition: transform 0.1s;
+  }
+  .cta-btn:active { transform: scale(0.98); }
+  .cta-btn.gold { background: var(--gold); color: var(--ink); }
+  .cta-btn.secondary { background: var(--paper); color: var(--ink); border: 1px solid var(--line-strong); }
+
+  /* ============ CARDIO CHOICE ============ */
+  .choice-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .choice-card {
+    padding: 22px 20px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    text-align: left;
+    width: 100%;
+    transition: background 0.15s, transform 0.1s;
+    position: relative;
+  }
+  .choice-card:active { transform: scale(0.99); background: var(--paper-elev); }
+  .choice-name {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    font-variation-settings: var(--display-max);
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .choice-target {
+    display: flex;
+    gap: 16px;
+  }
+  .choice-target-item {}
+  .choice-target-val {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    font-variation-settings: var(--display-strong);
+    line-height: 1;
+    color: var(--ink);
+  }
+  .choice-target-val .unit { font-size: 11px; color: var(--ink-faint); }
+  .choice-target-lbl {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--ink-faint);
+    margin-top: 3px;
+  }
+
+  /* ============ RUNNING VIEW ============ */
+  .running-view {
+    padding-top: calc(12px + var(--safe-top));
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  .run-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .run-quit, .run-pause {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--line);
+  }
+  .run-pause { background: var(--paper-elev); color: var(--ink); border: none; }
+  .run-pause.paused { background: var(--gold-bg); color: var(--gold-deep); }
+  .run-total {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .run-progress {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 32px;
+    height: 3px;
+  }
+  .run-progress-slot {
+    flex: 1;
+    background: var(--line);
+    border-radius: 2px;
+  }
+  .run-progress-slot.done { background: var(--gold); }
+  .run-progress-slot.current { background: var(--ink); }
+  .run-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .run-step-context {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .run-step-name {
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    text-align: center;
+    margin-bottom: 6px;
+    font-variation-settings: var(--display-max);
+    color: var(--ink);
+  }
+  .run-step-sub {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-soft);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 0.04em;
+  }
+  .run-timer { text-align: center; margin-bottom: 26px; }
+  .run-timer-value {
+    font-family: var(--font-display);
+    font-size: 100px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.065em;
+    font-variation-settings: var(--display-max);
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+  .run-timer.rest .run-timer-value { color: var(--pine); }
+  .run-timer.warmup .run-timer-value { color: var(--gold-deep); }
+  .run-timer-bar {
+    width: 100%;
+    max-width: 240px;
+    height: 3px;
+    background: var(--line);
+    border-radius: 2px;
+    margin: 16px auto 0;
+    overflow: hidden;
+  }
+  .run-timer-bar-fill {
+    height: 100%;
+    background: var(--ink);
+    transition: width 0.3s linear;
+  }
+  .run-timer.rest .run-timer-bar-fill { background: var(--pine); }
+  .run-timer.warmup .run-timer-bar-fill { background: var(--gold); }
+  .run-cues {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 22px;
+  }
+  .run-cues-list { list-style: none; padding: 0; }
+  .run-cues-list li {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  .run-cues-list li:last-child { margin-bottom: 0; }
+  .run-cues-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 8px;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 1px;
+  }
+  .run-next {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .run-next span { color: var(--ink-soft); }
+  .run-action-btn {
+    width: 100%;
+    padding: 20px;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 14px;
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    margin-bottom: 10px;
+    font-variation-settings: var(--display-strong);
+  }
+  .run-action-btn:active { background: var(--gold); color: var(--ink); }
+  .run-action-btn.done { background: var(--gold); color: var(--ink); }
+  .run-action-btn.skip {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--line-strong);
+    padding: 12px;
+    font-size: 11px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-variation-settings: normal;
+  }
+
+  /* ============ CARDIO STATS ============ */
+  .stats-view { padding-top: 20px; }
+  .stats-title {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    margin-bottom: 6px;
+    font-variation-settings: var(--display-max);
+  }
+  .stats-sub {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    margin-bottom: 24px;
+    letter-spacing: 0.04em;
+  }
+  .stats-input-group { margin-bottom: 14px; }
+  .stats-input-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .stats-input-label .target { color: var(--gold-deep); }
+  .stats-input {
+    width: 100%;
+    padding: 16px 18px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    font-variation-settings: var(--display-strong);
+  }
+  .stats-input:focus { outline: none; border-color: var(--gold); background: var(--gold-bg); }
+  .stats-verdict {
+    padding: 18px 20px;
+    border-radius: 14px;
+    margin: 20px 0;
+  }
+  .stats-verdict.above { background: rgba(31, 82, 52, 0.10); color: var(--pine); border: 1px solid rgba(31, 82, 52, 0.20); }
+  .stats-verdict.on-target { background: var(--gold-bg); color: var(--gold-deep); border: 1px solid var(--gold-light); }
+  .stats-verdict.below { background: rgba(178, 58, 31, 0.08); color: var(--rust); border: 1px solid rgba(178, 58, 31, 0.20); }
+  .stats-verdict-title {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin-bottom: 4px;
+    font-variation-settings: var(--display-strong);
+    line-height: 1;
+  }
+  .stats-verdict-desc {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.85;
+    margin-top: 6px;
+  }
+
+  /* ============ STATS PAGE (progression graphs) ============ */
+  .stats-page-title {
+    font-family: var(--font-display);
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    margin: 8px 0 6px;
+    font-variation-settings: var(--display-max);
+  }
+  .stats-page-sub {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    margin-bottom: 24px;
+    letter-spacing: 0.04em;
+  }
+  .stat-block {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .stat-block-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+  .stat-block-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    font-variation-settings: var(--display-strong);
+    color: var(--ink);
+  }
+  .stat-block-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-soft);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .stat-figures {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 14px;
+  }
+  .stat-figure {}
+  .stat-figure-val {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+    font-variation-settings: var(--display-strong);
+    line-height: 1;
+  }
+  .stat-figure-val .unit { font-size: 12px; color: var(--ink-faint); }
+  .stat-figure-lbl {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-faint);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .stat-chart {
+    width: 100%;
+    height: 100px;
+    display: block;
+    margin: 8px 0 6px;
+  }
+  .stat-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 6px;
+  }
+  .stat-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .stat-legend-mark {
+    width: 14px;
+    height: 2px;
+    border-radius: 1px;
+    background: var(--gold);
+  }
+  .stat-legend-mark.target {
+    background: repeating-linear-gradient(90deg, var(--ink-faint) 0 3px, transparent 3px 6px);
+  }
+  .stat-empty {
+    text-align: center;
+    padding: 24px 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ============ COMPLETE ============ */
+  .complete-view {
+    padding-top: 60px;
+    text-align: center;
+    min-height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .complete-mark {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gold-deep);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .complete-title {
+    font-family: var(--font-display);
+    font-size: 52px;
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    font-variation-settings: var(--display-max);
+    margin-bottom: 20px;
+    color: var(--ink);
+  }
+  .complete-progress {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 30px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
+    font-variation-settings: var(--display-strong);
+  }
+  .complete-arrow { color: var(--ink-faint); margin: 0 8px; }
+  .complete-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 8px;
+  }
+  .complete-actions button {
+    padding: 18px;
+    border-radius: 14px;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: -0.025em;
+    font-variation-settings: var(--display-strong);
+  }
+  .complete-actions .primary { background: var(--gold); color: var(--ink); }
+  .complete-actions .secondary { background: var(--paper); border: 1px solid var(--line-strong); color: var(--ink); }
+
+  /* ============ LIST VIEW ============ */
+  .list-title {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    margin: 12px 0 6px;
+    font-variation-settings: var(--display-max);
+  }
+  .list-intro {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+    line-height: 1.5;
+  }
+  .list-items { display: flex; flex-direction: column; gap: 6px; }
+  .list-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    transition: background 0.15s;
+  }
+  .list-card:active { background: var(--paper-elev); }
+  .list-card-body { flex: 1; padding-right: 10px; }
+  .list-card-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 17px;
+    letter-spacing: -0.025em;
+    margin-bottom: 3px;
+    font-variation-settings: var(--display-strong);
+    color: var(--ink);
+  }
+  .list-card-sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .list-card-arrow {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--ink-faint);
+    font-weight: 900;
+  }
+
+  /* ============ LEXIQUE DETAIL ============ */
+  .lex-cat {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--gold-deep);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 4px 10px;
+    background: var(--gold-bg);
+    border-radius: 100px;
+    margin-bottom: 12px;
+  }
+  .lex-title {
+    font-family: var(--font-display);
+    font-size: 38px;
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    margin-bottom: 10px;
+    font-variation-settings: var(--display-max);
+  }
+  .lex-intro {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin-bottom: 22px;
+  }
+  .lex-section { margin-bottom: 22px; }
+  .lex-section-head {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .lex-section ul { list-style: none; padding: 0; }
+  .lex-section ul li {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink);
+    padding-left: 18px;
+    position: relative;
+    margin-bottom: 5px;
+  }
+  .lex-section ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 8px;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 1px;
+  }
+  .lex-protocol {
+    background: var(--gold-bg);
+    border: 1px solid var(--gold-light);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 22px;
+  }
+  .lex-protocol .lex-section-head { color: var(--gold-deep); margin-bottom: 6px; }
+  .lex-protocol-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: -0.03em;
+    margin-bottom: 10px;
+    color: var(--gold-deep);
+    font-variation-settings: var(--display-strong);
+  }
+  .lex-protocol p {
+    color: var(--gold-deep);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .lex-protocol ul li { color: var(--gold-deep); }
+  .lex-protocol ul li::before { background: var(--gold); }
+
+  /* ============ ANIMATION ============ */
+  .view { animation: fade-in 0.22s ease; }
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ LOGIN SCREEN ============ */
+  .login-view {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px 20px;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+  .login-brand {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 28px;
+    letter-spacing: -0.035em;
+    font-variation-settings: var(--display-max);
+    color: var(--ink);
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .login-brand-dot { color: var(--gold); }
+  .login-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .login-title {
+    font-family: var(--font-display);
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    margin-bottom: 12px;
+    font-variation-settings: var(--display-max);
+    color: var(--ink);
+    text-align: center;
+  }
+  .login-intro {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .login-input {
+    width: 100%;
+    padding: 16px 18px;
+    background: var(--paper);
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .login-input:focus { outline: none; border-color: var(--gold); background: var(--gold-bg); }
+  .login-input::placeholder { color: var(--ink-faint); }
+  .login-status {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-align: center;
+    margin-top: 16px;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+  }
+  .login-status.error { color: var(--rust); }
+  .login-status.success { color: var(--pine); }
+  .login-skip {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+    margin-top: 30px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .login-skip button {
+    color: var(--ink-soft);
+    text-decoration: underline;
+  }
+
+  /* ============ ACCOUNT/DATA SCREEN ============ */
+  .account-block {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .account-block-title {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .account-block-value {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-variation-settings: var(--display-strong);
+    margin-bottom: 4px;
+    word-break: break-all;
+  }
+  .account-block-meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .account-block-actions { margin-top: 12px; display: flex; gap: 8px; }
+  .account-block-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--paper-elev);
+    color: var(--ink);
+  }
+  .account-block-actions button.gold { background: var(--gold); color: var(--ink); }
+  .account-block-actions button.danger { background: var(--paper-elev); color: var(--rust); }
+
+  .sync-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--paper-elev);
+    border-radius: 100px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .sync-badge-dot {
+    width: 6px; height: 6px;
+    background: var(--ink-faint);
+    border-radius: 50%;
+  }
+  .sync-badge.synced .sync-badge-dot { background: var(--pine); }
+  .sync-badge.syncing .sync-badge-dot { background: var(--gold); animation: pulse-dot 1s ease-in-out infinite; }
+  .sync-badge.error .sync-badge-dot { background: var(--rust); }
+  .sync-badge.offline .sync-badge-dot { background: var(--ink-faint); }
+
+  /* ============ DIALOG ============ */
+  .dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 9, 8, 0.35);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .dialog-overlay.show { display: flex; }
+  .dialog {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 22px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 20px 60px -12px rgba(0,0,0,0.15);
+  }
+  .dialog-title {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: -0.03em;
+    margin-bottom: 6px;
+    font-variation-settings: var(--display-strong);
+    line-height: 1.05;
+  }
+  .dialog-text {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .dialog-actions { display: flex; gap: 8px; }
+  .dialog-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .dialog-actions .primary { background: var(--gold); color: var(--ink); }
+  .dialog-actions .cancel { background: var(--paper-elev); color: var(--ink); }
+  .dialog-actions .destructive { background: var(--rust); color: var(--paper); }
+
+  .boxe-dialog textarea {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--ink);
+    min-height: 90px;
+    resize: vertical;
+    margin-bottom: 14px;
+  }
+  .boxe-dialog textarea:focus { outline: none; border-color: var(--gold); }
+  .boxe-dialog textarea::placeholder { color: var(--ink-faint); }
+
+  /* Star rating */
+  .rating {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    margin-bottom: 16px;
+  }
+  .rating-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+  }
+  .rating-stars { display: flex; gap: 6px; }
+  .rating-star {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: var(--line-strong);
+    transition: color 0.1s;
+    padding: 0;
+    line-height: 1;
+  }
+  .rating-star.active { color: var(--gold); }
+  .rating-star:active { transform: scale(0.9); }
+</style>
+</head>
+<body>
+
+<div class="app" id="app"></div>
+<div class="dialog-overlay" id="dialog"></div>
+
+<script>
+// ============================================================
+//  SUPABASE CONFIG — replace with your credentials
+// ============================================================
+const SUPABASE_CONFIG = {
+  url: 'https://xcwrxixkwkmxeeasffot.supabase.co',
+  anonKey: 'sb_publishable_aN25UpmhAZ9haai2x0_q0w_am-nDGOz'
+};
+
+const SUPABASE_ENABLED = SUPABASE_CONFIG.url !== 'YOUR_SUPABASE_URL' &&
+                        SUPABASE_CONFIG.anonKey !== 'YOUR_SUPABASE_ANON_KEY';
+
+let sb = null;
+if (SUPABASE_ENABLED && window.supabase) {
+  sb = window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+}
+
+// ============================================================
+//  PHASE + WEEK ID
+// ============================================================
+function currentPhase() {
+  const now = new Date();
+  if (now < new Date(2026, 9, 1)) return 'phase-0';
+  if (now < new Date(2027, 1, 1)) return 'phase-1';
+  if (now < new Date(2027, 4, 1)) return 'phase-2';
+  return 'phase-3';
+}
+function phaseLabel(p) {
+  return { 'phase-0': 'Phase 0 · Reprise', 'phase-1': 'Phase 1 · Développement', 'phase-2': 'Phase 2 · Spécifique', 'phase-3': 'Phase 3 · Terrain' }[p] || p;
+}
+function phaseShort(p) {
+  return { 'phase-0': 'Ph.0', 'phase-1': 'Ph.1', 'phase-2': 'Ph.2', 'phase-3': 'Ph.3' }[p] || p;
+}
+
+function getWeekId(d) {
+  d = d || new Date();
+  const target = new Date(d.valueOf());
+  const dayNr = (target.getDay() + 6) % 7;
+  target.setDate(target.getDate() - dayNr + 3);
+  const firstThursday = target.valueOf();
+  target.setMonth(0, 1);
+  if (target.getDay() !== 4) target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+  const weekNum = 1 + Math.ceil((firstThursday - target) / 604800000);
+  return `${d.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
+}
+function getMondayOfWeek(d) {
+  d = new Date(d.valueOf());
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+function shortWeekLabel(weekId) {
+  return weekId.split('-W')[1] || weekId;
+}
+
+// ============================================================
+//  CARDIO TARGETS
+// ============================================================
+const CARDIO_TARGETS = {
+  course: {
+    'phase-0': { duration: 45, km: 5.0, deniv: 50 },
+    'phase-1': { duration: 60, km: 7.5, deniv: 100 },
+    'phase-2': { duration: 90, km: 11.0, deniv: 200 },
+    'phase-3': { duration: 60, km: 8.0, deniv: 300 }
+  },
+  velo: {
+    'phase-0': { duration: 60, km: 18.0, deniv: 0 },
+    'phase-1': { duration: 90, km: 28.0, deniv: 0 },
+    'phase-2': { duration: 120, km: 40.0, deniv: 0 },
+    'phase-3': { duration: 45, km: 15.0, deniv: 0 }
+  }
+};
+function cardioTarget(type) { return CARDIO_TARGETS[type][currentPhase()]; }
+
+function buildCardioSession(type) {
+  const t = cardioTarget(type);
+  const isVelo = type === 'velo';
+  const durationSec = t.duration * 60;
+  const warmup = { type: 'time', name: 'Échauffement', duration: 300, label: 'échauffement',
+    cues: isVelo ? ['Résistance très faible', 'Cadence 80-90 tr/min', 'Monte progressivement le cardiaque']
+                 : ['Marche rapide 2 min', 'Rotations chevilles + hanches', 'Montées de genoux légères'] };
+  const body = { type: 'time', name: isVelo ? 'Vélo zone 2' : 'Course zone 2', duration: durationSec, label: 'endurance',
+    cues: isVelo ? ['Résistance moyenne', 'Cadence 80-90 tr/min', 'Conversation possible']
+                 : ['Nez qui respire, conversation possible', 'Cadence ~170-180 pas/min', 'Trop lent = c\'est bien'] };
+  const cooldown = { type: 'time', name: 'Retour au calme', duration: 180, label: 'récup',
+    cues: isVelo ? ['Résistance très faible', 'Cadence libre', 'Descente cardiaque progressive']
+                 : ['Décélération progressive', 'Respiration profonde', 'Marche pas courue'] };
+  return {
+    id: type,
+    focus: isVelo ? 'Cardio · Vélo' : 'Cardio · Course',
+    focusClass: 'cardio',
+    title: isVelo ? 'Vélo zone 2' : 'Course zone 2',
+    duration: `${t.duration + 8} min`,
+    durationMin: t.duration + 8,
+    target: t,
+    type: type,
+    intro: isVelo ? 'Moteur aérobie sans casser les articulations.' : 'Le moteur qu\'on construit lentement.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: warmup.name, t: '5 min' }] },
+      { head: 'Corps', items: [{ n: body.name, t: `${t.duration} min` }] },
+      { head: 'Récup', items: [{ n: cooldown.name, t: '3 min' }] }
+    ],
+    steps: [warmup, body, cooldown]
+  };
+}
+
+// ============================================================
+//  RENFO ROTATION
+// ============================================================
+const RENFO_ROTATION = [
+  { id: 'renfo-fondation', variant: 'A', focus: 'Renfo · Force fondation', focusClass: 'renfo',
+    title: 'Force fondation', duration: '45 min', durationMin: 45,
+    intro: 'Bases classiques : squats, pompes, tirages, planche.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Mobilité + activation', t: '5 min' }] },
+      { head: 'Circuit 3 tours', items: [{ n: 'Squats', t: '15' }, { n: 'Pompes', t: '10' }, { n: 'Rowing', t: '12' }, { n: 'Planche', t: '45 s' }] },
+      { head: 'Finisher', items: [{ n: 'Step-ups', t: '3 × 10/j' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Mobilité générale', duration: 180, label: 'échauffement', cues: ['Rotations cervicales, épaules, hanches', 'Cercles chevilles', 'Cat-cow 5 cycles'] },
+      { type: 'time', name: 'Activation', duration: 120, label: 'échauffement', cues: ['10 squats à vide', '10 fentes alternées', '10 rotations bras'] },
+      { type: 'reps', name: 'Squats', reps: '15 reps', label: 'circuit — tour 1/3', cues: ['Fesses vers l\'arrière', 'Sous parallèles', 'Dos droit'] },
+      { type: 'rest', duration: 15 },
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'circuit — tour 1/3', cues: ['Corps en ligne', 'Descente 2 sec'] },
+      { type: 'rest', duration: 15 },
+      { type: 'reps', name: 'Rowing', reps: '12 reps', label: 'circuit — tour 1/3', cues: ['Buste penché, dos droit', 'Coude près du corps'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche', duration: 45, label: 'circuit — tour 1/3', cues: ['Coudes sous épaules', 'Corps en ligne'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Squats', reps: '15 reps', label: 'circuit — tour 2/3', cues: ['Contrôle la descente', 'Amplitude complète'] },
+      { type: 'rest', duration: 15 },
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'circuit — tour 2/3', cues: ['Gainage permanent', 'Qualité'] },
+      { type: 'rest', duration: 15 },
+      { type: 'reps', name: 'Rowing', reps: '12 reps', label: 'circuit — tour 2/3', cues: ['Rétracte à chaque rep'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche', duration: 45, label: 'circuit — tour 2/3', cues: ['Tiens la forme'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Squats', reps: '15 reps', label: 'circuit — tour 3/3', cues: ['Dernier tour', 'Termine fort'] },
+      { type: 'rest', duration: 15 },
+      { type: 'reps', name: 'Pompes', reps: '10 reps', label: 'circuit — tour 3/3', cues: ['Amplitude', 'Tenir la forme'] },
+      { type: 'rest', duration: 15 },
+      { type: 'reps', name: 'Rowing', reps: '12 reps', label: 'circuit — tour 3/3', cues: ['Rétracte fort'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche', duration: 45, label: 'circuit — tour 3/3', cues: ['Termine solide'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'finisher — 1/3', cues: ['Marche haute', 'Pousse dans le talon'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'finisher — 2/3', cues: ['Contrôle la descente'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Step-ups', reps: '10 / jambe', label: 'finisher — 3/3', cues: ['Dernière série'] }
+    ] },
+  { id: 'renfo-endurance', variant: 'B', focus: 'Renfo · Endurance musculaire', focusClass: 'renfo',
+    title: 'Tempo lent', duration: '45 min', durationMin: 45,
+    intro: 'Circuit long à tempo contrôlé. Tenir sous effort.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Mobilité dynamique', t: '5 min' }] },
+      { head: 'Circuit 4 tours', items: [{ n: 'Pompes lentes', t: '8 · 3s' }, { n: 'Squats lents', t: '12 · 3s' }, { n: 'Planche', t: '30 s' }, { n: 'Fentes', t: '8/j' }, { n: 'Superman', t: '15' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Mobilité dynamique', duration: 180, label: 'échauffement', cues: ['Cat-cow', 'Rotations tronc'] },
+      { type: 'time', name: 'Activation', duration: 120, label: 'échauffement', cues: ['5 pompes tempo normal', '10 fentes alternées'] },
+      ...[1,2,3,4].flatMap(tour => [
+        { type: 'reps', name: 'Pompes lentes', reps: '8 reps · 3s', label: `circuit — tour ${tour}/4`, cues: ['Descente 3 sec vraie', 'Pause 1 sec en bas'] },
+        { type: 'rest', duration: 20 },
+        { type: 'reps', name: 'Squats lents', reps: '12 reps · 3s', label: `circuit — tour ${tour}/4`, cues: ['3 sec à descendre', 'Amplitude'] },
+        { type: 'rest', duration: 20 },
+        { type: 'time', name: 'Planche', duration: 30, label: `circuit — tour ${tour}/4`, cues: ['Corps en ligne'] },
+        { type: 'rest', duration: 20 },
+        { type: 'reps', name: 'Fentes alternées', reps: '8 / jambe', label: `circuit — tour ${tour}/4`, cues: ['Contrôle la descente'] },
+        { type: 'rest', duration: 20 },
+        { type: 'reps', name: 'Superman', reps: '15 reps', label: `circuit — tour ${tour}/4`, cues: ['Décolle bras et jambes', 'Pause 1 sec'] },
+        { type: 'rest', duration: tour < 4 ? 60 : 0 }
+      ])
+    ] },
+  { id: 'renfo-explosivite', variant: 'C', focus: 'Renfo · Explosivité', focusClass: 'renfo',
+    title: 'Puissance', duration: '40 min', durationMin: 40,
+    intro: 'Réactivité et puissance : sauts, burpees, pompes explosives.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Dynamique + activation', t: '5 min' }] },
+      { head: 'Circuit 3 tours', items: [{ n: 'Squats sautés', t: '10' }, { n: 'Pompes explo', t: '8' }, { n: 'Burpees', t: '10' }, { n: 'Mountain climbers', t: '20 s' }] },
+      { head: 'Finisher', items: [{ n: 'Planche', t: '3 × 30 s' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Mobilité dynamique', duration: 120, label: 'échauffement', cues: ['Rotations articulaires', 'Squats à vide'] },
+      { type: 'time', name: 'Activation cardio', duration: 90, label: 'échauffement', cues: ['Jumping jacks', 'High knees'] },
+      { type: 'time', name: 'Petits sauts', duration: 60, label: 'échauffement', cues: ['Sur place, doux', 'Prépare les tendons'] },
+      ...[1,2,3].flatMap(tour => [
+        { type: 'reps', name: 'Squats sautés', reps: '10 reps', label: `circuit — tour ${tour}/3`, cues: ['Squat complet', 'Explosif', 'Amortis'] },
+        { type: 'rest', duration: 25 },
+        { type: 'reps', name: 'Pompes explosives', reps: '8 reps', label: `circuit — tour ${tour}/3`, cues: ['Descente 2 sec', 'Pousse explosif'] },
+        { type: 'rest', duration: 25 },
+        { type: 'reps', name: 'Burpees', reps: '10 reps', label: `circuit — tour ${tour}/3`, cues: ['Planche, pompe, saut'] },
+        { type: 'rest', duration: 25 },
+        { type: 'time', name: 'Mountain climbers', duration: 20, label: `circuit — tour ${tour}/3`, cues: ['Rythme max', 'Gainage'] },
+        { type: 'rest', duration: 60 }
+      ]),
+      { type: 'time', name: 'Planche', duration: 30, label: 'finisher — 1/3', cues: ['Corps en ligne'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Planche', duration: 30, label: 'finisher — 2/3', cues: ['Tenir la forme'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Planche', duration: 30, label: 'finisher — 3/3', cues: ['Termine solide'] }
+    ] },
+  { id: 'renfo-posterieur', variant: 'D', focus: 'Renfo · Chaîne postérieure', focusClass: 'renfo',
+    title: 'Dos & fessiers', duration: '45 min', durationMin: 45,
+    intro: 'Dos, fessiers, ischios, antirotation — ce qui te porte sous le sac.',
+    plan: [
+      { head: 'Échauffement', items: [{ n: 'Activation postérieure', t: '5 min' }] },
+      { head: 'Circuit 3 tours', items: [{ n: 'Rowing lesté', t: '12' }, { n: 'Glute bridge', t: '15' }, { n: 'Pallof press', t: '10/c' }, { n: 'Superman', t: '12' }, { n: 'Dead bug', t: '15/c' }] },
+      { head: 'Finisher', items: [{ n: 'Planche latérale', t: '2 × 30/c' }] }
+    ],
+    steps: [
+      { type: 'time', name: 'Cat-cow', duration: 90, label: 'échauffement', cues: ['À quatre pattes', 'Dos rond / creux'] },
+      { type: 'time', name: 'Bird dog', duration: 90, label: 'échauffement', cues: ['Bras + jambe opposés', '10 par côté'] },
+      { type: 'time', name: 'Activation fessiers', duration: 120, label: 'échauffement', cues: ['15 glute bridges', '10 clam shells / côté'] },
+      ...[1,2,3].flatMap(tour => [
+        { type: 'reps', name: 'Rowing sac lesté', reps: '12 reps', label: `circuit — tour ${tour}/3`, cues: ['Buste 45°', 'Rétracte'] },
+        { type: 'rest', duration: 25 },
+        { type: 'reps', name: 'Glute bridge', reps: '15 reps', label: `circuit — tour ${tour}/3`, cues: ['Pousse dans les talons', 'Contracte en haut'] },
+        { type: 'rest', duration: 25 },
+        { type: 'reps', name: 'Pallof press G', reps: '10 reps', label: `circuit — tour ${tour}/3`, cues: ['Résiste à la rotation'] },
+        { type: 'rest', duration: 15 },
+        { type: 'reps', name: 'Pallof press D', reps: '10 reps', label: `circuit — tour ${tour}/3`, cues: ['Autre côté'] },
+        { type: 'rest', duration: 25 },
+        { type: 'reps', name: 'Superman', reps: '12 reps', label: `circuit — tour ${tour}/3`, cues: ['Décolle bras et jambes'] },
+        { type: 'rest', duration: 25 },
+        { type: 'reps', name: 'Dead bug', reps: '15 / côté', label: `circuit — tour ${tour}/3`, cues: ['Dos plaqué', 'Contrôlé'] },
+        { type: 'rest', duration: 60 }
+      ]),
+      { type: 'time', name: 'Planche latérale G', duration: 30, label: 'finisher — 1/2', cues: ['Coude sous épaule'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche latérale D', duration: 30, label: 'finisher — 1/2', cues: ['Autre côté'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Planche latérale G', duration: 30, label: 'finisher — 2/2', cues: ['Deuxième série'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche latérale D', duration: 30, label: 'finisher — 2/2', cues: ['Termine solide'] }
+    ] }
+];
+
+function getWeekRenfoIdx() {
+  const ref = new Date(2026, 6, 27);
+  const now = new Date();
+  const diffDays = Math.floor((now - ref) / (1000 * 60 * 60 * 24));
+  const weekNum = Math.floor(diffDays / 7);
+  return ((weekNum % RENFO_ROTATION.length) + RENFO_ROTATION.length) % RENFO_ROTATION.length;
+}
+function getCurrentRenfo() { return RENFO_ROTATION[getWeekRenfoIdx()]; }
+
+// ============================================================
+//  BONUS (compact)
+// ============================================================
+const BONUS = [
+  { id: 'bonus-jambes-power', focus: 'Bonus · Jambes', focusClass: 'bonus', title: 'Step-ups intensifs', duration: '20 min', durationMin: 20,
+    intro: 'Focus vertical : step-ups avec charge + excentrique.',
+    steps: [
+      { type: 'time', name: 'Échauffement', duration: 180, label: 'préparation', cues: ['Mobilité chevilles + hanches', '20 squats à vide'] },
+      { type: 'reps', name: 'Step-ups sac lesté', reps: '15 / jambe', label: 'bloc 1/4', cues: ['Sac ~5-10 kg', 'Marche haute'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Fentes marchées', reps: '12 / jambe', label: 'bloc 2/4', cues: ['Avancer en fentes'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Step-ups excentriques', reps: '10 / jambe', label: 'bloc 3/4', cues: ['Descente très lente 4 sec'] },
+      { type: 'rest', duration: 40 },
+      { type: 'time', name: 'Wall sit', duration: 60, label: 'bloc 4/4', cues: ['Cuisses parallèles', 'Respire'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Mollets excentriques', duration: 45, label: 'finisher', cues: ['Descente lente 3 sec'] }
+    ] },
+  { id: 'bonus-gainage', focus: 'Bonus · Tronc', focusClass: 'bonus', title: 'Gainage complet', duration: '20 min', durationMin: 20,
+    intro: 'Circuit varié : planches, anti-rotation, hollow, dead bugs.',
+    steps: [
+      { type: 'time', name: 'Cat-cow', duration: 60, label: 'échauffement', cues: ['Alterne dos rond / creux'] },
+      { type: 'time', name: 'Planche', duration: 60, label: 'circuit 1', cues: ['Coudes sous épaules'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Planche latérale G', duration: 40, label: 'circuit 1', cues: ['Hanches hautes'] },
+      { type: 'rest', duration: 15 },
+      { type: 'time', name: 'Planche latérale D', duration: 40, label: 'circuit 1', cues: ['Hanches hautes'] },
+      { type: 'rest', duration: 40 },
+      { type: 'reps', name: 'Dead bug', reps: '15 / côté', label: 'circuit 2', cues: ['Dos plaqué'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Bird dog', reps: '12 / côté', label: 'circuit 2', cues: ['Bras + jambe opposés'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Hollow hold', duration: 30, label: 'circuit 2', cues: ['Bas du dos plaqué'] },
+      { type: 'rest', duration: 40 },
+      { type: 'time', name: 'Planche + rotation hanches', duration: 40, label: 'circuit 3', cues: ['Descend les hanches'] },
+      { type: 'rest', duration: 20 },
+      { type: 'reps', name: 'Superman', reps: '15 reps', label: 'circuit 3', cues: ['Décolle bras et jambes'] },
+      { type: 'rest', duration: 20 },
+      { type: 'time', name: 'Planche finale', duration: 45, label: 'finisher', cues: ['Qualité'] }
+    ] },
+  { id: 'bonus-haut', focus: 'Bonus · Haut', focusClass: 'bonus', title: 'Tirage & pompes', duration: '20 min', durationMin: 20,
+    intro: 'Focus tirage et poussée.',
+    steps: [
+      { type: 'time', name: 'Mobilité épaules', duration: 180, label: 'échauffement', cues: ['Wall angels', 'Rétractions scapulaires'] },
+      { type: 'reps', name: 'Pompes classiques', reps: '10-15 reps', label: 'bloc 1', cues: ['Corps en ligne'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Tractions ou négatives', reps: '5-8 reps', label: 'bloc 1', cues: ['Négatives 5 sec'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes déclinées', reps: '8-12 reps', label: 'bloc 2', cues: ['Pieds surélevés'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Rowing haltère / sac', reps: '12 / bras', label: 'bloc 2', cues: ['Buste à 45°'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Pompes diamant', reps: '8-10 reps', label: 'bloc 3', cues: ['Mains en losange'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Curl + développé', reps: '10 reps', label: 'bloc 3', cues: ['Curl bras, pousse au-dessus'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Dead hang', duration: 30, label: 'finisher', cues: ['Épaules engagées'] }
+    ] },
+  { id: 'bonus-mobilite', focus: 'Bonus · Mobilité', focusClass: 'bonus', title: 'Hanches & chevilles', duration: '20 min', durationMin: 20,
+    intro: 'Hanches ouvertes, chevilles mobiles.',
+    steps: [
+      { type: 'time', name: 'Cat-cow', duration: 90, label: 'ouverture', cues: ['Alterne dos rond / creux'] },
+      { type: 'time', name: 'Rotations hanches', duration: 90, label: 'ouverture', cues: ['Genou décrit un cercle'] },
+      { type: 'time', name: 'Fente basse + rotation', duration: 90, label: 'hanches', cues: ['Rotation buste'] },
+      { type: 'time', name: 'Grenouille (frog)', duration: 90, label: 'hanches', cues: ['Genoux écartés', 'Recule doucement'] },
+      { type: 'time', name: 'Pigeon G', duration: 90, label: 'hanches', cues: ['Descend le buste'] },
+      { type: 'time', name: 'Pigeon D', duration: 90, label: 'hanches', cues: ['Autre côté'] },
+      { type: 'time', name: 'Genoux au mur', duration: 90, label: 'chevilles', cues: ['Sans lever le talon'] },
+      { type: 'time', name: 'Mollets contre mur', duration: 90, label: 'chevilles', cues: ['Talon planté'] },
+      { type: 'time', name: 'Squat profond tenu', duration: 90, label: 'intégration', cues: ['Coudes contre intérieur des genoux'] },
+      { type: 'time', name: 'Enfant + torsion', duration: 90, label: 'récup', cues: ['Passe un bras sous l\'autre'] }
+    ] },
+  { id: 'bonus-hiit', focus: 'Bonus · Cardio', focusClass: 'bonus', title: 'HIIT court', duration: '20 min', durationMin: 20,
+    intro: 'Cardio explosif.',
+    steps: [
+      { type: 'time', name: 'Échauffement', duration: 240, label: 'préparation', cues: ['Jumping jacks', 'Montées de genoux'] },
+      { type: 'time', name: 'Burpees', duration: 20, label: 'round 1 · 1/4', cues: ['Intensité max'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'Mountain climbers', duration: 20, label: 'round 1 · 2/4', cues: ['Rythme max'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'High knees', duration: 20, label: 'round 1 · 3/4', cues: ['Cadence max'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'Squats sautés', duration: 20, label: 'round 1 · 4/4', cues: ['Explosif'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Burpees', duration: 20, label: 'round 2 · 1/4', cues: ['Deuxième round'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'Mountain climbers', duration: 20, label: 'round 2 · 2/4', cues: ['Gainage actif'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'High knees', duration: 20, label: 'round 2 · 3/4', cues: ['Cadence max'] },
+      { type: 'rest', duration: 10 },
+      { type: 'time', name: 'Squats sautés', duration: 20, label: 'round 2 · 4/4', cues: ['Explosif'] },
+      { type: 'rest', duration: 90 },
+      { type: 'time', name: 'Finisher · Burpees', duration: 60, label: 'finisher', cues: ['Vide le réservoir'] },
+      { type: 'time', name: 'Retour au calme', duration: 90, label: 'récup', cues: ['Marche'] }
+    ] },
+  { id: 'bonus-grip', focus: 'Bonus · Grip', focusClass: 'bonus', title: 'Farmer & suspension', duration: '20 min', durationMin: 20,
+    intro: 'Préhension pour cordes fixes du Hörnli et le portage.',
+    steps: [
+      { type: 'time', name: 'Échauffement mains', duration: 120, label: 'préparation', cues: ['Rotations poignets'] },
+      { type: 'time', name: 'Dead hang', duration: 30, label: 'suspension 1/3', cues: ['Épaules engagées'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Dead hang', duration: 30, label: 'suspension 2/3', cues: ['Tiens'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Dead hang une main', duration: 15, label: 'suspension 3/3', cues: ['Alterne mains'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Farmer carry', reps: '40 mètres', label: 'portage 1/3', cues: ['Charge lourde par main'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Farmer carry unilatéral', reps: '20m / bras', label: 'portage 2/3', cues: ['Anti-rotation'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Farmer carry lourd', reps: '40 mètres', label: 'portage 3/3', cues: ['La plus grosse charge tenable'] },
+      { type: 'rest', duration: 60 },
+      { type: 'time', name: 'Serrage éponge/balle', duration: 45, label: 'finisher', cues: ['Serre 3 sec, relâche'] },
+      { type: 'time', name: 'Étirement avant-bras', duration: 90, label: 'récup', cues: ['Paumes au sol doigts vers toi'] }
+    ] },
+  { id: 'bonus-descente', focus: 'Bonus · Descente', focusClass: 'bonus', title: 'Excentrique jambes', duration: '20 min', durationMin: 20,
+    intro: 'Excentrique quadri + mollets pour préparer la descente.',
+    steps: [
+      { type: 'time', name: 'Mobilité genoux + chevilles', duration: 180, label: 'préparation', cues: ['Rotations, flexions'] },
+      { type: 'reps', name: 'Squats descente lente', reps: '10 reps', label: 'bloc 1', cues: ['Descente 4 sec'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Step-downs contrôlés', reps: '10 / jambe', label: 'bloc 1', cues: ['Descend contrôlé 3 sec'] },
+      { type: 'rest', duration: 45 },
+      { type: 'reps', name: 'Fentes descente lente', reps: '10 / jambe', label: 'bloc 2', cues: ['3 sec de descente'] },
+      { type: 'rest', duration: 30 },
+      { type: 'time', name: 'Wall sit', duration: 60, label: 'bloc 2', cues: ['Endurance statique'] },
+      { type: 'rest', duration: 60 },
+      { type: 'reps', name: 'Mollets excentriques G', reps: '15 reps', label: 'bloc 3', cues: ['Descend en 3 sec'] },
+      { type: 'rest', duration: 30 },
+      { type: 'reps', name: 'Mollets excentriques D', reps: '15 reps', label: 'bloc 3', cues: ['Autre jambe'] },
+      { type: 'rest', duration: 45 },
+      { type: 'time', name: 'Étirement quadri debout', duration: 90, label: 'étirements', cues: ['Talon vers les fesses'] },
+      { type: 'time', name: 'Étirement mollets', duration: 90, label: 'étirements', cues: ['Talon planté'] }
+    ] },
+  { id: 'bonus-respi', focus: 'Bonus · Mental', focusClass: 'bonus', title: 'Respi & visualisation', duration: '20 min', durationMin: 20,
+    intro: 'Cohérence cardiaque + box breathing + visualisation Cervin.',
+    steps: [
+      { type: 'time', name: 'Installation', duration: 60, label: 'préparation', cues: ['Assis droit', 'Yeux fermés'] },
+      { type: 'time', name: 'Cohérence cardiaque', duration: 300, label: 'bloc 1', cues: ['5 inspire · 5 expire', '6 respi / min'] },
+      { type: 'time', name: 'Transition', duration: 60, label: 'transition', cues: ['Respiration libre'] },
+      { type: 'time', name: 'Box breathing', duration: 300, label: 'bloc 2', cues: ['4 · 4 · 4 · 4', 'Rythme régulier'] },
+      { type: 'time', name: 'Transition', duration: 60, label: 'transition', cues: ['Retour naturel'] },
+      { type: 'time', name: 'Visualisation Cervin', duration: 420, label: 'bloc 3', cues: ['Départ du Hörnli à 4h', 'Sens le froid', 'Calme sur les ressauts'] },
+      { type: 'time', name: 'Ancrage', duration: 60, label: 'clôture', cues: ['Reviens ici et maintenant'] }
+    ] }
+];
+
+// ============================================================
+//  LEXIQUE
+// ============================================================
+const LEXIQUE = [
+  { id: 'coherence', cat: 'Respiration', title: 'Cohérence cardiaque',
+    intro: 'Synchronise cœur et respiration. Bascule en parasympathique, baisse cortisol, améliore focus.',
+    when: ['Le matin', 'À midi', 'Le soir avant de dormir', 'Avant une séance de sport'],
+    protocol: { title: 'Protocole 3-6-5', body: '3 fois par jour, 6 respirations/min (5 sec inspire nez, 5 sec expire bouche), 5 minutes.', details: ['Assis dos droit ou allongé', '30 cycles = 5 minutes', 'Effet 3-4h, cumulatif', 'Yeux fermés'] } },
+  { id: 'box-breathing', cat: 'Respiration', title: 'Box breathing (4-4-4-4)',
+    intro: 'Technique militaire pour rester calme sous pression.',
+    when: ['Avant les ressauts exposés', 'Avant un round de boxe', 'En cas de pic de stress'],
+    protocol: { title: 'Le carré du souffle', body: '4 sec inspire · 4 sec pause · 4 sec expire · 4 sec pause. 4 à 8 cycles.', details: ['Calme dans les pauses', 'Nasal si possible', 'Peut se pratiquer debout', 'Progression : 5-5-5-5 puis 6-6-6-6'] } },
+  { id: 'wim-hof', cat: 'Respiration', title: 'Méthode Wim Hof',
+    intro: 'Hyperventilation contrôlée + apnée. Tolérance CO2, immunité, préparation au froid.',
+    when: ['Le matin à jeun', 'Avant un défi mental', 'Avant douche/bain froid', 'Pas avant de dormir'],
+    protocol: { title: 'Cycle complet', body: '30 respirations rapides profondes puis apnée poumons vides, puis inspire pleine + rétention 15 sec. 3 tours.', details: ['Jamais dans l\'eau', 'Note tes temps d\'apnée', 'Après le 3ᵉ tour, respiration normale', '10-15 min total'] } },
+  { id: 'apnee-statique', cat: 'Apnée', title: 'Apnée statique',
+    intro: 'Tenir sa respiration au repos. Tolérance CO2, calme mental.',
+    when: ['Le soir', 'Après une séance', 'Jamais dans l\'eau seul'],
+    protocol: { title: 'Table CO2', body: '8 apnées avec repos qui diminuent : repos 2:00, apnée 1:00 ; repos 1:45, apnée 1:00 ; … jusqu\'à repos 0:15.', details: ['Allongé confortable', 'Bouche fermée, pince le nez', 'Adapte à ton niveau', 'Progresse toutes les 2 semaines'] } },
+  { id: 'apnee-dynamique', cat: 'Apnée', title: 'Apnée dynamique',
+    intro: 'Marcher en apnée. Entraînement mental pour l\'altitude.',
+    when: ['En complément d\'une séance cardio', 'À l\'échauffement', 'Jamais dans l\'eau seul'],
+    protocol: { title: 'Marche en apnée', body: 'Inspire pleine, retiens, marche jusqu\'à l\'envie de respirer, 5 respirations, recommence. 5-10 tours.', details: ['20 → 30 → 40 → 50 pas', 'Ne force pas', 'Toujours en sécurité'] } },
+  { id: 'douche-froide', cat: 'Froid', title: 'Douche froide',
+    intro: 'Déclencheur d\'inconfort volontaire le plus simple.',
+    when: ['Chaque matin', 'Après séance de sport', 'Fin de la douche chaude'],
+    protocol: { title: 'Progressif sur 4 semaines', body: 'S1 : 30 sec. S2 : 1 min. S3 : 1:30. S4+ : 2-3 min.', details: ['Le plus froid possible', 'Nasal, lente et profonde', 'Choc dure ~10 sec', 'Termine par nuque et visage'] } },
+  { id: 'bain-froid', cat: 'Froid', title: 'Bain froid',
+    intro: 'Immersion complète. Anti-inflammatoire puissant.',
+    when: ['Post-séance intense', '1×/semaine max', 'Jamais seul en eau naturelle'],
+    protocol: { title: 'Immersion contrôlée', body: 'Eau à 10-15°C. 3 à 5 min max. Immersion jusqu\'à la nuque.', details: ['Entre lentement', 'Respiration lente', 'Sortir avant le tremblement', 'Réchauffe-toi passivement'] } },
+  { id: 'meditation', cat: 'Mental', title: 'Méditation body scan',
+    intro: 'Ancre l\'attention dans le corps. Écoute des signaux.',
+    when: ['Le soir', 'Le matin', 'Après une séance'],
+    protocol: { title: 'Scan pieds → tête', body: '10 à 20 min. Balaye l\'attention lentement des orteils au sommet du crâne.', details: ['Pas de but, juste observer', 'Reviens au point corporel', 'Tension : mâchoire, épaules, ventre', 'App : Insight Timer, Petit Bambou'] } },
+  { id: 'visualisation', cat: 'Mental', title: 'Visualisation Cervin',
+    intro: 'Répétition mentale de l\'itinéraire. Prépare le cerveau.',
+    when: ['Le soir', 'Après une séance de respiration', 'Plus fréquent quand l\'échéance approche'],
+    protocol: { title: 'Le film mental', body: '5 à 15 min. Joue le film : départ, arête, ressauts, sommet, descente.', details: ['Focus surtout sur la DESCENTE', 'Calme dans les passages engagés', 'Sens le vent, le froid', 'Termine sur le retour au refuge'] } }
+];
+
+// ============================================================
+//  STRETCHING
+// ============================================================
+const STRETCHING = {
+  id: 'stretching', focusClass: 'stretching', focus: 'Étirements',
+  title: 'Étirements complets', duration: '10 min', durationMin: 10,
+  intro: 'Circuit post-séance.',
+  steps: [
+    { type: 'time', name: 'Quadriceps G', duration: 30, label: 'jambes', cues: ['Talon vers les fesses'] },
+    { type: 'time', name: 'Quadriceps D', duration: 30, label: 'jambes', cues: ['Autre côté'] },
+    { type: 'time', name: 'Ischios G', duration: 30, label: 'jambes', cues: ['Assis, jambe tendue', 'Buste vers le pied'] },
+    { type: 'time', name: 'Ischios D', duration: 30, label: 'jambes', cues: ['Autre côté'] },
+    { type: 'time', name: 'Pigeon G', duration: 45, label: 'hanches', cues: ['Genou avant plié'] },
+    { type: 'time', name: 'Pigeon D', duration: 45, label: 'hanches', cues: ['Autre côté'] },
+    { type: 'time', name: 'Fléchisseurs G', duration: 30, label: 'hanches', cues: ['Fente basse'] },
+    { type: 'time', name: 'Fléchisseurs D', duration: 30, label: 'hanches', cues: ['Autre côté'] },
+    { type: 'time', name: 'Mollets G', duration: 30, label: 'mollets', cues: ['Talon planté'] },
+    { type: 'time', name: 'Mollets D', duration: 30, label: 'mollets', cues: ['Autre côté'] },
+    { type: 'time', name: 'Twist allongé G', duration: 30, label: 'dos', cues: ['Genou côté opposé'] },
+    { type: 'time', name: 'Twist allongé D', duration: 30, label: 'dos', cues: ['Autre côté'] },
+    { type: 'time', name: 'Cobra', duration: 40, label: 'dos', cues: ['Pousse le buste'] },
+    { type: 'time', name: 'Enfant', duration: 60, label: 'récup', cues: ['Fesses sur les talons'] },
+    { type: 'time', name: 'Cross-body G', duration: 20, label: 'épaules', cues: ['Bras en travers'] },
+    { type: 'time', name: 'Cross-body D', duration: 20, label: 'épaules', cues: ['Autre côté'] },
+    { type: 'time', name: 'Pec G', duration: 30, label: 'épaules', cues: ['Avant-bras contre mur'] },
+    { type: 'time', name: 'Pec D', duration: 30, label: 'épaules', cues: ['Autre côté'] }
+  ]
+};
+
+// ============================================================
+//  STATE + PERSISTENCE
+// ============================================================
+const STORAGE_KEY = 'shaolin-one-state-v3';
+
+const state = {
+  view: 'home',
+  sessionId: null,
+  sessionKind: null,
+  lexiqueId: null,
+  boxeRatingInDialog: 4,
+  user: null,
+  authChecked: false,
+  syncStatus: 'offline', // 'offline' | 'syncing' | 'synced' | 'error'
+  lastSyncedAt: null,
+  loginMessage: null,
+  timer: { running: false, paused: false, stepIdx: 0, stepElapsed: 0, totalElapsed: 0, intervalId: null },
+  week: {
+    id: getWeekId(),
+    monday: getMondayOfWeek(new Date()).toISOString().slice(0, 10),
+    boxe: { done: false, note: '', score: 0 },
+    cardio: { done: false, type: null, duration: null, km: null, deniv: null },
+    renfo: { done: false, variantId: null },
+    bonusCount: 0
+  },
+  weekHistory: [],
+  cardioHistory: [],
+  wakeLock: null,
+  audioCtx: null
+};
+
+function freshWeek(now) {
+  now = now || new Date();
+  return {
+    id: getWeekId(now),
+    monday: getMondayOfWeek(now).toISOString().slice(0, 10),
+    boxe: { done: false, note: '', score: 0 },
+    cardio: { done: false, type: null, duration: null, km: null, deniv: null },
+    renfo: { done: false, variantId: null },
+    bonusCount: 0
+  };
+}
+
+function archiveIfNewWeek() {
+  const nowId = getWeekId();
+  if (state.week.id !== nowId) {
+    // Archive the previous week
+    state.weekHistory.push({ ...state.week });
+    // Reset to fresh
+    state.week = freshWeek();
+    saveState();
+  }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+
+    if (saved.week) {
+      // Ensure structure has all fields (migration)
+      state.week = {
+        id: saved.week.id || getWeekId(),
+        monday: saved.week.monday || getMondayOfWeek(new Date()).toISOString().slice(0, 10),
+        boxe: { done: false, note: '', score: 0, ...(saved.week.boxe || {}) },
+        cardio: { done: false, type: null, duration: null, km: null, deniv: null, ...(saved.week.cardio || {}) },
+        renfo: { done: false, variantId: null, ...(saved.week.renfo || {}) },
+        bonusCount: saved.week.bonusCount || 0
+      };
+    }
+    state.weekHistory = saved.weekHistory || [];
+    state.cardioHistory = saved.cardioHistory || [];
+  } catch (e) {}
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      week: state.week,
+      weekHistory: state.weekHistory,
+      cardioHistory: state.cardioHistory
+    }));
+  } catch (e) {}
+  // Also push to Supabase (fire-and-forget)
+  if (sb && state.user) {
+    pushCurrentWeekToRemote();
+  }
+}
+
+async function pushCurrentWeekToRemote() {
+  if (!sb || !state.user) return;
+  try {
+    state.syncStatus = 'syncing';
+    const { error } = await sb.from('week_state').upsert({
+      user_id: state.user.id,
+      week_id: state.week.id,
+      data: state.week,
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'user_id,week_id' });
+    if (error) throw error;
+    state.syncStatus = 'synced';
+    state.lastSyncedAt = new Date().toISOString();
+  } catch (e) {
+    console.warn('Sync push failed:', e.message);
+    state.syncStatus = 'error';
+  }
+}
+
+async function pushCardioHistoryEntry(entry) {
+  if (!sb || !state.user) return;
+  try {
+    await sb.from('cardio_history').insert({
+      user_id: state.user.id,
+      date: entry.date,
+      week_id: entry.weekId,
+      type: entry.type,
+      duration: entry.duration,
+      km: entry.km,
+      deniv: entry.deniv,
+      phase: entry.phase
+    });
+  } catch (e) { console.warn('Cardio history push failed:', e.message); }
+}
+
+async function syncPull() {
+  if (!sb || !state.user) return;
+  state.syncStatus = 'syncing';
+  try {
+    // Fetch all week_state rows
+    const { data: weeks, error: weeksErr } = await sb.from('week_state')
+      .select('week_id, data, updated_at')
+      .order('week_id', { ascending: true });
+    if (weeksErr) throw weeksErr;
+
+    // Fetch cardio history
+    const { data: cardio, error: cardioErr } = await sb.from('cardio_history')
+      .select('*')
+      .order('date', { ascending: true });
+    if (cardioErr) throw cardioErr;
+
+    // Merge weeks: for current week, use most recent; for past weeks, prefer remote
+    const currentId = state.week.id;
+    const remoteMap = new Map(weeks.map(w => [w.week_id, w]));
+
+    // Update current week if remote is newer or if local is empty
+    const remoteCurrent = remoteMap.get(currentId);
+    if (remoteCurrent) {
+      state.week = { ...state.week, ...remoteCurrent.data, id: currentId };
+    }
+
+    // Rebuild weekHistory from remote (past weeks only)
+    const history = [];
+    for (const w of weeks) {
+      if (w.week_id !== currentId) {
+        history.push({ ...w.data, id: w.week_id });
+      }
+    }
+    // Also keep any local-only history not on remote (edge case)
+    for (const localWeek of state.weekHistory) {
+      if (localWeek.id !== currentId && !remoteMap.has(localWeek.id)) {
+        history.push(localWeek);
+        // Push it to remote
+        try {
+          await sb.from('week_state').upsert({
+            user_id: state.user.id,
+            week_id: localWeek.id,
+            data: localWeek,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'user_id,week_id' });
+        } catch (e) { console.warn('Backfill push failed:', e.message); }
+      }
+    }
+    state.weekHistory = history.sort((a, b) => a.id.localeCompare(b.id));
+
+    // Cardio history: use remote as source of truth
+    state.cardioHistory = (cardio || []).map(c => ({
+      date: c.date, weekId: c.week_id, type: c.type,
+      duration: c.duration, km: c.km, deniv: c.deniv, phase: c.phase
+    }));
+
+    // Persist merged state locally
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      week: state.week,
+      weekHistory: state.weekHistory,
+      cardioHistory: state.cardioHistory
+    }));
+
+    // If local week has changes not on remote (updated more recently), push it
+    if (!remoteCurrent) await pushCurrentWeekToRemote();
+
+    state.syncStatus = 'synced';
+    state.lastSyncedAt = new Date().toISOString();
+  } catch (e) {
+    console.warn('Sync pull failed:', e.message);
+    state.syncStatus = 'error';
+  }
+}
+
+function countDoneInWeek(w) {
+  let c = 0;
+  if (w.boxe && w.boxe.done) c++;
+  if (w.cardio && w.cardio.done) c++;
+  if (w.renfo && w.renfo.done) c++;
+  return c;
+}
+function countDone() { return countDoneInWeek(state.week); }
+
+// ============================================================
+//  AUDIO + WAKE
+// ============================================================
+function ensureAudio() {
+  if (!state.audioCtx) {
+    try { const AC = window.AudioContext || window.webkitAudioContext; if (AC) state.audioCtx = new AC(); } catch (e) {}
+  }
+  if (state.audioCtx && state.audioCtx.state === 'suspended') state.audioCtx.resume();
+}
+function beep(freq = 660, duration = 0.18) {
+  if (!state.audioCtx) return;
+  try {
+    const osc = state.audioCtx.createOscillator();
+    const gain = state.audioCtx.createGain();
+    osc.type = 'sine'; osc.frequency.value = freq;
+    gain.gain.value = 0.001;
+    osc.connect(gain); gain.connect(state.audioCtx.destination);
+    const now = state.audioCtx.currentTime;
+    osc.start(now);
+    gain.gain.exponentialRampToValueAtTime(0.3, now + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+    osc.stop(now + duration + 0.05);
+  } catch (e) {}
+}
+function vibrate(p) { if (navigator.vibrate) navigator.vibrate(p); }
+function signalTransition() { beep(660, 0.15); setTimeout(() => beep(880, 0.2), 180); vibrate([120, 60, 180]); }
+function signalCountdown() { beep(440, 0.08); vibrate(60); }
+function signalComplete() { beep(660, 0.15); setTimeout(() => beep(880, 0.15), 180); setTimeout(() => beep(1100, 0.3), 360); vibrate([200, 80, 200, 80, 400]); }
+async function requestWakeLock() { if ('wakeLock' in navigator) { try { state.wakeLock = await navigator.wakeLock.request('screen'); } catch (e) {} } }
+function releaseWakeLock() { if (state.wakeLock) { state.wakeLock.release().catch(()=>{}); state.wakeLock = null; } }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && state.timer.running) requestWakeLock(); });
+
+// ============================================================
+//  TIMER
+// ============================================================
+function getCurrentSession() {
+  if (state.sessionKind === 'stretching') return STRETCHING;
+  if (state.sessionKind === 'bonus') return BONUS.find(b => b.id === state.sessionId);
+  if (state.sessionKind === 'cardio') return buildCardioSession(state.sessionId);
+  if (state.sessionKind === 'renfo') return RENFO_ROTATION.find(r => r.id === state.sessionId);
+  return null;
+}
+function activeSteps() { const s = getCurrentSession(); return s ? s.steps : []; }
+function currentStep() { return activeSteps()[state.timer.stepIdx]; }
+
+function startTimer() {
+  ensureAudio(); requestWakeLock();
+  state.timer.running = true; state.timer.paused = false;
+  state.timer.stepIdx = 0; state.timer.stepElapsed = 0; state.timer.totalElapsed = 0;
+  if (state.timer.intervalId) clearInterval(state.timer.intervalId);
+  state.timer.intervalId = setInterval(tick, 1000);
+  render();
+}
+function tick() {
+  if (!state.timer.running || state.timer.paused) return;
+  state.timer.totalElapsed += 1;
+  const step = currentStep();
+  if (!step) return;
+  if (step.type === 'time' || step.type === 'rest') {
+    state.timer.stepElapsed += 1;
+    const remaining = step.duration - state.timer.stepElapsed;
+    if (remaining <= 3 && remaining > 0) signalCountdown();
+    if (state.timer.stepElapsed >= step.duration) { advance(); return; }
+  }
+  updateTimerUI();
+}
+function togglePause() { state.timer.paused = !state.timer.paused; render(); }
+function advance() {
+  signalTransition();
+  state.timer.stepIdx += 1; state.timer.stepElapsed = 0;
+  if (state.timer.stepIdx >= activeSteps().length) { completeSession(); return; }
+  render();
+}
+function skipStep() {
+  state.timer.stepIdx += 1; state.timer.stepElapsed = 0;
+  if (state.timer.stepIdx >= activeSteps().length) { completeSession(); return; }
+  render();
+}
+function completeSession() {
+  if (state.timer.intervalId) clearInterval(state.timer.intervalId);
+  state.timer.intervalId = null; state.timer.running = false;
+  releaseWakeLock(); signalComplete();
+  if (state.sessionKind === 'cardio') { state.view = 'cardio-stats'; render(); return; }
+  if (state.sessionKind === 'renfo') {
+    state.week.renfo.done = true;
+    state.week.renfo.variantId = state.sessionId;
+    saveState();
+  }
+  if (state.sessionKind === 'bonus') {
+    state.week.bonusCount = (state.week.bonusCount || 0) + 1;
+    saveState();
+  }
+  state.view = 'complete';
+  render();
+}
+function quitSession() {
+  if (state.timer.intervalId) clearInterval(state.timer.intervalId);
+  state.timer.intervalId = null; state.timer.running = false; state.timer.paused = false;
+  releaseWakeLock();
+  state.view = 'home'; render();
+}
+
+// ============================================================
+//  DIALOG
+// ============================================================
+function showDialog(html) {
+  const el = document.getElementById('dialog');
+  el.innerHTML = `<div class="dialog">${html}</div>`;
+  el.classList.add('show');
+}
+function hideDialog() { document.getElementById('dialog').classList.remove('show'); }
+function confirmDialog(title, text, onConfirm, confirmLabel = 'Confirmer', destructive = false) {
+  showDialog(`
+    <div class="dialog-title">${title}</div>
+    <div class="dialog-text">${text}</div>
+    <div class="dialog-actions">
+      <button class="cancel" onclick="hideDialog()">Annuler</button>
+      <button class="${destructive ? 'destructive' : 'primary'}" id="dialog-confirm">${confirmLabel}</button>
+    </div>`);
+  setTimeout(() => {
+    const btn = document.getElementById('dialog-confirm');
+    if (btn) btn.addEventListener('click', () => { hideDialog(); onConfirm(); });
+  }, 0);
+}
+
+// ============================================================
+//  BOXE CHECK (with score rating)
+// ============================================================
+function openBoxeCheck() {
+  const done = state.week.boxe.done;
+  if (done) {
+    const stars = Array.from({length: 5}, (_, i) => i < (state.week.boxe.score || 0) ? '★' : '☆').join(' ');
+    showDialog(`
+      <div class="dialog-title">Boxe · validée</div>
+      <div class="dialog-text">
+        <div style="font-family:var(--font-mono); font-size:10px; letter-spacing:0.12em; color:var(--ink-faint); text-transform:uppercase; margin-bottom:6px">Score</div>
+        <div style="font-size:20px; color:var(--gold); margin-bottom:12px">${stars}</div>
+        ${state.week.boxe.note ? '<div>« ' + state.week.boxe.note.replace(/</g, '&lt;') + ' »</div>' : '<div style="color:var(--ink-faint)">Pas d\'avis noté.</div>'}
+      </div>
+      <div class="dialog-actions">
+        <button class="cancel" onclick="hideDialog()">Fermer</button>
+        <button class="destructive" onclick="unmarkBoxe()">Retirer</button>
+      </div>`);
+  } else {
+    state.boxeRatingInDialog = 4;
+    showDialog(`
+      <div class="dialog-title">Ta séance ?</div>
+      <div class="dialog-text">Un mot rapide et un score (1 à 5).</div>
+      <div class="boxe-dialog">
+        <textarea id="boxe-note" placeholder="bonne séance, gros run, fatigué…" autofocus></textarea>
+        <div class="rating">
+          <div class="rating-label">Score</div>
+          <div class="rating-stars" id="rating-stars">
+            ${[1,2,3,4,5].map(i => `<button class="rating-star ${i <= 4 ? 'active' : ''}" onclick="setBoxeRating(${i})">★</button>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="dialog-actions">
+        <button class="cancel" onclick="hideDialog()">Annuler</button>
+        <button class="primary" onclick="markBoxe()">Valider</button>
+      </div>`);
+    setTimeout(() => { const ta = document.getElementById('boxe-note'); if (ta) ta.focus(); }, 100);
+  }
+}
+function setBoxeRating(n) {
+  state.boxeRatingInDialog = n;
+  const stars = document.querySelectorAll('#rating-stars .rating-star');
+  stars.forEach((el, i) => el.classList.toggle('active', i < n));
+}
+function markBoxe() {
+  const noteEl = document.getElementById('boxe-note');
+  state.week.boxe.done = true;
+  state.week.boxe.note = noteEl ? noteEl.value.trim() : '';
+  state.week.boxe.score = state.boxeRatingInDialog || 4;
+  saveState(); hideDialog(); render();
+}
+function unmarkBoxe() {
+  state.week.boxe.done = false; state.week.boxe.note = ''; state.week.boxe.score = 0;
+  saveState(); hideDialog(); render();
+}
+
+// ============================================================
+//  NAVIGATION
+// ============================================================
+function goto(view, opts = {}) {
+  if (state.timer.running && view !== 'running') {
+    confirmDialog('Séance en cours', 'Quitter la séance ? Elle ne sera pas validée.', () => {
+      quitSession();
+      Object.assign(state, opts);
+      state.view = view; render();
+    }, 'Quitter', true);
+    return;
+  }
+  Object.assign(state, opts);
+  state.view = view;
+  window.scrollTo({ top: 0 });
+  render();
+}
+function openCardioChoice() { state.view = 'cardio-choice'; window.scrollTo({top:0}); render(); }
+function openCardio(type) { state.sessionId = type; state.sessionKind = 'cardio'; state.view = 'preview'; window.scrollTo({top:0}); render(); }
+function openRenfo() { const r = getCurrentRenfo(); state.sessionId = r.id; state.sessionKind = 'renfo'; state.view = 'preview'; window.scrollTo({top:0}); render(); }
+function openBonus(id) { state.sessionId = id; state.sessionKind = 'bonus'; state.view = 'preview'; window.scrollTo({top:0}); render(); }
+function openStretching() { state.sessionId = null; state.sessionKind = 'stretching'; state.view = 'preview'; window.scrollTo({top:0}); render(); }
+function startCurrentSession() { state.view = 'running'; startTimer(); }
+
+// ============================================================
+//  CARDIO STATS
+// ============================================================
+function submitCardioStats() {
+  const type = state.sessionId;
+  const duration = parseFloat(document.getElementById('stats-duration').value) || 0;
+  const km = parseFloat(document.getElementById('stats-km').value) || 0;
+  const deniv = parseFloat(document.getElementById('stats-deniv').value) || 0;
+  state.week.cardio = { done: true, type, duration, km, deniv };
+  const entry = { date: new Date().toISOString().slice(0,10), weekId: state.week.id, type, duration, km, deniv, phase: currentPhase() };
+  state.cardioHistory.push(entry);
+  saveState();
+  pushCardioHistoryEntry(entry);
+  state.view = 'complete';
+  render();
+}
+function computeVerdict(type, duration, km, deniv) {
+  const t = CARDIO_TARGETS[type][currentPhase()];
+  const durPct = (duration / t.duration) * 100;
+  const kmPct = (km / t.km) * 100;
+  const overall = (durPct + kmPct) / 2;
+  let cls, title, desc;
+  if (overall >= 100) { cls = 'above'; title = 'Au-dessus'; desc = `${Math.round(overall)}% de la cible · continue`; }
+  else if (overall >= 85) { cls = 'on-target'; title = 'Dans la cible'; desc = `${Math.round(overall)}% de la cible · tu progresses`; }
+  else { cls = 'below'; title = 'En-dessous'; desc = `${Math.round(overall)}% de la cible · c'est le début, ça vient`; }
+  return { cls, title, desc };
+}
+
+// ============================================================
+//  STATS COMPUTATION
+// ============================================================
+function getRecentWeeks(n = 8) {
+  // Returns last N weeks with current week last, filling in empty weeks
+  const now = new Date();
+  const currentMonday = getMondayOfWeek(now);
+  const weeks = [];
+  for (let i = n - 1; i >= 0; i--) {
+    const monday = new Date(currentMonday);
+    monday.setDate(monday.getDate() - i * 7);
+    const wkId = getWeekId(monday);
+    let wk;
+    if (wkId === state.week.id) {
+      wk = state.week;
+    } else {
+      wk = state.weekHistory.find(w => w.id === wkId);
+    }
+    if (!wk) {
+      wk = { id: wkId, monday: monday.toISOString().slice(0, 10), boxe: {done: false, score: 0}, cardio: {done: false}, renfo: {done: false}, bonusCount: 0, empty: true };
+    }
+    weeks.push(wk);
+  }
+  return weeks;
+}
+
+function computeBoxeStats(weeks) {
+  const scores = weeks.map(w => w.boxe && w.boxe.done ? (w.boxe.score || 3) : 0);
+  const target = weeks.map(() => 4);
+  const total = scores.filter(s => s > 0).length;
+  const withScores = scores.filter(s => s > 0);
+  const avgScore = withScores.length ? (withScores.reduce((a, b) => a + b, 0) / withScores.length).toFixed(1) : '–';
+  return { scores, target, total, avgScore };
+}
+
+function computeCardioStats(weeks) {
+  // Compute % of target reached for each week
+  const pcts = weeks.map(w => {
+    if (!w.cardio || !w.cardio.done) return 0;
+    const t = CARDIO_TARGETS[w.cardio.type][currentPhase()];
+    const durPct = (w.cardio.duration / t.duration) * 100;
+    const kmPct = (w.cardio.km / t.km) * 100;
+    return Math.min(150, (durPct + kmPct) / 2);
+  });
+  const target = weeks.map(() => 100);
+  const totalDone = pcts.filter(p => p > 0).length;
+  const totalMin = weeks.reduce((sum, w) => sum + (w.cardio && w.cardio.done ? (w.cardio.duration || 0) : 0), 0);
+  const totalKm = weeks.reduce((sum, w) => sum + (w.cardio && w.cardio.done ? (w.cardio.km || 0) : 0), 0);
+  return { pcts, target, totalDone, totalMin, totalKm };
+}
+
+function computeRenfoStats(weeks) {
+  const counts = weeks.map(w => (w.renfo && w.renfo.done ? 1 : 0) + (w.bonusCount || 0));
+  const target = weeks.map(() => 1);
+  const totalRenfo = weeks.filter(w => w.renfo && w.renfo.done).length;
+  const totalBonus = weeks.reduce((sum, w) => sum + (w.bonusCount || 0), 0);
+  return { counts, target, totalRenfo, totalBonus };
+}
+
+// ============================================================
+//  SVG LINE CHART
+// ============================================================
+function drawLineChart(actualData, targetData, opts = {}) {
+  const { width = 400, height = 100, minY = 0 } = opts;
+  let maxY = opts.maxY;
+  if (maxY === undefined) {
+    const allVals = [...actualData, ...targetData];
+    maxY = Math.max(...allVals, 1) * 1.15;
+  }
+  const padding = 6;
+  const chartW = width - padding * 2;
+  const chartH = height - padding * 2;
+  const range = maxY - minY;
+  const n = actualData.length;
+  if (n === 0) return '';
+
+  const xScale = (i) => padding + (n === 1 ? chartW/2 : (i / (n - 1)) * chartW);
+  const yScale = (v) => padding + chartH - ((v - minY) / range) * chartH;
+
+  const targetPath = targetData.map((v, i) => `${i === 0 ? 'M' : 'L'} ${xScale(i)} ${yScale(v)}`).join(' ');
+  const actualPath = actualData.map((v, i) => `${i === 0 ? 'M' : 'L'} ${xScale(i)} ${yScale(v)}`).join(' ');
+  const areaPath = `${actualPath} L ${xScale(n - 1)} ${yScale(minY)} L ${xScale(0)} ${yScale(minY)} Z`;
+
+  const points = actualData.map((v, i) => {
+    if (v === 0 && i < n - 1) return ''; // skip zero points except last (current) week
+    return `<circle cx="${xScale(i)}" cy="${yScale(v)}" r="3" fill="#C9A44E"/>`;
+  }).join('');
+
+  return `
+    <svg class="stat-chart" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="gold-grad" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stop-color="#C9A44E" stop-opacity="0.20"/>
+          <stop offset="100%" stop-color="#C9A44E" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path d="${areaPath}" fill="url(#gold-grad)"/>
+      <path d="${targetPath}" stroke="#A19E97" stroke-width="1.2" stroke-dasharray="4 4" fill="none"/>
+      <path d="${actualPath}" stroke="#C9A44E" stroke-width="2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
+      ${points}
+    </svg>`;
+}
+
+// ============================================================
+//  RENDER — HOME
+// ============================================================
+function renderHome() {
+  const done = countDone();
+  const target = 3;
+
+  const renfoVariant = getCurrentRenfo();
+  const cardio = state.week.cardio;
+  const boxe = state.week.boxe;
+  const renfo = state.week.renfo;
+
+  // Weekly overview (last 8 weeks)
+  const recent = getRecentWeeks(8);
+  const currentId = state.week.id;
+  const weekCellsHTML = recent.map(w => {
+    const d = countDoneInWeek(w);
+    const isFull = d === 3;
+    const isCurrent = w.id === currentId;
+    const dots = ['boxe', 'cardio', 'renfo'].map(slot => {
+      const doneSlot = w[slot] && w[slot].done;
+      return `<div class="week-dot ${doneSlot ? 'done' : ''}"></div>`;
+    }).join('');
+    return `
+      <div class="week-cell ${isFull ? 'full' : ''} ${isCurrent ? 'current' : ''}">
+        <div class="week-cell-dots">${dots}</div>
+        <div class="week-label">S${shortWeekLabel(w.id)}</div>
+      </div>`;
+  }).join('');
+
+  // Session rows
+  let cardioTile;
+  if (cardio.done) {
+    cardioTile = `
+      <button class="session-row cardio done" onclick="goto('cardio-recap')">
+        <div class="session-row-marker"></div>
+        <div class="session-row-body">
+          <div class="session-row-tag">Cardio · ${cardio.type === 'velo' ? 'Vélo' : 'Course'}</div>
+          <div class="session-row-title">${cardio.duration} min · ${cardio.km} km</div>
+          <div class="session-row-meta">${cardio.deniv}m D+ · voir détail</div>
+        </div>
+        <div class="session-row-status">Fait</div>
+      </button>`;
+  } else {
+    cardioTile = `
+      <button class="session-row cardio" onclick="openCardioChoice()">
+        <div class="session-row-marker"></div>
+        <div class="session-row-body">
+          <div class="session-row-tag">Cardio</div>
+          <div class="session-row-title">Vélo ou course</div>
+          <div class="session-row-meta">Zone 2 · au choix</div>
+        </div>
+        <div class="session-row-arrow">→</div>
+      </button>`;
+  }
+
+  let renfoTile;
+  if (renfo.done) {
+    const doneVariant = RENFO_ROTATION.find(r => r.id === renfo.variantId) || renfoVariant;
+    renfoTile = `
+      <button class="session-row renfo done" onclick="openRenfo()">
+        <div class="session-row-marker"></div>
+        <div class="session-row-body">
+          <div class="session-row-tag">Renfo · Variant ${doneVariant.variant}</div>
+          <div class="session-row-title">${doneVariant.title}</div>
+          <div class="session-row-meta">Séance bouclée</div>
+        </div>
+        <div class="session-row-status">Fait</div>
+      </button>`;
+  } else {
+    renfoTile = `
+      <button class="session-row renfo" onclick="openRenfo()">
+        <div class="session-row-marker"></div>
+        <div class="session-row-body">
+          <div class="session-row-tag">Renfo · Semaine ${renfoVariant.variant}</div>
+          <div class="session-row-title">${renfoVariant.title}</div>
+          <div class="session-row-meta">${renfoVariant.duration} · nouveau chaque semaine</div>
+        </div>
+        <div class="session-row-arrow">→</div>
+      </button>`;
+  }
+
+  let boxeTile;
+  if (boxe.done) {
+    const stars = '★'.repeat(boxe.score || 0);
+    boxeTile = `
+      <button class="session-row boxe done" onclick="openBoxeCheck()">
+        <div class="session-row-marker"></div>
+        <div class="session-row-body">
+          <div class="session-row-tag">Combat · ${stars || 'validée'}</div>
+          <div class="session-row-title">Boxe</div>
+          <div class="session-row-meta">${boxe.note ? '« ' + boxe.note.slice(0, 34) + (boxe.note.length > 34 ? '…' : '') + ' »' : 'Validée'}</div>
+        </div>
+        <div class="session-row-status">Fait</div>
+      </button>`;
+  } else {
+    boxeTile = `
+      <button class="session-row boxe" onclick="openBoxeCheck()">
+        <div class="session-row-marker"></div>
+        <div class="session-row-body">
+          <div class="session-row-tag">Combat</div>
+          <div class="session-row-title">Boxe</div>
+          <div class="session-row-meta">Coche + score</div>
+        </div>
+        <div class="session-row-arrow">→</div>
+      </button>`;
+  }
+
+  // Journey
+  const phase = currentPhase();
+  const phaseIdx = { 'phase-0': 0, 'phase-1': 1, 'phase-2': 2, 'phase-3': 3 }[phase];
+  const journeyLabels = ['Ph. 0', 'Ph. 1', 'Ph. 2', 'Ph. 3', 'Cervin'];
+  const trackPct = (phaseIdx / 4) * 100;
+  const journeyNodes = journeyLabels.map((lbl, i) => {
+    const isSummit = i === 4;
+    const isActive = i === phaseIdx || (isSummit && phaseIdx === 4);
+    return `<div class="journey-node ${isActive ? 'active' : ''} ${isSummit ? 'summit' : ''}"><div class="journey-dot"></div><div class="journey-node-label">${lbl}</div></div>`;
+  }).join('');
+
+  return `
+    <div class="view">
+      <header class="top-bar">
+        <div class="brand">Shaolin One<span class="brand-dot">.</span></div>
+        <div class="phase-chip">
+          <div class="phase-chip-dot"></div>
+          <div class="phase-chip-text">${phaseLabel(phase)}</div>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-label">Cette semaine</div>
+        <div class="hero-counter">
+          <div class="hero-num ${done === target ? 'complete' : ''}">${done}</div>
+          <div class="hero-denom">/${target}</div>
+        </div>
+        <div class="hero-caption">${done === target ? '· semaine bouclée ·' : `${target - done} restante${target - done > 1 ? 's' : ''}`}</div>
+      </section>
+
+      <div class="week-strip-wrap">
+        <div class="week-strip-head">
+          <div class="week-strip-title">Les 8 dernières semaines</div>
+          <div class="week-strip-hint">✧ = 3/3</div>
+        </div>
+        <div class="week-strip">${weekCellsHTML}</div>
+      </div>
+
+      <div class="section-title">
+        <div class="section-title-text">Cette semaine · à faire</div>
+      </div>
+      <div class="session-list">
+        ${cardioTile}
+        ${renfoTile}
+        ${boxeTile}
+      </div>
+
+      <div class="library-row">
+        <button class="lib-tile" onclick="goto('stats')">
+          <div class="lib-tile-count">◔</div>
+          <div class="lib-tile-title">Stats</div>
+        </button>
+        <button class="lib-tile" onclick="goto('bonus-list')">
+          <div class="lib-tile-count">${BONUS.length}</div>
+          <div class="lib-tile-title">Bonus</div>
+        </button>
+        <button class="lib-tile" onclick="openStretching()">
+          <div class="lib-tile-count">10′</div>
+          <div class="lib-tile-title">Étirements</div>
+        </button>
+        <button class="lib-tile" onclick="goto('lexique-list')">
+          <div class="lib-tile-count">${LEXIQUE.length}</div>
+          <div class="lib-tile-title">Parasportif</div>
+        </button>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding: 0 4px;">
+        <button class="sync-badge ${state.syncStatus}" onclick="goto('account')">
+          <div class="sync-badge-dot"></div>
+          ${sb && state.user ? (state.syncStatus === 'synced' ? '☁ Sync ok' : state.syncStatus === 'syncing' ? '☁ Sync…' : state.syncStatus === 'error' ? '☁ Erreur' : '☁ Sync') : '☁ Local'}
+        </button>
+        <button class="sync-badge" onclick="goto('account')" style="cursor:pointer">
+          <div class="sync-badge-dot" style="background:var(--gold)"></div>
+          Compte
+        </button>
+      </div>
+
+      <div class="journey">
+        <div class="journey-label">Cervin · été 2027</div>
+        <div class="journey-line">
+          <div class="journey-track"><div class="journey-track-fill" style="width:${trackPct}%"></div></div>
+          ${journeyNodes}
+        </div>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — STATS PAGE
+// ============================================================
+function renderStats() {
+  const N = 8;
+  const weeks = getRecentWeeks(N);
+  const boxe = computeBoxeStats(weeks);
+  const cardio = computeCardioStats(weeks);
+  const renfo = computeRenfoStats(weeks);
+
+  const hasAnyData = boxe.total > 0 || cardio.totalDone > 0 || renfo.totalRenfo > 0 || renfo.totalBonus > 0;
+
+  const boxeChart = drawLineChart(boxe.scores, boxe.target, { maxY: 5.5 });
+  const cardioChart = drawLineChart(cardio.pcts, cardio.target, { maxY: 130 });
+  const renfoChart = drawLineChart(renfo.counts, renfo.target, { maxY: Math.max(3, Math.max(...renfo.counts) + 1) });
+
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <h1 class="stats-page-title">Stats.</h1>
+      <div class="stats-page-sub">8 dernières semaines · réel vs cible</div>
+
+      ${!hasAnyData ? `<div class="stat-empty">Pas encore de données. Valide tes premières séances pour voir la progression.</div>` : ''}
+
+      <div class="stat-block">
+        <div class="stat-block-head">
+          <div class="stat-block-title">Boxe</div>
+          <div class="stat-block-meta">Score par semaine · cible ★★★★</div>
+        </div>
+        <div class="stat-figures">
+          <div class="stat-figure">
+            <div class="stat-figure-val">${boxe.total}<span class="unit"> / ${N}</span></div>
+            <div class="stat-figure-lbl">Séances</div>
+          </div>
+          <div class="stat-figure">
+            <div class="stat-figure-val">${boxe.avgScore}<span class="unit"> / 5</span></div>
+            <div class="stat-figure-lbl">Score moyen</div>
+          </div>
+        </div>
+        ${boxeChart}
+        <div class="stat-legend">
+          <div class="stat-legend-item"><div class="stat-legend-mark"></div>Réel</div>
+          <div class="stat-legend-item"><div class="stat-legend-mark target"></div>Cible 4/5</div>
+        </div>
+      </div>
+
+      <div class="stat-block">
+        <div class="stat-block-head">
+          <div class="stat-block-title">Cardio</div>
+          <div class="stat-block-meta">% cible atteint · phase ${phaseShort(currentPhase())}</div>
+        </div>
+        <div class="stat-figures">
+          <div class="stat-figure">
+            <div class="stat-figure-val">${cardio.totalDone}<span class="unit"> / ${N}</span></div>
+            <div class="stat-figure-lbl">Séances</div>
+          </div>
+          <div class="stat-figure">
+            <div class="stat-figure-val">${Math.round(cardio.totalMin)}<span class="unit"> min</span></div>
+            <div class="stat-figure-lbl">Total</div>
+          </div>
+          <div class="stat-figure">
+            <div class="stat-figure-val">${cardio.totalKm.toFixed(1)}<span class="unit"> km</span></div>
+            <div class="stat-figure-lbl">Distance</div>
+          </div>
+        </div>
+        ${cardioChart}
+        <div class="stat-legend">
+          <div class="stat-legend-item"><div class="stat-legend-mark"></div>% atteint</div>
+          <div class="stat-legend-item"><div class="stat-legend-mark target"></div>Cible 100%</div>
+        </div>
+      </div>
+
+      <div class="stat-block">
+        <div class="stat-block-head">
+          <div class="stat-block-title">Renfo</div>
+          <div class="stat-block-meta">Séances par semaine · renfo + bonus</div>
+        </div>
+        <div class="stat-figures">
+          <div class="stat-figure">
+            <div class="stat-figure-val">${renfo.totalRenfo}<span class="unit"> / ${N}</span></div>
+            <div class="stat-figure-lbl">Renfo</div>
+          </div>
+          <div class="stat-figure">
+            <div class="stat-figure-val">${renfo.totalBonus}</div>
+            <div class="stat-figure-lbl">Bonus</div>
+          </div>
+        </div>
+        ${renfoChart}
+        <div class="stat-legend">
+          <div class="stat-legend-item"><div class="stat-legend-mark"></div>Total (renfo + bonus)</div>
+          <div class="stat-legend-item"><div class="stat-legend-mark target"></div>Cible 1 renfo</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — CARDIO CHOICE
+// ============================================================
+function renderCardioChoice() {
+  const tV = CARDIO_TARGETS.velo[currentPhase()];
+  const tC = CARDIO_TARGETS.course[currentPhase()];
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <div class="preview-hero">
+        <div class="preview-focus-tag cardio">Cardio · ${phaseLabel(currentPhase())}</div>
+        <h1 class="preview-title">Vélo ou course.</h1>
+        <p class="preview-intro-short">Choisis ta modalité. Cibles ajustées à la phase.</p>
+      </div>
+      <div class="choice-list">
+        <button class="choice-card" onclick="openCardio('velo')">
+          <div class="choice-name">Vélo maison</div>
+          <div class="choice-target">
+            <div class="choice-target-item"><div class="choice-target-val">${tV.duration}<span class="unit"> min</span></div><div class="choice-target-lbl">Cible</div></div>
+            <div class="choice-target-item"><div class="choice-target-val">${tV.km}<span class="unit"> km</span></div><div class="choice-target-lbl">Distance</div></div>
+          </div>
+        </button>
+        <button class="choice-card" onclick="openCardio('course')">
+          <div class="choice-name">Course à pied</div>
+          <div class="choice-target">
+            <div class="choice-target-item"><div class="choice-target-val">${tC.duration}<span class="unit"> min</span></div><div class="choice-target-lbl">Cible</div></div>
+            <div class="choice-target-item"><div class="choice-target-val">${tC.km}<span class="unit"> km</span></div><div class="choice-target-lbl">Distance</div></div>
+            <div class="choice-target-item"><div class="choice-target-val">${tC.deniv}<span class="unit"> m</span></div><div class="choice-target-lbl">D+</div></div>
+          </div>
+        </button>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — PREVIEW
+// ============================================================
+function renderPreview() {
+  const s = getCurrentSession();
+  if (!s) return renderHome();
+  const nbSteps = s.steps.filter(x => x.type !== 'section').length;
+
+  let targetHTML = '';
+  if (state.sessionKind === 'cardio' && s.target) {
+    targetHTML = `
+      <div class="target-box">
+        <div class="target-box-label">Cible ${phaseLabel(currentPhase())}</div>
+        <div class="target-box-metrics">
+          <div class="target-box-metric"><div class="target-box-val">${s.target.duration}<span class="unit"> min</span></div><div class="target-box-lbl">Durée</div></div>
+          <div class="target-box-metric"><div class="target-box-val">${s.target.km}<span class="unit"> km</span></div><div class="target-box-lbl">Distance</div></div>
+          ${state.sessionId === 'course' ? `<div class="target-box-metric"><div class="target-box-val">${s.target.deniv}<span class="unit"> m</span></div><div class="target-box-lbl">D+</div></div>` : ''}
+        </div>
+      </div>`;
+  }
+
+  const planHTML = (s.plan || []).map(section => `
+    <div class="plan-section">
+      <div class="plan-section-head">
+        <div class="plan-section-tag">${section.head}</div>
+        <div class="plan-section-line"></div>
+      </div>
+      <div class="plan-items">
+        ${section.items.map(i => `<div class="plan-item"><div>${i.n}</div><div class="plan-item-time">${i.t}</div></div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <div class="preview-hero">
+        <div class="preview-focus-tag ${s.focusClass || 'bonus'}">${s.focus || 'Séance'}</div>
+        <h1 class="preview-title">${s.title}</h1>
+        ${s.intro ? `<p class="preview-intro-short">${s.intro}</p>` : ''}
+      </div>
+      <div class="preview-metrics">
+        <div class="preview-metric"><div class="preview-metric-val">${s.durationMin}<span class="unit"> min</span></div><div class="preview-metric-lbl">Durée</div></div>
+        <div class="preview-metric"><div class="preview-metric-val">${nbSteps}</div><div class="preview-metric-lbl">Étapes</div></div>
+        <div class="preview-metric"><div class="preview-metric-val">${phaseShort(currentPhase())}</div><div class="preview-metric-lbl">Phase</div></div>
+      </div>
+      ${targetHTML}
+      ${planHTML ? `<div class="plan-block">${planHTML}</div>` : ''}
+      <button class="cta-btn" onclick="startCurrentSession()">Démarrer</button>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — RUNNING
+// ============================================================
+function renderRunning() {
+  const steps = activeSteps();
+  const step = currentStep();
+  if (!step) return renderComplete();
+
+  const totalMin = Math.floor(state.timer.totalElapsed / 60);
+  const totalSec = state.timer.totalElapsed % 60;
+  const totalStr = `${totalMin}:${String(totalSec).padStart(2, '0')}`;
+
+  const progressHTML = steps.map((_, i) => {
+    let cls = '';
+    if (i < state.timer.stepIdx) cls = 'done';
+    else if (i === state.timer.stepIdx) cls = 'current';
+    return `<div class="run-progress-slot ${cls}"></div>`;
+  }).join('');
+
+  let viewClass = 'exercise';
+  if (step.type === 'rest') viewClass = 'rest';
+  else if (step.label === 'échauffement' || step.label === 'préparation') viewClass = 'warmup';
+
+  let timerHTML = '', actionHTML = '', stepNameHTML = '', stepSubHTML = '', contextHTML = '';
+
+  if (step.type === 'rest') {
+    const remaining = step.duration - state.timer.stepElapsed;
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const pct = Math.min(100, (state.timer.stepElapsed / step.duration) * 100);
+    contextHTML = `<div class="run-step-context">Repos</div>`;
+    stepNameHTML = `<div class="run-step-name">Récup</div>`;
+    const next = steps[state.timer.stepIdx + 1];
+    stepSubHTML = `<div class="run-step-sub">Prochain · ${next ? (next.name || 'Fin') : 'Fin'}</div>`;
+    timerHTML = `
+      <div class="run-timer rest">
+        <div class="run-timer-value">${timeStr}</div>
+        <div class="run-timer-bar"><div class="run-timer-bar-fill" style="width:${pct}%"></div></div>
+      </div>`;
+    actionHTML = `<button class="run-action-btn skip" onclick="skipStep()">Passer le repos →</button>`;
+  }
+  else if (step.type === 'time') {
+    const remaining = step.duration - state.timer.stepElapsed;
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const pct = Math.min(100, (state.timer.stepElapsed / step.duration) * 100);
+    if (step.label) contextHTML = `<div class="run-step-context">${step.label}</div>`;
+    stepNameHTML = `<div class="run-step-name">${step.name}</div>`;
+    timerHTML = `
+      <div class="run-timer ${viewClass}">
+        <div class="run-timer-value">${timeStr}</div>
+        <div class="run-timer-bar"><div class="run-timer-bar-fill" style="width:${pct}%"></div></div>
+      </div>`;
+    actionHTML = `<button class="run-action-btn skip" onclick="skipStep()">Passer →</button>`;
+  }
+  else if (step.type === 'reps') {
+    if (step.label) contextHTML = `<div class="run-step-context">${step.label}</div>`;
+    stepNameHTML = `<div class="run-step-name">${step.name}</div>`;
+    stepSubHTML = `<div class="run-step-sub">${step.reps || ''}</div>`;
+    actionHTML = `<button class="run-action-btn done" onclick="advance()">✓ Fait</button>`;
+  }
+
+  let cuesHTML = '';
+  if (step.cues && step.cues.length) {
+    cuesHTML = `<div class="run-cues"><ul class="run-cues-list">${step.cues.map(c => `<li>${c}</li>`).join('')}</ul></div>`;
+  }
+  let nextPreview = '';
+  if (step.type === 'reps') {
+    const next = steps[state.timer.stepIdx + 1];
+    if (next) {
+      const nextLabel = next.type === 'rest' ? `Repos ${next.duration}s` : (next.name + (next.reps ? ` · ${next.reps}` : ''));
+      nextPreview = `<div class="run-next">Prochain · <span>${nextLabel}</span></div>`;
+    }
+  }
+
+  return `
+    <div class="view running-view ${viewClass}">
+      <div class="run-top">
+        <button class="run-quit" onclick="askQuit()">← Quitter</button>
+        <div class="run-total">${totalStr}</div>
+        <button class="run-pause ${state.timer.paused ? 'paused' : ''}" onclick="togglePause()">
+          ${state.timer.paused ? '▶ Reprendre' : '⏸ Pause'}
+        </button>
+      </div>
+      <div class="run-progress">${progressHTML}</div>
+      <div class="run-content">
+        ${contextHTML}${stepNameHTML}${stepSubHTML}${timerHTML}${cuesHTML}${nextPreview}
+      </div>
+      ${actionHTML}
+    </div>`;
+}
+function askQuit() { confirmDialog('Quitter la séance ?', 'La séance ne sera pas validée.', quitSession, 'Quitter', true); }
+function updateTimerUI() {
+  const step = currentStep();
+  if (!step) return;
+  if (step.type === 'time' || step.type === 'rest') {
+    const remaining = step.duration - state.timer.stepElapsed;
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    const pct = Math.min(100, (state.timer.stepElapsed / step.duration) * 100);
+    const valEl = document.querySelector('.run-timer-value');
+    const fillEl = document.querySelector('.run-timer-bar-fill');
+    if (valEl) valEl.textContent = timeStr;
+    if (fillEl) fillEl.style.width = pct + '%';
+  }
+  const totalMin = Math.floor(state.timer.totalElapsed / 60);
+  const totalSec = state.timer.totalElapsed % 60;
+  const totalEl = document.querySelector('.run-total');
+  if (totalEl) totalEl.textContent = `${totalMin}:${String(totalSec).padStart(2, '0')}`;
+}
+
+// ============================================================
+//  RENDER — CARDIO STATS (post-session input)
+// ============================================================
+function renderCardioStats() {
+  const type = state.sessionId;
+  const target = CARDIO_TARGETS[type][currentPhase()];
+  const label = type === 'velo' ? 'Vélo maison' : 'Course à pied';
+  return `
+    <div class="view stats-view">
+      <div class="preview-focus-tag cardio">Terminé · ${label}</div>
+      <h1 class="stats-title">Tes chiffres.</h1>
+      <p class="stats-sub">Note-les pour te situer sur la courbe.</p>
+      <div class="stats-input-group">
+        <div class="stats-input-label"><span>Durée (min)</span><span class="target">Cible · ${target.duration}</span></div>
+        <input type="number" class="stats-input" id="stats-duration" inputmode="numeric" placeholder="${target.duration}">
+      </div>
+      <div class="stats-input-group">
+        <div class="stats-input-label"><span>Distance (km)</span><span class="target">Cible · ${target.km}</span></div>
+        <input type="number" step="0.1" class="stats-input" id="stats-km" inputmode="decimal" placeholder="${target.km}">
+      </div>
+      ${type === 'course' ? `
+      <div class="stats-input-group">
+        <div class="stats-input-label"><span>Dénivelé (m)</span><span class="target">Cible · ${target.deniv}</span></div>
+        <input type="number" class="stats-input" id="stats-deniv" inputmode="numeric" placeholder="${target.deniv}">
+      </div>` : `<input type="hidden" id="stats-deniv" value="0">`}
+      <button class="cta-btn gold" onclick="submitCardioStats()" style="margin-top:12px">Valider</button>
+      <button class="cta-btn secondary" onclick="goto('home')">Passer sans enregistrer</button>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — CARDIO RECAP
+// ============================================================
+function renderCardioRecap() {
+  const c = state.week.cardio;
+  const target = CARDIO_TARGETS[c.type][currentPhase()];
+  const v = computeVerdict(c.type, c.duration, c.km, c.deniv);
+  const label = c.type === 'velo' ? 'Vélo maison' : 'Course à pied';
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <div class="preview-hero">
+        <div class="preview-focus-tag cardio">Validée · ${label}</div>
+        <h1 class="preview-title">Cette semaine.</h1>
+      </div>
+      <div class="preview-metrics">
+        <div class="preview-metric"><div class="preview-metric-val">${c.duration}<span class="unit"> min</span></div><div class="preview-metric-lbl">Durée · cible ${target.duration}</div></div>
+        <div class="preview-metric"><div class="preview-metric-val">${c.km}<span class="unit"> km</span></div><div class="preview-metric-lbl">Km · cible ${target.km}</div></div>
+        ${c.type === 'course' ? `<div class="preview-metric"><div class="preview-metric-val">${c.deniv}<span class="unit"> m</span></div><div class="preview-metric-lbl">D+ · cible ${target.deniv}</div></div>` : `<div class="preview-metric"><div class="preview-metric-val">–</div><div class="preview-metric-lbl">D+</div></div>`}
+      </div>
+      <div class="stats-verdict ${v.cls}">
+        <div class="stats-verdict-title">${v.title}</div>
+        <div class="stats-verdict-desc">${v.desc}</div>
+      </div>
+      <button class="cta-btn secondary" onclick="editCardioStats()">Corriger les chiffres</button>
+    </div>`;
+}
+function editCardioStats() {
+  state.sessionId = state.week.cardio.type;
+  state.sessionKind = 'cardio';
+  state.view = 'cardio-stats';
+  state.week.cardio.done = false;
+  saveState(); render();
+  setTimeout(() => {
+    const dur = document.getElementById('stats-duration');
+    const km = document.getElementById('stats-km');
+    const den = document.getElementById('stats-deniv');
+    if (dur) dur.value = state.week.cardio.duration || '';
+    if (km) km.value = state.week.cardio.km || '';
+    if (den) den.value = state.week.cardio.deniv || '';
+  }, 30);
+}
+
+// ============================================================
+//  RENDER — COMPLETE
+// ============================================================
+function renderComplete() {
+  const kind = state.sessionKind;
+  const done = countDone();
+  const showCounter = kind === 'cardio' || kind === 'renfo';
+  let stats = '';
+  if (kind === 'cardio' && state.week.cardio.done) {
+    const c = state.week.cardio;
+    const v = computeVerdict(c.type, c.duration, c.km, c.deniv);
+    stats = `<div class="stats-verdict ${v.cls}" style="margin: 0 8px 30px"><div class="stats-verdict-title">${v.title}</div><div class="stats-verdict-desc">${v.desc}</div></div>`;
+  }
+  let progressHTML = '';
+  if (showCounter) progressHTML = `<div class="complete-progress">${done}<span class="complete-arrow">/</span>3</div>`;
+  return `
+    <div class="view complete-view">
+      <div class="complete-mark">Séance validée</div>
+      <div class="complete-title">Bien joué.</div>
+      ${progressHTML}
+      ${stats}
+      <div class="complete-actions">
+        ${kind !== 'stretching' ? `<button class="primary" onclick="openStretching()">Étirements post-séance</button>` : ''}
+        <button class="secondary" onclick="goto('home')">Retour à l'accueil</button>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — BONUS + LEXIQUE
+// ============================================================
+function renderBonusList() {
+  const itemsHTML = BONUS.map(b => `
+    <button class="list-card" onclick="openBonus('${b.id}')">
+      <div class="list-card-body">
+        <div class="list-card-title">${b.title}</div>
+        <div class="list-card-sub">${b.focus} · ${b.duration}</div>
+      </div>
+      <div class="list-card-arrow">→</div>
+    </button>`).join('');
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <h1 class="list-title">Bonus.</h1>
+      <p class="list-intro">Séances 20 min quand tu as la pêche. Comptées dans les stats renfo.</p>
+      <div class="list-items">${itemsHTML}</div>
+    </div>`;
+}
+function renderLexiqueList() {
+  const itemsHTML = LEXIQUE.map(l => `
+    <button class="list-card" onclick="goto('lexique-detail', {lexiqueId: '${l.id}'})">
+      <div class="list-card-body">
+        <div class="list-card-title">${l.title}</div>
+        <div class="list-card-sub">${l.cat}</div>
+      </div>
+      <div class="list-card-arrow">→</div>
+    </button>`).join('');
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <h1 class="list-title">Parasportif.</h1>
+      <p class="list-intro">Respi · apnée · froid · mental.</p>
+      <div class="list-items">${itemsHTML}</div>
+    </div>`;
+}
+function renderLexiqueDetail() {
+  const item = LEXIQUE.find(l => l.id === state.lexiqueId);
+  if (!item) return renderLexiqueList();
+  const whenHTML = item.when ? `<div class="lex-section"><div class="lex-section-head">Quand</div><ul>${item.when.map(w => `<li>${w}</li>`).join('')}</ul></div>` : '';
+  const protocolHTML = item.protocol ? `
+    <div class="lex-protocol">
+      <div class="lex-section-head">Protocole</div>
+      <div class="lex-protocol-title">${item.protocol.title}</div>
+      <p>${item.protocol.body}</p>
+      ${item.protocol.details ? `<ul>${item.protocol.details.map(d => `<li>${d}</li>`).join('')}</ul>` : ''}
+    </div>` : '';
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('lexique-list')">← Retour</button>
+      <div class="lex-cat">${item.cat}</div>
+      <h1 class="lex-title">${item.title}</h1>
+      <p class="lex-intro">${item.intro}</p>
+      ${whenHTML}
+      ${protocolHTML}
+    </div>`;
+}
+
+// ============================================================
+//  AUTH
+// ============================================================
+async function initAuth() {
+  if (!sb) { state.authChecked = true; return; }
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      state.user = session.user;
+      state.syncStatus = 'syncing';
+    }
+  } catch (e) { console.warn('Auth check failed:', e.message); }
+  state.authChecked = true;
+
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      state.user = session.user;
+      state.loginMessage = null;
+      await syncPull();
+      state.view = 'home';
+      render();
+    }
+    if (event === 'SIGNED_OUT') {
+      state.user = null;
+      state.syncStatus = 'offline';
+      state.view = 'login';
+      render();
+    }
+  });
+}
+
+async function sendMagicLink() {
+  const emailEl = document.getElementById('login-email');
+  const email = (emailEl && emailEl.value || '').trim();
+  if (!email) {
+    state.loginMessage = { type: 'error', text: 'Entre ton email' };
+    render();
+    return;
+  }
+  state.loginMessage = { type: 'info', text: 'Envoi en cours…' };
+  render();
+  try {
+    const redirectTo = window.location.origin + window.location.pathname;
+    const { error } = await sb.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: redirectTo }
+    });
+    if (error) throw error;
+    state.loginMessage = { type: 'success', text: 'Lien envoyé. Vérifie ta boîte mail et clique sur le lien.' };
+  } catch (e) {
+    state.loginMessage = { type: 'error', text: 'Erreur : ' + e.message };
+  }
+  render();
+}
+
+async function signOut() {
+  if (!sb) return;
+  try { await sb.auth.signOut(); } catch (e) {}
+}
+
+function skipAuth() {
+  // Continue in local-only mode
+  state.user = null;
+  state.view = 'home';
+  render();
+}
+
+async function manualSync() {
+  if (!sb || !state.user) return;
+  await syncPull();
+  render();
+}
+
+// ============================================================
+//  RENDER — LOGIN
+// ============================================================
+function renderLogin() {
+  const msg = state.loginMessage;
+  return `
+    <div class="login-view">
+      <div class="login-brand">Shaolin One<span class="login-brand-dot">.</span></div>
+      <div class="login-tag">Cervin · été 2027</div>
+      <h1 class="login-title">Connecte-toi.</h1>
+      <p class="login-intro">Sync sur tous tes appareils. Tu recevras un lien magique par email — pas de mot de passe.</p>
+      <input type="email" class="login-input" id="login-email" placeholder="ton@email.com" autocomplete="email" inputmode="email">
+      <button class="cta-btn gold" onclick="sendMagicLink()">Recevoir le lien</button>
+      ${msg ? `<div class="login-status ${msg.type}">${msg.text}</div>` : ''}
+      <div class="login-skip">
+        <button onclick="skipAuth()">Continuer sans compte (local uniquement)</button>
+      </div>
+    </div>`;
+}
+
+// ============================================================
+//  RENDER — ACCOUNT
+// ============================================================
+function renderAccount() {
+  const nbWeeks = state.weekHistory.length + 1;
+  const nbCardio = state.cardioHistory.length;
+  const totalDone = state.weekHistory.reduce((sum, w) => sum + countDoneInWeek(w), 0) + countDone();
+  const lastSync = state.lastSyncedAt ? new Date(state.lastSyncedAt).toLocaleString('fr-FR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '–';
+
+  const syncLabels = {
+    'offline': 'Local uniquement',
+    'syncing': 'Synchronisation…',
+    'synced': 'Synchronisé',
+    'error': 'Erreur de sync'
+  };
+
+  return `
+    <div class="view">
+      <button class="back-btn" onclick="goto('home')">← Retour</button>
+      <h1 class="list-title">Compte.</h1>
+      <p class="list-intro">Ton historique et ta sync.</p>
+
+      ${sb ? (state.user ? `
+        <div class="account-block">
+          <div class="account-block-title">Connecté</div>
+          <div class="account-block-value">${state.user.email || 'Sans email'}</div>
+          <div class="account-block-meta">${syncLabels[state.syncStatus] || state.syncStatus} · dernière sync ${lastSync}</div>
+          <div class="account-block-actions">
+            <button class="gold" onclick="manualSync()">Sync maintenant</button>
+            <button class="danger" onclick="signOut()">Se déconnecter</button>
+          </div>
+        </div>
+      ` : `
+        <div class="account-block">
+          <div class="account-block-title">Compte</div>
+          <div class="account-block-value">Non connecté</div>
+          <div class="account-block-meta">Tes données sont uniquement sur cet appareil. Connecte-toi pour les sauvegarder.</div>
+          <div class="account-block-actions">
+            <button class="gold" onclick="goto('login')">Se connecter</button>
+          </div>
+        </div>
+      `) : `
+        <div class="account-block">
+          <div class="account-block-title">Sync</div>
+          <div class="account-block-value">Non configurée</div>
+          <div class="account-block-meta">Supabase pas encore branché. Édite SUPABASE_CONFIG en haut du script pour activer.</div>
+        </div>
+      `}
+
+      <div class="account-block">
+        <div class="account-block-title">Historique local</div>
+        <div class="account-block-value">${nbWeeks} semaine${nbWeeks > 1 ? 's' : ''}</div>
+        <div class="account-block-meta">${totalDone} séances validées · ${nbCardio} séances cardio détaillées</div>
+        <div class="account-block-actions">
+          <button onclick="exportData()">Exporter JSON</button>
+          <button onclick="triggerImport()">Importer JSON</button>
+        </div>
+        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">
+      </div>
+    </div>`;
+}
+
+function exportData() {
+  const data = {
+    exportedAt: new Date().toISOString(),
+    week: state.week,
+    weekHistory: state.weekHistory,
+    cardioHistory: state.cardioHistory
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `shaolin-one-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function triggerImport() { document.getElementById('import-file').click(); }
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.week) state.week = data.week;
+      if (data.weekHistory) state.weekHistory = data.weekHistory;
+      if (data.cardioHistory) state.cardioHistory = data.cardioHistory;
+      saveState();
+      if (sb && state.user) {
+        // Backfill all weeks to remote
+        for (const w of [...state.weekHistory, state.week]) {
+          await sb.from('week_state').upsert({
+            user_id: state.user.id,
+            week_id: w.id,
+            data: w,
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'user_id,week_id' });
+        }
+        for (const c of state.cardioHistory) {
+          await sb.from('cardio_history').insert({
+            user_id: state.user.id,
+            date: c.date, week_id: c.weekId, type: c.type,
+            duration: c.duration, km: c.km, deniv: c.deniv, phase: c.phase
+          }).select().maybeSingle().catch(()=>{});
+        }
+      }
+      alert('Import terminé.');
+      render();
+    } catch (err) { alert('Import raté : ' + err.message); }
+  };
+  reader.readAsText(file);
+}
+
+// ============================================================
+//  DISPATCH
+// ============================================================
+function render() {
+  const app = document.getElementById('app');
+  let html;
+  switch (state.view) {
+    case 'login': html = renderLogin(); break;
+    case 'account': html = renderAccount(); break;
+    case 'home': html = renderHome(); break;
+    case 'stats': html = renderStats(); break;
+    case 'cardio-choice': html = renderCardioChoice(); break;
+    case 'cardio-stats': html = renderCardioStats(); break;
+    case 'cardio-recap': html = renderCardioRecap(); break;
+    case 'preview': html = renderPreview(); break;
+    case 'running': html = renderRunning(); break;
+    case 'complete': html = renderComplete(); break;
+    case 'bonus-list': html = renderBonusList(); break;
+    case 'lexique-list': html = renderLexiqueList(); break;
+    case 'lexique-detail': html = renderLexiqueDetail(); break;
+    default: html = renderHome();
+  }
+  app.innerHTML = html;
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+async function init() {
+  loadState();
+  archiveIfNewWeek();
+
+  if (SUPABASE_ENABLED && sb) {
+    await initAuth();
+    if (state.user) {
+      // Show home immediately with local data, then pull remote in background
+      render();
+      await syncPull();
+      render();
+    } else {
+      // Not signed in — show login
+      state.view = 'login';
+      render();
+    }
+  } else {
+    // Supabase not configured, local-only mode
+    render();
+  }
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
