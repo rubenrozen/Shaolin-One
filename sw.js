@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v6 · Supabase sync
-const CACHE = 'shaolin-v6-cervin';
+// v7 · Password auth
+const CACHE = 'shaolin-v7-cervin';
 const ASSETS = [
   './',
   './index.html',
