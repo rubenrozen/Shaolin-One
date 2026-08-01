@@ -847,6 +847,9 @@
     object-fit: contain;
     /* Blend blanc de l'image sur fond crème pour intégration propre */
     mix-blend-mode: multiply;
+    /* Fade-out du bas de l'image pour effacer proprement le trait de sol MJ */
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 82%, transparent 96%);
+    mask-image: linear-gradient(to bottom, black 0%, black 82%, transparent 96%);
   }
   .exercise-illu.large {
     width: 260px;
@@ -4230,8 +4233,8 @@ function renderRunning() {
       <div class="rest-screen">
         <div class="rest-timer-wrap">
           <div class="rest-timer-label">Repos</div>
-          <div class="rest-timer-value">${timeStr}</div>
-          <div class="rest-timer-bar"><div class="rest-timer-bar-fill" style="width:${pct}%"></div></div>
+          <div class="rest-timer-value run-timer-value">${timeStr}</div>
+          <div class="rest-timer-bar"><div class="rest-timer-bar-fill run-timer-bar-fill" style="width:${pct}%"></div></div>
         </div>
         ${next ? `
           <div class="rest-next-header">Prochain exercice</div>
