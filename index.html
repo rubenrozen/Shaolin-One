@@ -3228,9 +3228,18 @@ async function initAuth() {
   state.authChecked = true;
 
   sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      // Arriving via reset password email link
+      state.view = 'reset-password-form';
+      state.loginMessage = null;
+      render();
+      return;
+    }
     if (event === 'SIGNED_IN' && session) {
       state.user = session.user;
       state.loginMessage = null;
+      // Don't auto-navigate if user is in the middle of a password reset flow
+      if (state.view === 'reset-password-form' || state.view === 'reset-password-done') return;
       await syncPull();
       state.view = 'home';
       render();
@@ -3305,6 +3314,59 @@ function toggleAuthMode() {
   render();
 }
 
+async function sendResetLink() {
+  const emailEl = document.getElementById('reset-email');
+  const email = (emailEl && emailEl.value || '').trim();
+  if (!email) {
+    state.loginMessage = { type: 'error', text: 'Entre ton email' };
+    render();
+    return;
+  }
+  state.loginMessage = { type: 'info', text: 'Envoi du lien…' };
+  render();
+  try {
+    const redirectTo = window.location.origin + window.location.pathname;
+    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo });
+    if (error) throw error;
+    state.loginMessage = {
+      type: 'success',
+      text: 'Lien envoyé à ' + email + '. Clique-le depuis ta boîte mail — ça ouvrira ton navigateur pour définir un nouveau mot de passe, puis reviens dans cette app.'
+    };
+    render();
+  } catch (e) {
+    state.loginMessage = { type: 'error', text: 'Erreur : ' + e.message };
+    render();
+  }
+}
+
+async function updatePasswordAndFinish() {
+  const pwdEl = document.getElementById('new-password');
+  const newPassword = pwdEl && pwdEl.value || '';
+  if (!newPassword || newPassword.length < 8) {
+    state.loginMessage = { type: 'error', text: 'Mot de passe : 8 caractères minimum' };
+    render();
+    return;
+  }
+  state.loginMessage = { type: 'info', text: 'Mise à jour…' };
+  render();
+  try {
+    const { error } = await sb.auth.updateUser({ password: newPassword });
+    if (error) throw error;
+    state.loginMessage = null;
+    state.view = 'reset-password-done';
+    render();
+  } catch (e) {
+    state.loginMessage = { type: 'error', text: 'Erreur : ' + e.message };
+    render();
+  }
+}
+
+function openResetPassword() {
+  state.view = 'reset-request';
+  state.loginMessage = null;
+  render();
+}
+
 async function signOut() {
   if (!sb) return;
   try { await sb.auth.signOut(); } catch (e) {}
@@ -3341,12 +3403,58 @@ function renderLogin() {
         <button type="submit" class="cta-btn gold">${isSignup ? 'Créer le compte' : 'Se connecter'}</button>
       </form>
       ${msg ? `<div class="login-status ${msg.type}">${msg.text}</div>` : ''}
+      ${!isSignup ? `<div class="login-skip"><button onclick="openResetPassword()">Mot de passe oublié ?</button></div>` : ''}
       <div class="login-skip">
         <button onclick="toggleAuthMode()">${isSignup ? 'J\'ai déjà un compte' : 'Créer un compte'}</button>
       </div>
       <div class="login-skip">
         <button onclick="skipAuth()">Continuer sans compte (local)</button>
       </div>
+    </div>`;
+}
+
+function renderResetRequest() {
+  const msg = state.loginMessage;
+  return `
+    <div class="login-view">
+      <div class="login-brand">Shaolin One<span class="login-brand-dot">.</span></div>
+      <div class="login-tag">Cervin · été 2027</div>
+      <h1 class="login-title">Mot de passe oublié.</h1>
+      <p class="login-intro">On t'envoie un lien de récupération par email. Note : ça ouvrira ton navigateur pour définir le nouveau mot de passe, puis reviens dans l'app pour te connecter.</p>
+      <form onsubmit="event.preventDefault(); sendResetLink(); return false;">
+        <input type="email" class="login-input" id="reset-email" placeholder="email" autocomplete="email" inputmode="email" required>
+        <button type="submit" class="cta-btn gold">Envoyer le lien</button>
+      </form>
+      ${msg ? `<div class="login-status ${msg.type}">${msg.text}</div>` : ''}
+      <div class="login-skip">
+        <button onclick="goto('login')">Retour</button>
+      </div>
+    </div>`;
+}
+
+function renderResetPasswordForm() {
+  const msg = state.loginMessage;
+  return `
+    <div class="login-view">
+      <div class="login-brand">Shaolin One<span class="login-brand-dot">.</span></div>
+      <div class="login-tag">Cervin · été 2027</div>
+      <h1 class="login-title">Nouveau mot de passe.</h1>
+      <p class="login-intro">Choisis un nouveau mot de passe pour ton compte.</p>
+      <form onsubmit="event.preventDefault(); updatePasswordAndFinish(); return false;" autocomplete="on">
+        <input type="password" class="login-input" id="new-password" placeholder="nouveau mot de passe" autocomplete="new-password" required minlength="8">
+        <button type="submit" class="cta-btn gold">Sauvegarder</button>
+      </form>
+      ${msg ? `<div class="login-status ${msg.type}">${msg.text}</div>` : ''}
+    </div>`;
+}
+
+function renderResetPasswordDone() {
+  return `
+    <div class="login-view">
+      <div class="login-brand">Shaolin One<span class="login-brand-dot">.</span></div>
+      <div class="login-tag">Cervin · été 2027</div>
+      <h1 class="login-title">C'est fait.</h1>
+      <p class="login-intro">Ton mot de passe a bien été mis à jour. Retourne dans l'app Shaolin One installée sur ton écran d'accueil et connecte-toi avec ton nouveau mot de passe.</p>
     </div>`;
 }
 
@@ -3474,6 +3582,9 @@ function render() {
   let html;
   switch (state.view) {
     case 'login': html = renderLogin(); break;
+    case 'reset-request': html = renderResetRequest(); break;
+    case 'reset-password-form': html = renderResetPasswordForm(); break;
+    case 'reset-password-done': html = renderResetPasswordDone(); break;
     case 'account': html = renderAccount(); break;
     case 'home': html = renderHome(); break;
     case 'stats': html = renderStats(); break;
