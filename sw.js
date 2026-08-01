@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v15 · Illustrations + rest screen enrichi
-const CACHE = 'shaolin-v15-cervin';
+// v16 · Fix rest timer + mask sol
+const CACHE = 'shaolin-v16-cervin';
 const ASSETS = [
   './',
   './index.html',
