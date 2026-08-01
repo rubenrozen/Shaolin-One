@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v13 · Renfo refonte + composite score + NET
-const CACHE = 'shaolin-v13-cervin';
+// v15 · Illustrations + rest screen enrichi
+const CACHE = 'shaolin-v15-cervin';
 const ASSETS = [
   './',
   './index.html',
