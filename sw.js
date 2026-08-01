@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v11 · Modern typo + startDate + bonus full-body
-const CACHE = 'shaolin-v11-cervin';
+// v12 · Tabs Entrainement/Cockpit + phase override + sticky counter
+const CACHE = 'shaolin-v12-cervin';
 const ASSETS = [
   './',
   './index.html',
