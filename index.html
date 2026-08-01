@@ -836,6 +836,124 @@
     color: var(--ink-faint);
     font-weight: 700;
   }
+
+  /* ============ ILLUSTRATION EXERCICE ============ */
+  .exercise-illu {
+    display: block;
+    margin: 0 auto 8px;
+    width: 200px;
+    height: 200px;
+    max-width: 100%;
+    object-fit: contain;
+    /* Blend blanc de l'image sur fond crème pour intégration propre */
+    mix-blend-mode: multiply;
+  }
+  .exercise-illu.large {
+    width: 260px;
+    height: 260px;
+    margin-bottom: 12px;
+  }
+  .exercise-illu.small {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 6px;
+  }
+
+  /* ============ REST SCREEN (écran de repos enrichi) ============ */
+  .rest-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 8px 0 24px;
+  }
+  .rest-timer-wrap {
+    margin-bottom: 20px;
+    padding: 20px 24px;
+    background: var(--paper-elev);
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 180px;
+  }
+  .rest-timer-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .rest-timer-value {
+    font-family: var(--font-display);
+    font-size: 62px;
+    font-weight: 800;
+    color: var(--ink);
+    font-variation-settings: var(--display-max);
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+  }
+  .rest-timer-bar {
+    width: 100%;
+    height: 4px;
+    background: var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+  .rest-timer-bar-fill {
+    height: 100%;
+    background: var(--ink);
+    transition: width 0.4s linear;
+  }
+
+  .rest-next-header {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-deep);
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .rest-next-name {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--ink);
+    font-variation-settings: var(--display-strong);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 4px;
+  }
+  .rest-next-info {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 14px;
+  }
+  .rest-next-desc {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    max-width: 340px;
+    margin: 0 auto;
+    font-weight: 500;
+  }
+  .rest-next-final {
+    font-family: var(--font-display);
+    font-size: 24px;
+    color: var(--ink-faint);
+    font-variation-settings: var(--display-strong);
+    letter-spacing: -0.02em;
+    margin-top: 20px;
+  }
   .steps-detail-count {
     font-family: var(--font-mono);
     font-size: 10px;
@@ -1996,6 +2114,92 @@ function getMondayOfWeek(d) {
 function shortWeekLabel(weekId) {
   return weekId.split('-W')[1] || weekId;
 }
+
+
+// ============================================================
+//  ILLUSTRATIONS & DESCRIPTIONS PAR EXERCICE
+// ============================================================
+const EXERCISES = {
+  'squats': { illu: 'squats', desc: 'Pousse les fesses vers l\'arrière comme sur une chaise basse. Cuisses parallèles au sol, dos droit, poids sur les talons.' },
+  'squats lents': { illu: 'squats-lents', desc: 'Descente contrôlée en 3 secondes, pause d\'une seconde en bas, remontée normale. Focus contrôle.' },
+  'squats sautés': { illu: 'squats-sautes', desc: 'Squat complet, puis explosion verticale. Amortis en position squat.' },
+  'pompes': { illu: 'pompes', desc: 'Corps en ligne, mains largeur d\'épaules. Coudes à 45° du corps, descente 2 secondes.' },
+  'pompes lentes': { illu: 'pompes-lentes', desc: 'Descente en 3 secondes, pause d\'une seconde en bas. Contrôle total du mouvement.' },
+  'pompes explosives': { illu: 'pompes-explosives', desc: 'Descente contrôlée, poussée explosive. Les mains peuvent décoller légèrement.' },
+  'pompes plyo': { illu: 'pompes-plyo', desc: 'Descente contrôlée puis poussée assez puissante pour décoller les mains du sol.' },
+  'pompes archer': { illu: 'pompes-archer', desc: 'Mains très écartées. Descends d\'un côté, l\'autre bras reste tendu. Alterne.' },
+  'rowing élastique': { illu: 'rowing-elastique', desc: 'Buste penché à 45°, élastique sous les pieds. Tire vers les côtes, coudes proches du corps.' },
+  'rowing sac lesté': { illu: 'rowing-sac-leste', desc: 'Une main sur un appui, l\'autre tire un sac lesté vers la hanche. Buste parallèle au sol.' },
+  'rowing 1 bras': { illu: 'rowing-1-bras', desc: 'Un genou et une main sur un banc. L\'autre bras tire un sac vers la hanche.' },
+  'rowing lent': { illu: 'rowing-lent', desc: 'Traction en 3 secondes, retour contrôlé en 3 secondes. Tempo lent.' },
+  'fentes alternées': { illu: 'fentes-alternees', desc: 'Grand pas en avant, descente jusqu\'à ce que le genou arrière frôle le sol. Alterne.' },
+  'fentes lentes': { illu: 'fentes-lentes', desc: 'Descente en 3 secondes. Genou avant aligné avec le pied, contrôle total.' },
+  'fentes sautées': { illu: 'fentes-sautees', desc: 'Fente basse puis explosion vers le haut, changement de jambe en l\'air.' },
+  'fentes bulgares': { illu: 'fentes-bulgares', desc: 'Pied arrière posé sur une chaise. Descends en fente en gardant le buste droit.' },
+  'step-ups': { illu: 'step-ups', desc: 'Pose un pied sur la marche, pousse dans le talon pour monter en extension complète.' },
+  'glute bridge': { illu: 'glute-bridge', desc: 'Allongé sur le dos, genoux pliés. Pousse dans les talons pour décoller les hanches.' },
+  'glute bridge lent': { illu: 'glute-bridge-lent', desc: 'Monte contrôlé, pause d\'une seconde en haut, descente en 3 secondes.' },
+  'wall sit': { illu: 'wall-sit', desc: 'Dos contre un mur, glisse jusqu\'à ce que les cuisses soient parallèles au sol.' },
+  'mollets': { illu: 'mollets', desc: 'Debout, monte sur la pointe des pieds, redescends contrôlé. Amplitude max.' },
+  'burpees': { illu: 'burpees', desc: 'Squat → mains au sol → pieds en arrière → planche → saut vers les mains → saut vertical.' },
+  'planche': { illu: 'planche', desc: 'Sur les avant-bras, corps en ligne parfaite. Bassin engagé, respiration continue.' },
+  'planche latérale': { illu: 'planche-laterale', desc: 'Sur un avant-bras, corps de profil, hanches hautes. Jambes empilées.' },
+  'superman': { illu: 'superman', desc: 'Allongé face au sol, décolle simultanément bras, poitrine et jambes. Pause en haut.' },
+  'dead bug': { illu: 'dead-bug', desc: 'Sur le dos, bras vers le plafond, genoux à 90°. Descends bras + jambe opposés lentement.' },
+  'bird dog': { illu: 'bird-dog', desc: 'À quatre pattes, tends simultanément le bras droit et la jambe gauche. Alterne.' },
+  'hollow hold': { illu: 'hollow-hold', desc: 'Allongé sur le dos, bras derrière la tête. Décolle épaules et jambes, bas du dos plaqué.' },
+  'pallof press': { illu: 'pallof-press', desc: 'Élastique fixé sur le côté, tenu à deux mains devant le sternum. Pousse et résiste à la rotation.' },
+  'mountain climbers': { illu: 'mountain-climbers', desc: 'Position planche haute, ramène alternativement un genou vers la poitrine à vitesse rapide.' },
+  'high knees': { illu: 'high-knees', desc: 'Sur place, cours en montant les genoux le plus haut possible. Cadence maximale.' },
+  'petits sauts': { illu: 'petits-sauts', desc: 'Sur place, petits sauts légers sur la pointe des pieds. Prépare les tendons.' },
+  'mobilité générale': { illu: 'mobilite-generale', desc: 'Rotations articulaires : cou, épaules, hanches, chevilles. Cat-cow, squats à vide.' },
+  'mobilité dynamique': { illu: 'mobilite-dynamique', desc: 'Rotations amples, world\'s greatest stretch, swings de jambes. Prépare une séance intense.' },
+  'cat-cow': { illu: 'cat-cow', desc: 'À quatre pattes, alterne dos rond (rentrer le ventre) et dos creux (regard vers le haut).' },
+  'activation': { illu: 'activation', desc: '10 squats à vide, 5 pompes lentes, 10 fentes alternées. Réveille les muscles.' },
+  'activation cardio': { illu: 'activation-cardio', desc: 'Jumping jacks, high knees, montées de genoux. 20-30 sec chaque, monte le cardiaque.' },
+  'activation fessiers': { illu: 'activation-fessiers', desc: '15 glute bridges lents, 10 clam shells par côté. Prépare la chaîne postérieure.' },
+  'quadriceps': { illu: 'quadriceps', desc: 'Debout, attrape ton pied talon vers les fesses. Genoux côte à côte, bassin neutre.' },
+  'ischios': { illu: 'ischios', desc: 'Assis, une jambe tendue, l\'autre pliée. Buste vers le pied tendu, dos droit.' },
+  'pigeon': { illu: 'pigeon', desc: 'Genou avant plié devant, tibia parallèle au haut du tapis. Jambe arrière tendue, buste bas.' },
+  'fléchisseurs': { illu: 'flechisseurs', desc: 'Fente basse, genou arrière au sol. Pousse le bassin vers l\'avant sans cambrer.' },
+  'mollets contre mur': { illu: 'mollets-mur', desc: 'Face au mur, jambe avant pliée, jambe arrière tendue talon planté. Avance la hanche.' },
+  'twist allongé': { illu: 'twist-allonge', desc: 'Sur le dos, bras en croix. Ramène un genou vers le côté opposé, regard à l\'opposé.' },
+  'cobra': { illu: 'cobra', desc: 'À plat ventre, mains sous les épaules. Pousse le buste vers le haut, hanches au sol.' },
+  'enfant': { illu: 'enfant', desc: 'À genoux, fesses sur les talons, buste vers l\'avant, bras tendus devant. Respire profondément.' },
+  'cross-body': { illu: 'cross-body', desc: 'Bras tendu en travers de la poitrine, main tirant au niveau du coude vers toi. Épaule basse.' },
+  'pec': { illu: 'pec-mur', desc: 'Avant-bras contre un mur, coude à hauteur d\'épaule. Avance le buste, tourne à l\'opposé.' },
+};
+
+// Retourne la clé normalisée d'un exercice, ou null si non mappé
+function normalizeExerciseName(name) {
+  if (!name || typeof name !== 'string') return null;
+  let n = name.toLowerCase().trim();
+  // Retire les suffixes " G", " D", " g", " d" (planche latérale G → planche latérale)
+  n = n.replace(/\s+[gd]$/i, '');
+  // Retire les suffixes " · série X/Y" ou similaires
+  n = n.replace(/\s*·.*$/, '');
+  return n;
+}
+
+function getExerciseData(name) {
+  const key = normalizeExerciseName(name);
+  return key ? (EXERCISES[key] || null) : null;
+}
+
+// Retourne le HTML pour l'illustration d'un exo (ou chaîne vide si pas dispo)
+// L'attribut onerror gère le cas où le fichier est mappé mais pas encore présent
+function renderIllustration(name, size) {
+  const data = getExerciseData(name);
+  if (!data || !data.illu) return '';
+  const cls = size === 'large' ? 'exercise-illu large' : (size === 'small' ? 'exercise-illu small' : 'exercise-illu');
+  return `<img src="./illustrations/${data.illu}.webp" class="${cls}" alt="" onerror="this.style.display='none'; this.parentElement && this.parentElement.classList.add('no-illu');" />`;
+}
+
+function getExerciseDesc(name) {
+  const data = getExerciseData(name);
+  return data ? data.desc : '';
+}
+
 
 // ============================================================
 //  CARDIO TARGETS
@@ -3972,7 +4176,6 @@ function renderPreview() {
       </div>
       ${targetHTML}
       ${planHTML ? `<div class="plan-block">${planHTML}</div>` : ''}
-      ${stepsDetailHTML}
       <button class="cta-btn" onclick="startCurrentSession()">Démarrer</button>
     </div>`;
 }
@@ -4000,7 +4203,7 @@ function renderRunning() {
   if (step.type === 'rest') viewClass = 'rest';
   else if (step.label === 'échauffement' || step.label === 'préparation') viewClass = 'warmup';
 
-  let timerHTML = '', actionHTML = '', stepNameHTML = '', stepSubHTML = '', contextHTML = '';
+  let timerHTML = '', actionHTML = '', stepNameHTML = '', stepSubHTML = '', contextHTML = '', illuHTML = '';
 
   if (step.type === 'rest') {
     const remaining = step.duration - state.timer.stepElapsed;
@@ -4008,16 +4211,52 @@ function renderRunning() {
     const s = remaining % 60;
     const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     const pct = Math.min(100, (state.timer.stepElapsed / step.duration) * 100);
-    contextHTML = `<div class="run-step-context">Repos</div>`;
-    stepNameHTML = `<div class="run-step-name">Récup</div>`;
-    const next = steps[state.timer.stepIdx + 1];
-    stepSubHTML = `<div class="run-step-sub">Prochain · ${next ? (next.name || 'Fin') : 'Fin'}</div>`;
-    timerHTML = `
-      <div class="run-timer rest">
-        <div class="run-timer-value">${timeStr}</div>
-        <div class="run-timer-bar"><div class="run-timer-bar-fill" style="width:${pct}%"></div></div>
+
+    // Trouve le prochain step non-rest pour l'aperçu
+    let next = null;
+    for (let i = state.timer.stepIdx + 1; i < steps.length; i++) {
+      if (steps[i].type !== 'rest') { next = steps[i]; break; }
+    }
+
+    // Rendu spécifique complet pour la vue rest (bypass le layout standard)
+    const nextIllu = next ? renderIllustration(next.name, 'large') : '';
+    const nextDesc = next ? getExerciseDesc(next.name) : '';
+    const nextInfo = next
+      ? (next.type === 'reps' ? next.reps : (next.type === 'time' ? `${next.duration} s` : ''))
+      : '';
+    const nextLabel = next && next.label ? next.label : '';
+
+    const restContent = `
+      <div class="rest-screen">
+        <div class="rest-timer-wrap">
+          <div class="rest-timer-label">Repos</div>
+          <div class="rest-timer-value">${timeStr}</div>
+          <div class="rest-timer-bar"><div class="rest-timer-bar-fill" style="width:${pct}%"></div></div>
+        </div>
+        ${next ? `
+          <div class="rest-next-header">Prochain exercice</div>
+          ${nextIllu}
+          <div class="rest-next-name">${next.name}</div>
+          ${nextInfo || nextLabel ? `<div class="rest-next-info">${nextInfo}${nextInfo && nextLabel ? ' · ' : ''}${nextLabel}</div>` : ''}
+          ${nextDesc ? `<div class="rest-next-desc">${nextDesc}</div>` : ''}
+        ` : `<div class="rest-next-final">Séance presque bouclée.</div>`}
       </div>`;
-    actionHTML = `<button class="run-action-btn skip" onclick="skipStep()">Passer le repos →</button>`;
+
+    return `
+      <div class="view running-view rest">
+        <div class="run-top">
+          <button class="run-quit" onclick="askQuit()">← Quitter</button>
+          <div class="run-total">${totalStr}</div>
+          <button class="run-pause ${state.timer.paused ? 'paused' : ''}" onclick="togglePause()">
+            ${state.timer.paused ? '▶ Reprendre' : '⏸ Pause'}
+          </button>
+        </div>
+        <div class="run-progress">${progressHTML}</div>
+        <div class="run-content">
+          ${restContent}
+        </div>
+        <button class="run-action-btn skip" onclick="skipStep()">Passer le repos →</button>
+      </div>`;
   }
   else if (step.type === 'time') {
     const remaining = step.duration - state.timer.stepElapsed;
@@ -4026,6 +4265,7 @@ function renderRunning() {
     const timeStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     const pct = Math.min(100, (state.timer.stepElapsed / step.duration) * 100);
     if (step.label) contextHTML = `<div class="run-step-context">${step.label}</div>`;
+    illuHTML = renderIllustration(step.name);
     stepNameHTML = `<div class="run-step-name">${step.name}</div>`;
     timerHTML = `
       <div class="run-timer ${viewClass}">
@@ -4036,6 +4276,7 @@ function renderRunning() {
   }
   else if (step.type === 'reps') {
     if (step.label) contextHTML = `<div class="run-step-context">${step.label}</div>`;
+    illuHTML = renderIllustration(step.name);
     stepNameHTML = `<div class="run-step-name">${step.name}</div>`;
     stepSubHTML = `<div class="run-step-sub">${step.reps || ''}</div>`;
     actionHTML = `<button class="run-action-btn done" onclick="advance()">✓ Fait</button>`;
@@ -4065,7 +4306,7 @@ function renderRunning() {
       </div>
       <div class="run-progress">${progressHTML}</div>
       <div class="run-content">
-        ${contextHTML}${stepNameHTML}${stepSubHTML}${timerHTML}${cuesHTML}${nextPreview}
+        ${contextHTML}${illuHTML}${stepNameHTML}${stepSubHTML}${timerHTML}${cuesHTML}${nextPreview}
       </div>
       ${actionHTML}
     </div>`;
