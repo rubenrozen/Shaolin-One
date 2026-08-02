@@ -1024,6 +1024,112 @@
     letter-spacing: 0.04em;
     margin-top: auto;
   }
+
+  /* ============ REWARDS / BADGES ============ */
+  .rewards-headline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 10px 0 22px;
+  }
+  .rewards-headline-card {
+    background: var(--paper-elev);
+    border-radius: 16px;
+    padding: 16px 14px;
+    border: 1px solid var(--line);
+    text-align: center;
+  }
+  .rewards-headline-num {
+    font-family: var(--font-display);
+    font-size: 46px;
+    font-weight: 800;
+    color: var(--gold-deep);
+    font-variation-settings: var(--display-max);
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+  }
+  .rewards-headline-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin-top: 6px;
+  }
+
+  .badge-section-header {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin: 22px 4px 10px;
+  }
+  .badge-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .badge {
+    background: var(--paper-elev);
+    border-radius: 16px;
+    padding: 16px 14px 14px;
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-height: 110px;
+    position: relative;
+    transition: all 0.15s;
+  }
+  .badge.unlocked {
+    background: var(--gold-bg);
+    border-color: var(--gold);
+    box-shadow: 0 0 12px var(--gold-halo);
+  }
+  .badge.locked { opacity: 0.42; }
+  .badge-icon {
+    font-family: var(--font-display);
+    font-size: 22px;
+    line-height: 1;
+    color: var(--gold-deep);
+    letter-spacing: 0.05em;
+    font-variation-settings: var(--display-strong);
+    margin-bottom: 4px;
+  }
+  .badge.locked .badge-icon { color: var(--ink-faint); }
+  .badge-label {
+    font-family: var(--font-display);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-variation-settings: var(--display-strong);
+    line-height: 1.1;
+  }
+  .badge-desc {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+    margin-top: 2px;
+  }
+  .badge-threshold {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--gold-deep);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: auto;
+    padding-top: 6px;
+  }
+  .badge.locked .badge-threshold { color: var(--ink-faint); }
   .steps-detail-count {
     font-family: var(--font-mono);
     font-size: 10px;
@@ -3298,6 +3404,59 @@ function countDoneInWeek(w) {
 function countDone() { return countDoneInWeek(state.week); }
 
 // ============================================================
+//  REWARDS / BADGES
+// ============================================================
+// Retourne l'ensemble des semaines (historique + courante), filtrées par startDate
+function allValidWeeks() {
+  const startDate = state.settings && state.settings.startDate ? new Date(state.settings.startDate) : null;
+  const weeks = [...(state.weekHistory || [])];
+  if (state.week && state.week.id) weeks.push(state.week);
+  if (!startDate) return weeks;
+  return weeks.filter(w => {
+    if (!w.monday) return true;
+    return new Date(w.monday) >= startDate;
+  });
+}
+
+// Compte les semaines "pleines" (3/3 séances principales validées)
+function countFullWeeks() {
+  return allValidWeeks().filter(w => countDoneInWeek(w) === 3).length;
+}
+
+// Compte le total de bonus effectués
+function countTotalBonus() {
+  return allValidWeeks().reduce((sum, w) => sum + (w.bonusCount || 0), 0);
+}
+
+// Paliers pour les semaines pleines (points de constance)
+const CONSTANCE_TIERS = [
+  { threshold: 1, label: 'Première', icon: '◆', desc: 'Ta première semaine bouclée' },
+  { threshold: 3, label: 'Régularité', icon: '◆◆', desc: '3 semaines pleines cumulées' },
+  { threshold: 5, label: 'Constance', icon: '◆◆◆', desc: '5 semaines pleines' },
+  { threshold: 10, label: 'Discipline', icon: '❖', desc: '10 semaines pleines · le rythme installé' },
+  { threshold: 20, label: 'Dévotion', icon: '❖❖', desc: '20 semaines pleines · la moitié du chemin' },
+  { threshold: 40, label: 'Maître', icon: '❖❖❖', desc: '40 semaines · prêt pour le Cervin' }
+];
+
+// Paliers pour les bonus
+const BONUS_TIERS = [
+  { threshold: 1, label: 'Premier bonus', icon: '✦', desc: 'Tu es allé chercher un extra' },
+  { threshold: 5, label: 'Assidu', icon: '✦✦', desc: '5 bonus effectués' },
+  { threshold: 10, label: 'Passionné', icon: '✦✦✦', desc: '10 bonus dans les jambes' },
+  { threshold: 25, label: 'Marathonien', icon: '✧', desc: '25 bonus cumulés' },
+  { threshold: 50, label: 'Athlète', icon: '✧✧', desc: '50 bonus · niveau engagement rare' },
+  { threshold: 100, label: 'Centurion', icon: '✧✧✧', desc: '100 bonus · tu as changé ton corps' }
+];
+
+function computeRewards() {
+  const fullWeeks = countFullWeeks();
+  const totalBonus = countTotalBonus();
+  const constanceBadges = CONSTANCE_TIERS.map(t => ({ ...t, unlocked: fullWeeks >= t.threshold }));
+  const bonusBadges = BONUS_TIERS.map(t => ({ ...t, unlocked: totalBonus >= t.threshold }));
+  return { fullWeeks, totalBonus, constanceBadges, bonusBadges };
+}
+
+// ============================================================
 //  AUDIO + WAKE
 // ============================================================
 function ensureAudio() {
@@ -3322,9 +3481,18 @@ function beep(freq = 660, duration = 0.18) {
   } catch (e) {}
 }
 function vibrate(p) { if (navigator.vibrate) navigator.vibrate(p); }
-function signalTransition() { beep(660, 0.15); setTimeout(() => beep(880, 0.2), 180); vibrate([120, 60, 180]); }
+// Signal au démarrage d'un chrono : deux notes montantes (attaque)
+function signalStart() { beep(660, 0.12); setTimeout(() => beep(880, 0.15), 130); vibrate([100, 40, 140]); }
+// Signal 10 sec avant la fin : double bip aigu (warning)
+function signalWarning() { beep(920, 0.10); setTimeout(() => beep(920, 0.10), 180); vibrate([80, 40, 80]); }
+// Signal petit bip pour countdown 3/2/1
 function signalCountdown() { beep(440, 0.08); vibrate(60); }
+// Signal à la fin d'un chrono : deux notes descendantes (expiration)
+function signalEnd() { beep(500, 0.25); setTimeout(() => beep(360, 0.35), 250); vibrate([180, 80, 240]); }
+// Signal fin de séance complète : mélodie triomphale
 function signalComplete() { beep(660, 0.15); setTimeout(() => beep(880, 0.15), 180); setTimeout(() => beep(1100, 0.3), 360); vibrate([200, 80, 200, 80, 400]); }
+// Legacy alias
+function signalTransition() { signalStart(); }
 async function requestWakeLock() { if ('wakeLock' in navigator) { try { state.wakeLock = await navigator.wakeLock.request('screen'); } catch (e) {} } }
 function releaseWakeLock() { if (state.wakeLock) { state.wakeLock.release().catch(()=>{}); state.wakeLock = null; } }
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && state.timer.running) requestWakeLock(); });
@@ -3348,6 +3516,11 @@ function startTimer() {
   state.timer.stepIdx = 0; state.timer.stepElapsed = 0; state.timer.totalElapsed = 0;
   if (state.timer.intervalId) clearInterval(state.timer.intervalId);
   state.timer.intervalId = setInterval(tick, 1000);
+  // Signal de départ si la première étape a un chrono
+  const firstStep = currentStep();
+  if (firstStep && (firstStep.type === 'time' || firstStep.type === 'rest')) {
+    setTimeout(() => signalStart(), 200);
+  }
   render();
 }
 function tick() {
@@ -3358,16 +3531,29 @@ function tick() {
   if (step.type === 'time' || step.type === 'rest') {
     state.timer.stepElapsed += 1;
     const remaining = step.duration - state.timer.stepElapsed;
+    // Warning à 10 sec restantes (une seule fois, pas continu)
+    if (remaining === 10) signalWarning();
+    // Countdown 3, 2, 1
     if (remaining <= 3 && remaining > 0) signalCountdown();
-    if (state.timer.stepElapsed >= step.duration) { advance(); return; }
+    // Fin de chrono → son distinct puis on avance
+    if (state.timer.stepElapsed >= step.duration) {
+      signalEnd();
+      advance();
+      return;
+    }
   }
   updateTimerUI();
 }
 function togglePause() { state.timer.paused = !state.timer.paused; render(); }
 function advance() {
-  signalTransition();
-  state.timer.stepIdx += 1; state.timer.stepElapsed = 0;
+  state.timer.stepIdx += 1;
+  state.timer.stepElapsed = 0;
   if (state.timer.stepIdx >= activeSteps().length) { completeSession(); return; }
+  // Signal de démarrage uniquement si le nouveau step a un chrono qui tourne
+  const newStep = currentStep();
+  if (newStep && (newStep.type === 'time' || newStep.type === 'rest')) {
+    signalStart();
+  }
   render();
 }
 function skipStep() {
@@ -3904,6 +4090,43 @@ function renderTraining() {
 // ============================================================
 //  RENDER — COCKPIT (semainier + stats + settings)
 // ============================================================
+function renderRewardsSection() {
+  const r = computeRewards();
+  const constanceHTML = r.constanceBadges.map(b => `
+    <div class="badge ${b.unlocked ? 'unlocked' : 'locked'}">
+      <div class="badge-icon">${b.icon}</div>
+      <div class="badge-label">${b.label}</div>
+      <div class="badge-desc">${b.desc}</div>
+      <div class="badge-threshold">${b.threshold} sem</div>
+    </div>`).join('');
+  const bonusHTML = r.bonusBadges.map(b => `
+    <div class="badge ${b.unlocked ? 'unlocked' : 'locked'}">
+      <div class="badge-icon">${b.icon}</div>
+      <div class="badge-label">${b.label}</div>
+      <div class="badge-desc">${b.desc}</div>
+      <div class="badge-threshold">${b.threshold} bonus</div>
+    </div>`).join('');
+
+  return `
+      <div class="section-title" style="margin-top: 24px;">
+        <div class="section-title-text">Récompenses</div>
+      </div>
+      <div class="rewards-headline">
+        <div class="rewards-headline-card">
+          <div class="rewards-headline-num">${r.fullWeeks}</div>
+          <div class="rewards-headline-label">Semaines pleines</div>
+        </div>
+        <div class="rewards-headline-card">
+          <div class="rewards-headline-num">${r.totalBonus}</div>
+          <div class="rewards-headline-label">Bonus effectués</div>
+        </div>
+      </div>
+      <div class="badge-section-header">Constance · semaines 3/3</div>
+      <div class="badge-grid">${constanceHTML}</div>
+      <div class="badge-section-header">Extra · bonus cumulés</div>
+      <div class="badge-grid">${bonusHTML}</div>`;
+}
+
 function renderCockpit() {
   const N = 8;
   const weeks = getRecentWeeks(N);
@@ -3964,6 +4187,8 @@ function renderCockpit() {
         </div>
         <div class="week-strip">${weekCellsHTML}</div>
       </div>
+
+      ${renderRewardsSection()}
 
       <div class="section-title">
         <div class="section-title-text">Progression</div>
