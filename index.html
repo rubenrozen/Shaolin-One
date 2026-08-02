@@ -173,7 +173,7 @@
     -webkit-backdrop-filter: blur(14px);
     border-top: 1px solid var(--line);
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     padding-bottom: var(--safe-bottom);
     z-index: 30;
     max-width: 560px;
@@ -956,6 +956,73 @@
     font-variation-settings: var(--display-strong);
     letter-spacing: -0.02em;
     margin-top: 20px;
+  }
+
+  /* ============ DISCIPLINE GRID ============ */
+  .discipline-intro {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin: 6px 0 22px;
+    font-weight: 500;
+  }
+  .discipline-cat-header {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin: 22px 4px 10px;
+  }
+  .discipline-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .discipline-card {
+    background: var(--paper-elev);
+    border-radius: 20px;
+    padding: 20px 16px 18px;
+    border: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 6px;
+    transition: transform 0.15s, background 0.15s;
+    cursor: pointer;
+    min-height: 130px;
+  }
+  .discipline-card:active {
+    transform: scale(0.97);
+    background: var(--gold-bg);
+  }
+  .discipline-card-icon {
+    font-family: var(--font-display);
+    font-size: 28px;
+    color: var(--gold-deep);
+    line-height: 1;
+    margin-bottom: 6px;
+    font-variation-settings: var(--display-strong);
+  }
+  .discipline-card-title {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-variation-settings: var(--display-strong);
+    line-height: 1.15;
+  }
+  .discipline-card-hint {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-top: auto;
   }
   .steps-detail-count {
     font-family: var(--font-mono);
@@ -2908,42 +2975,84 @@ const BONUS = [
 //  LEXIQUE
 // ============================================================
 const LEXIQUE = [
-  { id: 'coherence', cat: 'Respiration', title: 'Cohérence cardiaque',
+  // ==== RESPIRATION ====
+  { id: 'coherence', cat: 'Respiration', icon: '♡', title: 'Cohérence cardiaque',
     intro: 'Synchronise cœur et respiration. Bascule en parasympathique, baisse cortisol, améliore focus.',
     when: ['Le matin', 'À midi', 'Le soir avant de dormir', 'Avant une séance de sport'],
     protocol: { title: 'Protocole 3-6-5', body: '3 fois par jour, 6 respirations/min (5 sec inspire nez, 5 sec expire bouche), 5 minutes.', details: ['Assis dos droit ou allongé', '30 cycles = 5 minutes', 'Effet 3-4h, cumulatif', 'Yeux fermés'] } },
-  { id: 'box-breathing', cat: 'Respiration', title: 'Box breathing (4-4-4-4)',
+
+  { id: 'box-breathing', cat: 'Respiration', icon: '□', title: 'Box breathing (4-4-4-4)',
     intro: 'Technique militaire pour rester calme sous pression.',
     when: ['Avant les ressauts exposés', 'Avant un round de boxe', 'En cas de pic de stress'],
     protocol: { title: 'Le carré du souffle', body: '4 sec inspire · 4 sec pause · 4 sec expire · 4 sec pause. 4 à 8 cycles.', details: ['Calme dans les pauses', 'Nasal si possible', 'Peut se pratiquer debout', 'Progression : 5-5-5-5 puis 6-6-6-6'] } },
-  { id: 'wim-hof', cat: 'Respiration', title: 'Méthode Wim Hof',
+
+  { id: 'wim-hof', cat: 'Respiration', icon: '❄', title: 'Méthode Wim Hof',
     intro: 'Hyperventilation contrôlée + apnée. Tolérance CO2, immunité, préparation au froid.',
     when: ['Le matin à jeun', 'Avant un défi mental', 'Avant douche/bain froid', 'Pas avant de dormir'],
     protocol: { title: 'Cycle complet', body: '30 respirations rapides profondes puis apnée poumons vides, puis inspire pleine + rétention 15 sec. 3 tours.', details: ['Jamais dans l\'eau', 'Note tes temps d\'apnée', 'Après le 3ᵉ tour, respiration normale', '10-15 min total'] } },
-  { id: 'apnee-statique', cat: 'Apnée', title: 'Apnée statique',
+
+  { id: 'nadi-shodhana', cat: 'Respiration', icon: '∞', title: 'Nadi Shodhana',
+    intro: 'Pranayama yogique classique. Alterne les narines pour équilibrer les systèmes sympathique et parasympathique. Effets mesurables sur HRV et pression artérielle (Telles et al., 2013).',
+    when: ['En préparation d\'effort', 'En récupération de séance', 'Avant méditation', 'Le matin pour ancrer'],
+    protocol: { title: 'Respiration alternée', body: '5 min. Pouce ferme narine droite → inspire gauche. Ferme gauche avec annulaire → expire droite → inspire droite. Ferme droite → expire gauche. Un cycle complet.', details: ['Assis dos droit, épaules relâchées', 'Rythme 4 sec inspire / 6 sec expire', '10 à 20 cycles complets', 'Tradition Hatha Yoga, codifiée au 15ème siècle'] } },
+
+  { id: 'buteyko', cat: 'Respiration', icon: '◐', title: 'Méthode Buteyko',
+    intro: 'Développée par Konstantin Buteyko (URSS, 1950). L\'hyperventilation chronique abaisse le CO2 sanguin et diminue l\'oxygénation tissulaire (effet Bohr). Adoptée par Kilian Jornet et l\'endurance élite.',
+    when: ['Le matin au réveil (Control Pause)', 'Toute la journée : respiration nasale exclusive', 'Avant les séances d\'altitude simulée'],
+    protocol: { title: 'Control Pause + hypoventilation', body: 'Matin à jeun : expire normal, pince le nez, chronomètre jusqu\'à première envie d\'inspirer. C\'est ton CP. Cible : progresser de 20s à 40+ sec sur plusieurs mois.', details: ['Respiration nasale exclusive jour ET nuit', 'Réduire l\'amplitude respiratoire', 'CP > 40s = adaptation altitude solide', 'Corrèle avec performance en altitude'] } },
+
+  // ==== APNÉE ====
+  { id: 'apnee-statique', cat: 'Apnée', icon: '●', title: 'Apnée statique',
     intro: 'Tenir sa respiration au repos. Tolérance CO2, calme mental.',
     when: ['Le soir', 'Après une séance', 'Jamais dans l\'eau seul'],
     protocol: { title: 'Table CO2', body: '8 apnées avec repos qui diminuent : repos 2:00, apnée 1:00 ; repos 1:45, apnée 1:00 ; … jusqu\'à repos 0:15.', details: ['Allongé confortable', 'Bouche fermée, pince le nez', 'Adapte à ton niveau', 'Progresse toutes les 2 semaines'] } },
-  { id: 'apnee-dynamique', cat: 'Apnée', title: 'Apnée dynamique',
+
+  { id: 'apnee-dynamique', cat: 'Apnée', icon: '↔', title: 'Apnée dynamique',
     intro: 'Marcher en apnée. Entraînement mental pour l\'altitude.',
     when: ['En complément d\'une séance cardio', 'À l\'échauffement', 'Jamais dans l\'eau seul'],
     protocol: { title: 'Marche en apnée', body: 'Inspire pleine, retiens, marche jusqu\'à l\'envie de respirer, 5 respirations, recommence. 5-10 tours.', details: ['20 → 30 → 40 → 50 pas', 'Ne force pas', 'Toujours en sécurité'] } },
-  { id: 'douche-froide', cat: 'Froid', title: 'Douche froide',
+
+  // ==== FROID ====
+  { id: 'douche-froide', cat: 'Froid', icon: '▽', title: 'Douche froide',
     intro: 'Déclencheur d\'inconfort volontaire le plus simple.',
     when: ['Chaque matin', 'Après séance de sport', 'Fin de la douche chaude'],
     protocol: { title: 'Progressif sur 4 semaines', body: 'S1 : 30 sec. S2 : 1 min. S3 : 1:30. S4+ : 2-3 min.', details: ['Le plus froid possible', 'Nasal, lente et profonde', 'Choc dure ~10 sec', 'Termine par nuque et visage'] } },
-  { id: 'bain-froid', cat: 'Froid', title: 'Bain froid',
+
+  { id: 'bain-froid', cat: 'Froid', icon: '≋', title: 'Bain froid',
     intro: 'Immersion complète. Anti-inflammatoire puissant.',
     when: ['Post-séance intense', '1×/semaine max', 'Jamais seul en eau naturelle'],
     protocol: { title: 'Immersion contrôlée', body: 'Eau à 10-15°C. 3 à 5 min max. Immersion jusqu\'à la nuque.', details: ['Entre lentement', 'Respiration lente', 'Sortir avant le tremblement', 'Réchauffe-toi passivement'] } },
-  { id: 'meditation', cat: 'Mental', title: 'Méditation body scan',
+
+  // ==== MENTAL ====
+  { id: 'meditation', cat: 'Mental', icon: '○', title: 'Méditation body scan',
     intro: 'Ancre l\'attention dans le corps. Écoute des signaux.',
     when: ['Le soir', 'Le matin', 'Après une séance'],
     protocol: { title: 'Scan pieds → tête', body: '10 à 20 min. Balaye l\'attention lentement des orteils au sommet du crâne.', details: ['Pas de but, juste observer', 'Reviens au point corporel', 'Tension : mâchoire, épaules, ventre', 'App : Insight Timer, Petit Bambou'] } },
-  { id: 'visualisation', cat: 'Mental', title: 'Visualisation Cervin',
+
+  { id: 'visualisation', cat: 'Mental', icon: '△', title: 'Visualisation Cervin',
     intro: 'Répétition mentale de l\'itinéraire. Prépare le cerveau.',
     when: ['Le soir', 'Après une séance de respiration', 'Plus fréquent quand l\'échéance approche'],
-    protocol: { title: 'Le film mental', body: '5 à 15 min. Joue le film : départ, arête, ressauts, sommet, descente.', details: ['Focus surtout sur la DESCENTE', 'Calme dans les passages engagés', 'Sens le vent, le froid', 'Termine sur le retour au refuge'] } }
+    protocol: { title: 'Le film mental', body: '5 à 15 min. Joue le film : départ, arête, ressauts, sommet, descente.', details: ['Focus surtout sur la DESCENTE', 'Calme dans les passages engagés', 'Sens le vent, le froid', 'Termine sur le retour au refuge'] } },
+
+  { id: 'vipassana', cat: 'Mental', icon: '⋯', title: 'Vipassana',
+    intro: 'Tradition bouddhiste Theravada, 2500 ans. Observation des sensations sans réaction. Popularisée par S.N. Goenka. Modifie ton rapport aux sensations désagréables (fatigue, froid, douleur musculaire). Fondation scientifique via Kabat-Zinn (MBSR) et Davidson (Univ. Wisconsin).',
+    when: ['Le matin ou soir', 'Après grosse séance pour re-caler la tête', 'En préparation mentale longue échéance'],
+    protocol: { title: 'Scan corporel systématique', body: '30 à 60 min. Balaye chaque partie du corps de la tête aux pieds puis pieds à tête. Observe chaque sensation (chaud, tension, picotement) sans réagir, sans juger.', details: ['Position assise stable, dos droit', 'Ne pas chercher à changer la sensation, juste l\'observer', 'La sensation disparaît d\'elle-même : anicca (impermanence)', 'Idéal : retraite 10 jours Goenka (gratuit)'] } },
+
+  { id: 'pettlep', cat: 'Mental', icon: '✦', title: 'Répétition mentale PETTLEP',
+    intro: 'Cadre scientifique de la visualisation. Holmes & Collins (2001), utilisé par le comité olympique britannique. Sept dimensions à maximiser pour rendre la répétition mentale efficace : Physical, Environment, Task, Timing, Learning, Emotion, Perspective.',
+    when: ['Après une reco terrain ou vidéo', 'Le soir avant une échéance', 'En complément de Visualisation Cervin (framework méthodologique)'],
+    protocol: { title: 'Check-list 7 dimensions', body: '15 à 25 min. Adopte la posture du geste (P). Sois dans le lieu réel (E). Répète la tâche exacte (T). En temps réel, pas accéléré (T). Adapté à ton niveau actuel (L). Engage les émotions (E). Alterne vue interne / externe (P).', details: ['P physique : adopte la vraie posture', 'E environnement : cherche des photos du lieu', 'T timing : chronomètre à durée réelle', 'E émotion : ressens la peur, l\'effort, la joie', 'P perspective : vue première personne priorité'] } },
+
+  { id: 'nsdr', cat: 'Mental', icon: '☾', title: 'NSDR',
+    intro: 'Non-Sleep Deep Rest. Popularisé par Andrew Huberman (Stanford). Combine yoga nidra et cohérence cardiaque. Récupération non-sommeil documentée par les travaux de Matthew Walker. 20 min de NSDR = récupération équivalente à une phase de sommeil profond partiel.',
+    when: ['En milieu de journée pour reset', 'Après une grosse séance quand tu ne peux pas dormir', 'À la place d\'une sieste'],
+    protocol: { title: 'Protocole 20 min', body: 'Allongé sur le dos, yeux fermés. 5 min respiration lente (6 respi/min). 10 min scan corporel guidé (relaxation progressive de chaque partie). 5 min immobilité totale, attention diffuse.', details: ['Guidage audio recommandé (YouTube Huberman NSDR)', 'Ne pas s\'endormir totalement (sinon effet groggy)', 'Fait remonter la dopamine cérébrale', 'Utilisé par Google leadership et athlètes UFC'] } },
+
+  { id: 'marche-meditative', cat: 'Mental', icon: '↗', title: 'Marche méditative',
+    intro: 'Kinhin, méditation en mouvement de tradition zen. Modernisée par Thich Nhat Hanh. Entraîne à maintenir la concentration en mouvement soutenu — exactement ce qu\'il te faudra sur 5-6h de course d\'arête au Cervin.',
+    when: ['Après méditation assise (transition douce)', 'Pour marcher long sans distraction', 'À l\'échauffement mental d\'une course longue'],
+    protocol: { title: 'Marche très lente attentive', body: '15 à 30 min. Marche à moitié de ta vitesse normale. Coordonne la respiration : inspire sur 3 pas, expire sur 4 pas. Regard bas, à 2 mètres devant. Concentration sur les sensations plantaires à chaque pas.', details: ['Terrain plat au début, montagne ensuite', 'Ne pense pas à ta destination', 'Chaque pas est complet en lui-même', 'Testable en course longue en Zone 1'] } }
 ];
 
 // ============================================================
@@ -3641,6 +3750,10 @@ function renderTabBar() {
         <div class="tab-icon">◈</div>
         <div class="tab-label">Entraînement</div>
       </button>
+      <button class="tab-btn ${tab === 'discipline' ? 'active' : ''}" onclick="switchTab('discipline')">
+        <div class="tab-icon">◉</div>
+        <div class="tab-label">Discipline</div>
+      </button>
       <button class="tab-btn ${tab === 'cockpit' ? 'active' : ''}" onclick="switchTab('cockpit')">
         <div class="tab-icon">◐</div>
         <div class="tab-label">Cockpit</div>
@@ -3770,14 +3883,10 @@ function renderTraining() {
         ${boxeTile}
       </div>
 
-      <div class="library-row" style="grid-template-columns: 1fr 1fr;">
+      <div class="library-row" style="grid-template-columns: 1fr;">
         <button class="lib-tile" onclick="goto('bonus-list')">
           <div class="lib-tile-count">${BONUS.length}</div>
           <div class="lib-tile-title">Bonus</div>
-        </button>
-        <button class="lib-tile" onclick="goto('lexique-list')">
-          <div class="lib-tile-count">${LEXIQUE.length}</div>
-          <div class="lib-tile-title">Parasportif</div>
         </button>
       </div>
 
@@ -4488,26 +4597,41 @@ function renderBonusList() {
       <div class="list-items">${itemsHTML}</div>
     </div>`;
 }
-function renderLexiqueList() {
-  const itemsHTML = LEXIQUE.map(l => `
-    <button class="list-card" onclick="goto('lexique-detail', {lexiqueId: '${l.id}'})">
-      <div class="list-card-body">
-        <div class="list-card-title">${l.title}</div>
-        <div class="list-card-sub">${l.cat}</div>
-      </div>
-      <div class="list-card-arrow">→</div>
-    </button>`).join('');
+function renderDiscipline() {
+  // Group items by category
+  const cats = {};
+  LEXIQUE.forEach(l => {
+    if (!cats[l.cat]) cats[l.cat] = [];
+    cats[l.cat].push(l);
+  });
+  // Ordre des catégories
+  const catOrder = ['Respiration', 'Apnée', 'Froid', 'Mental'];
+  const sectionsHTML = catOrder
+    .filter(cat => cats[cat] && cats[cat].length)
+    .map(cat => {
+      const cardsHTML = cats[cat].map(l => `
+        <button class="discipline-card" onclick="goto('discipline-detail', {lexiqueId: '${l.id}'})">
+          <div class="discipline-card-icon">${l.icon || '·'}</div>
+          <div class="discipline-card-title">${l.title}</div>
+        </button>`).join('');
+      return `
+        <div class="discipline-cat-header">${cat}</div>
+        <div class="discipline-grid">${cardsHTML}</div>`;
+    }).join('');
+
   return `
-    <div class="view">
-      ${renderTopBar({ back: "goto('training')" })}
-      <h1 class="list-title">Parasportif.</h1>
-      <p class="list-intro">Respi · apnée · froid · mental.</p>
-      <div class="list-items">${itemsHTML}</div>
-    </div>`;
+    <div class="view has-tabbar">
+      ${renderTopBar()}
+      <h1 class="stats-page-title" style="margin-top: 20px;">Discipline.</h1>
+      <p class="discipline-intro">Souffle · apnée · froid · mental. Les pratiques qui te préparent à ce que le physique seul ne suffit pas à faire.</p>
+      ${sectionsHTML}
+    </div>
+    ${renderTabBar()}`;
 }
-function renderLexiqueDetail() {
+
+function renderDisciplineDetail() {
   const item = LEXIQUE.find(l => l.id === state.lexiqueId);
-  if (!item) return renderLexiqueList();
+  if (!item) return renderDiscipline();
   const whenHTML = item.when ? `<div class="lex-section"><div class="lex-section-head">Quand</div><ul>${item.when.map(w => `<li>${w}</li>`).join('')}</ul></div>` : '';
   const protocolHTML = item.protocol ? `
     <div class="lex-protocol">
@@ -4518,14 +4642,18 @@ function renderLexiqueDetail() {
     </div>` : '';
   return `
     <div class="view">
-      ${renderTopBar({ back: "goto('lexique-list')" })}
-      <div class="lex-cat">${item.cat}</div>
+      ${renderTopBar({ back: "goto('discipline')" })}
+      <div class="lex-cat">${item.icon || ''} ${item.cat}</div>
       <h1 class="lex-title">${item.title}</h1>
       <p class="lex-intro">${item.intro}</p>
       ${whenHTML}
       ${protocolHTML}
     </div>`;
 }
+
+// Legacy aliases so existing links (lexique-list, lexique-detail) still work
+function renderLexiqueList() { return renderDiscipline(); }
+function renderLexiqueDetail() { return renderDisciplineDetail(); }
 
 // ============================================================
 //  AUTH
@@ -4935,8 +5063,10 @@ function render() {
     case 'running': html = renderRunning(); break;
     case 'complete': html = renderComplete(); break;
     case 'bonus-list': html = renderBonusList(); break;
-    case 'lexique-list': html = renderLexiqueList(); break;
-    case 'lexique-detail': html = renderLexiqueDetail(); break;
+    case 'lexique-list':
+    case 'discipline': html = renderDiscipline(); break;
+    case 'lexique-detail':
+    case 'discipline-detail': html = renderDisciplineDetail(); break;
     default: html = renderTraining();
   }
   app.innerHTML = html;
