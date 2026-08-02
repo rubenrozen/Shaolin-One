@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v18 · Badges + signaux sonores
-const CACHE = 'shaolin-v18-cervin';
+// v19 · Rewards collapse/expand
+const CACHE = 'shaolin-v19-cervin';
 const ASSETS = [
   './',
   './index.html',
