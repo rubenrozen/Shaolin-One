@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v17 · Discipline tab avec 6 pratiques
-const CACHE = 'shaolin-v17-cervin';
+// v18 · Badges + signaux sonores
+const CACHE = 'shaolin-v18-cervin';
 const ASSETS = [
   './',
   './index.html',
