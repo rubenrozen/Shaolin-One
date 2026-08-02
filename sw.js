@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v16 · Fix rest timer + mask sol
-const CACHE = 'shaolin-v16-cervin';
+// v17 · Discipline tab avec 6 pratiques
+const CACHE = 'shaolin-v17-cervin';
 const ASSETS = [
   './',
   './index.html',
