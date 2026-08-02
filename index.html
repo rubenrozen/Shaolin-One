@@ -1025,21 +1025,34 @@
     margin-top: auto;
   }
 
-  /* ============ REWARDS / BADGES ============ */
-  .rewards-headline {
+  /* ============ REWARDS / BADGES (collapse/expand) ============ */
+  .rewards-summary-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
-    margin: 10px 0 22px;
+    margin: 10px 0 0;
   }
-  .rewards-headline-card {
+  .rewards-box {
     background: var(--paper-elev);
-    border-radius: 16px;
-    padding: 16px 14px;
+    border-radius: 20px;
+    padding: 18px 16px 14px;
     border: 1px solid var(--line);
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    gap: 4px;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.2s, border-color 0.2s;
+    position: relative;
   }
-  .rewards-headline-num {
+  .rewards-box:active { transform: scale(0.98); }
+  .rewards-box.expanded {
+    background: var(--gold-bg);
+    border-color: var(--gold);
+    box-shadow: 0 0 12px var(--gold-halo);
+  }
+  .rewards-box-num {
     font-family: var(--font-display);
     font-size: 46px;
     font-weight: 800;
@@ -1048,69 +1061,116 @@
     letter-spacing: -0.03em;
     line-height: 0.9;
   }
-  .rewards-headline-label {
+  .rewards-box-label {
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink-faint);
     font-weight: 700;
-    margin-top: 6px;
+    margin-top: 4px;
+  }
+  .rewards-box-tier {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+    width: 100%;
+  }
+  .rewards-box.expanded .rewards-box-tier { border-top-color: var(--gold); }
+  .rewards-box-tier-icon {
+    font-family: var(--font-display);
+    font-size: 14px;
+    color: var(--gold-deep);
+    font-variation-settings: var(--display-strong);
+    letter-spacing: 0.03em;
+  }
+  .rewards-box-tier-label {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    font-variation-settings: var(--display-strong);
+    line-height: 1;
+  }
+  .rewards-box-tier-empty {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .rewards-box-chevron {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    line-height: 1;
+    transition: transform 0.2s, color 0.2s;
+  }
+  .rewards-box.expanded .rewards-box-chevron {
+    color: var(--gold-deep);
+    transform: rotate(180deg);
   }
 
-  .badge-section-header {
+  .rewards-detail {
+    margin-top: 12px;
+    background: var(--paper-elev);
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    padding: 18px;
+    box-shadow: 0 0 16px var(--gold-halo);
+    animation: rewards-expand 0.28s ease;
+  }
+  @keyframes rewards-expand {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .rewards-detail-head {
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--ink-faint);
     font-weight: 700;
-    margin: 22px 4px 10px;
+    margin-bottom: 14px;
   }
-  .badge-grid {
+  .rewards-detail-tier {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    grid-template-columns: 34px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
   }
-  .badge {
-    background: var(--paper-elev);
-    border-radius: 16px;
-    padding: 16px 14px 14px;
-    border: 1px solid var(--line);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    min-height: 110px;
-    position: relative;
-    transition: all 0.15s;
-  }
-  .badge.unlocked {
-    background: var(--gold-bg);
-    border-color: var(--gold);
-    box-shadow: 0 0 12px var(--gold-halo);
-  }
-  .badge.locked { opacity: 0.42; }
-  .badge-icon {
+  .rewards-detail-tier:first-of-type { border-top: none; padding-top: 0; }
+  .rewards-detail-tier-icon {
     font-family: var(--font-display);
-    font-size: 22px;
-    line-height: 1;
+    font-size: 18px;
     color: var(--gold-deep);
-    letter-spacing: 0.05em;
     font-variation-settings: var(--display-strong);
-    margin-bottom: 4px;
+    text-align: center;
+    letter-spacing: 0.03em;
+    line-height: 1;
   }
-  .badge.locked .badge-icon { color: var(--ink-faint); }
-  .badge-label {
+  .rewards-detail-tier.locked .rewards-detail-tier-icon { color: var(--ink-faint); opacity: 0.5; }
+  .rewards-detail-tier-body { min-width: 0; }
+  .rewards-detail-tier-label {
     font-family: var(--font-display);
     font-size: 15px;
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     color: var(--ink);
     font-variation-settings: var(--display-strong);
     line-height: 1.1;
   }
-  .badge-desc {
+  .rewards-detail-tier.locked .rewards-detail-tier-label { color: var(--ink-soft); opacity: 0.65; }
+  .rewards-detail-tier-desc {
     font-family: var(--font-mono);
     font-size: 10px;
     color: var(--ink-soft);
@@ -1119,17 +1179,19 @@
     line-height: 1.35;
     margin-top: 2px;
   }
-  .badge-threshold {
+  .rewards-detail-tier-status {
     font-family: var(--font-mono);
-    font-size: 9px;
-    color: var(--gold-deep);
+    font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    margin-top: auto;
-    padding-top: 6px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
   }
-  .badge.locked .badge-threshold { color: var(--ink-faint); }
+  .rewards-detail-tier-status.unlocked { background: var(--gold-bg); color: var(--gold-deep); }
+  .rewards-detail-tier-status.next { background: rgba(31,82,52,0.08); color: var(--pine); }
+  .rewards-detail-tier-status.locked { background: transparent; color: var(--ink-faint); }
   .steps-detail-count {
     font-family: var(--font-mono);
     font-size: 10px;
@@ -3210,6 +3272,7 @@ const state = {
   timer: { running: false, paused: false, stepIdx: 0, stepElapsed: 0, totalElapsed: 0, intervalId: null },
   settings: { startDate: null, manualPhase: null },
   tab: 'training',
+  expandedRewards: null, // null | 'constance' | 'bonus'
   week: {
     id: getWeekId(),
     monday: getMondayOfWeek(new Date()).toISOString().slice(0, 10),
@@ -3454,6 +3517,22 @@ function computeRewards() {
   const constanceBadges = CONSTANCE_TIERS.map(t => ({ ...t, unlocked: fullWeeks >= t.threshold }));
   const bonusBadges = BONUS_TIERS.map(t => ({ ...t, unlocked: totalBonus >= t.threshold }));
   return { fullWeeks, totalBonus, constanceBadges, bonusBadges };
+}
+
+// Retourne le palier maximum atteint (ou null si aucun)
+function currentTier(badges) {
+  const unlocked = badges.filter(b => b.unlocked);
+  return unlocked.length ? unlocked[unlocked.length - 1] : null;
+}
+
+// Retourne le prochain palier à débloquer (ou null si tout est fait)
+function nextTier(badges) {
+  return badges.find(b => !b.unlocked) || null;
+}
+
+function toggleRewards(which) {
+  state.expandedRewards = (state.expandedRewards === which) ? null : which;
+  render();
 }
 
 // ============================================================
@@ -4092,39 +4171,61 @@ function renderTraining() {
 // ============================================================
 function renderRewardsSection() {
   const r = computeRewards();
-  const constanceHTML = r.constanceBadges.map(b => `
-    <div class="badge ${b.unlocked ? 'unlocked' : 'locked'}">
-      <div class="badge-icon">${b.icon}</div>
-      <div class="badge-label">${b.label}</div>
-      <div class="badge-desc">${b.desc}</div>
-      <div class="badge-threshold">${b.threshold} sem</div>
-    </div>`).join('');
-  const bonusHTML = r.bonusBadges.map(b => `
-    <div class="badge ${b.unlocked ? 'unlocked' : 'locked'}">
-      <div class="badge-icon">${b.icon}</div>
-      <div class="badge-label">${b.label}</div>
-      <div class="badge-desc">${b.desc}</div>
-      <div class="badge-threshold">${b.threshold} bonus</div>
-    </div>`).join('');
+  const constTier = currentTier(r.constanceBadges);
+  const bonusTier = currentTier(r.bonusBadges);
+  const expanded = state.expandedRewards;
+
+  const renderBox = (which, num, label, tier, unit) => {
+    const isExpanded = expanded === which;
+    const tierHTML = tier
+      ? `<div class="rewards-box-tier-icon">${tier.icon}</div><div class="rewards-box-tier-label">${tier.label}</div>`
+      : `<div class="rewards-box-tier-empty">Aucun palier</div>`;
+    return `
+      <button class="rewards-box ${isExpanded ? 'expanded' : ''}" onclick="toggleRewards('${which}')">
+        <div class="rewards-box-chevron">▼</div>
+        <div class="rewards-box-num">${num}</div>
+        <div class="rewards-box-label">${label}</div>
+        <div class="rewards-box-tier">${tierHTML}</div>
+      </button>`;
+  };
+
+  const renderDetail = (badges, unit) => {
+    const nextT = nextTier(badges);
+    const rowsHTML = badges.map(b => {
+      let status;
+      if (b.unlocked) status = { cls: 'unlocked', text: 'Débloqué' };
+      else if (nextT && b.threshold === nextT.threshold) status = { cls: 'next', text: `${b.threshold} · Prochain` };
+      else status = { cls: 'locked', text: `${b.threshold} ${unit}` };
+      return `
+        <div class="rewards-detail-tier ${b.unlocked ? 'unlocked' : 'locked'}">
+          <div class="rewards-detail-tier-icon">${b.icon}</div>
+          <div class="rewards-detail-tier-body">
+            <div class="rewards-detail-tier-label">${b.label}</div>
+            <div class="rewards-detail-tier-desc">${b.desc}</div>
+          </div>
+          <div class="rewards-detail-tier-status ${status.cls}">${status.text}</div>
+        </div>`;
+    }).join('');
+    return `
+      <div class="rewards-detail">
+        <div class="rewards-detail-head">Parcours des paliers</div>
+        ${rowsHTML}
+      </div>`;
+  };
+
+  const detailHTML = expanded === 'constance' ? renderDetail(r.constanceBadges, 'sem')
+                   : expanded === 'bonus' ? renderDetail(r.bonusBadges, 'bonus')
+                   : '';
 
   return `
       <div class="section-title" style="margin-top: 24px;">
         <div class="section-title-text">Récompenses</div>
       </div>
-      <div class="rewards-headline">
-        <div class="rewards-headline-card">
-          <div class="rewards-headline-num">${r.fullWeeks}</div>
-          <div class="rewards-headline-label">Semaines pleines</div>
-        </div>
-        <div class="rewards-headline-card">
-          <div class="rewards-headline-num">${r.totalBonus}</div>
-          <div class="rewards-headline-label">Bonus effectués</div>
-        </div>
+      <div class="rewards-summary-row">
+        ${renderBox('constance', r.fullWeeks, 'Semaines pleines', constTier, 'sem')}
+        ${renderBox('bonus', r.totalBonus, 'Bonus effectués', bonusTier, 'bonus')}
       </div>
-      <div class="badge-section-header">Constance · semaines 3/3</div>
-      <div class="badge-grid">${constanceHTML}</div>
-      <div class="badge-section-header">Extra · bonus cumulés</div>
-      <div class="badge-grid">${bonusHTML}</div>`;
+      ${detailHTML}`;
 }
 
 function renderCockpit() {
