@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v19 · Rewards collapse/expand
-const CACHE = 'shaolin-v19-cervin';
+// v22 · Moteur profil + vélo intérieur + discipline libre
+const CACHE = 'shaolin-v22-cervin';
 const ASSETS = [
   './',
   './index.html',
