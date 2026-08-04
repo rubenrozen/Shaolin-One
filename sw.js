@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v28 · Fix weeklyTarget suit template
-const CACHE = 'shaolin-v28-cervin';
+// v29 · Tous les 25 programmes implémentés
+const CACHE = 'shaolin-v29-cervin';
 const ASSETS = [
   './',
   './index.html',
