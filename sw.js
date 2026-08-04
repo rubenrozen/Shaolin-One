@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v22 · Moteur profil + vélo intérieur + discipline libre
-const CACHE = 'shaolin-v22-cervin';
+// v23 · Refonte sessions + templates hebdo
+const CACHE = 'shaolin-v23-cervin';
 const ASSETS = [
   './',
   './index.html',
