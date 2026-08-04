@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v29 · Tous les 25 programmes implémentés
-const CACHE = 'shaolin-v29-cervin';
+// v30 · Puissance et posture + cibles cardio par prog
+const CACHE = 'shaolin-v30-cervin';
 const ASSETS = [
   './',
   './index.html',
