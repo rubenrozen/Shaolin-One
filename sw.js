@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v25 · Score 3D km+D++allure + vélo int multi-mode
-const CACHE = 'shaolin-v25-cervin';
+// v26 · Programme Marathon complet
+const CACHE = 'shaolin-v26-cervin';
 const ASSETS = [
   './',
   './index.html',
