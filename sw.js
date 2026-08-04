@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v27 · Hotfix init state.week
-const CACHE = 'shaolin-v27-cervin';
+// v28 · Fix weeklyTarget suit template
+const CACHE = 'shaolin-v28-cervin';
 const ASSETS = [
   './',
   './index.html',
