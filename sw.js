@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v26 · Programme Marathon complet
-const CACHE = 'shaolin-v26-cervin';
+// v27 · Hotfix init state.week
+const CACHE = 'shaolin-v27-cervin';
 const ASSETS = [
   './',
   './index.html',
