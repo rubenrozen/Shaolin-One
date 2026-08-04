@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v23 · Refonte sessions + templates hebdo
-const CACHE = 'shaolin-v23-cervin';
+// v25 · Score 3D km+D++allure + vélo int multi-mode
+const CACHE = 'shaolin-v25-cervin';
 const ASSETS = [
   './',
   './index.html',
