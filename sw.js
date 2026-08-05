@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v38 · Discipline favoris + step onboarding
-const CACHE = 'shaolin-v38-cervin';
+// v39 · Stats collapsables intégrées Cockpit transversales
+const CACHE = 'shaolin-v39-cervin';
 const ASSETS = [
   './',
   './index.html',
