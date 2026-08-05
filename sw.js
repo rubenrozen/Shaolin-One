@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v39 · Stats collapsables intégrées Cockpit transversales
-const CACHE = 'shaolin-v39-cervin';
+// v40 · Fix crash cockpit + try/catch guard
+const CACHE = 'shaolin-v40-cervin';
 const ASSETS = [
   './',
   './index.html',
