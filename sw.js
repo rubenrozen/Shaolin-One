@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v41 · Fix aggregateUniversStats missing weeks var
-const CACHE = 'shaolin-v41-cervin';
+// v42 · Visualisation générique + fav sync Supabase + journey animée
+const CACHE = 'shaolin-v42-cervin';
 const ASSETS = [
   './',
   './index.html',
