@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v36 · Yoga/Pilates/Calisthenie + stats catégorie-aware
-const CACHE = 'shaolin-v36-cervin';
+// v38 · Discipline favoris + step onboarding
+const CACHE = 'shaolin-v38-cervin';
 const ASSETS = [
   './',
   './index.html',
