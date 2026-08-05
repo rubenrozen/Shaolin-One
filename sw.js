@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v33 · Univers stats visuel
-const CACHE = 'shaolin-v33-cervin';
+// v35 · Onglet Sports - 6 programmes dédiés
+const CACHE = 'shaolin-v35-cervin';
 const ASSETS = [
   './',
   './index.html',
