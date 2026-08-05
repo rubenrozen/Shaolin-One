@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v30 · Puissance et posture + cibles cardio par prog
-const CACHE = 'shaolin-v30-cervin';
+// v31 · Cardio alpinisme typé + discipline optionnelle
+const CACHE = 'shaolin-v31-cervin';
 const ASSETS = [
   './',
   './index.html',
