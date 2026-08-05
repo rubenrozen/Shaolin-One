@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v31 · Cardio alpinisme typé + discipline optionnelle
-const CACHE = 'shaolin-v31-cervin';
+// v33 · Univers stats visuel
+const CACHE = 'shaolin-v33-cervin';
 const ASSETS = [
   './',
   './index.html',
