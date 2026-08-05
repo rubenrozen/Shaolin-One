@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v35 · Onglet Sports - 6 programmes dédiés
-const CACHE = 'shaolin-v35-cervin';
+// v36 · Yoga/Pilates/Calisthenie + stats catégorie-aware
+const CACHE = 'shaolin-v36-cervin';
 const ASSETS = [
   './',
   './index.html',
