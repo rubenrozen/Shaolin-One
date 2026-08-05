@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v40 · Fix crash cockpit + try/catch guard
-const CACHE = 'shaolin-v40-cervin';
+// v41 · Fix aggregateUniversStats missing weeks var
+const CACHE = 'shaolin-v41-cervin';
 const ASSETS = [
   './',
   './index.html',
