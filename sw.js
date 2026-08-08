@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v42 · Visualisation générique + fav sync Supabase + journey animée
-const CACHE = 'shaolin-v42-cervin';
+// v44 · Sprint 1 - Terrain + Sport libre + Doctrine modulateurs
+const CACHE = 'shaolin-v44-cervin';
 const ASSETS = [
   './',
   './index.html',
