@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v44 · Sprint 1 - Terrain + Sport libre + Doctrine modulateurs
-const CACHE = 'shaolin-v44-cervin';
+// v45 · Debug guard render + init
+const CACHE = 'shaolin-v45-cervin';
 const ASSETS = [
   './',
   './index.html',
