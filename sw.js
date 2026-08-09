@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v47 · Migration Supabase nouveau projet
-const CACHE = 'shaolin-v47-cervin';
+// v48 · Debug verbose onbFinish + overlay erreur runtime
+const CACHE = 'shaolin-v48-cervin';
 const ASSETS = [
   './',
   './index.html',
