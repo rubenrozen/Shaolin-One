@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v48 · Debug verbose onbFinish + overlay erreur runtime
-const CACHE = 'shaolin-v48-cervin';
+// v51 · Sprint 4 - Onglet Seances + archives + filtres
+const CACHE = 'shaolin-v51-cervin';
 const ASSETS = [
   './',
   './index.html',
