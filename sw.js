@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v45 · Debug guard render + init
-const CACHE = 'shaolin-v45-cervin';
+// v46 · Boot safety net + error capture
+const CACHE = 'shaolin-v46-cervin';
 const ASSETS = [
   './',
   './index.html',
