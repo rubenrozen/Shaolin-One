@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v46 · Boot safety net + error capture
-const CACHE = 'shaolin-v46-cervin';
+// v47 · Migration Supabase nouveau projet
+const CACHE = 'shaolin-v47-cervin';
 const ASSETS = [
   './',
   './index.html',
