@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v54 · Illustrations webp sur exercices custom (16 mappings)
-const CACHE = 'shaolin-v54-cervin';
+// v55 · Refonte flow onboarding + mode sans objectif
+const CACHE = 'shaolin-v55-cervin';
 const ASSETS = [
   './',
   './index.html',
