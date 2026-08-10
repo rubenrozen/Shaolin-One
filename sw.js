@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v56 · Renfo generique 4 niveaux + courbe progression cardio-renfo
-const CACHE = 'shaolin-v56-cervin';
+// v57 · Mes stats collapse + Seances granulaire + barres
+const CACHE = 'shaolin-v57-cervin';
 const ASSETS = [
   './',
   './index.html',
