@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v55 · Refonte flow onboarding + mode sans objectif
-const CACHE = 'shaolin-v55-cervin';
+// v56 · Renfo generique 4 niveaux + courbe progression cardio-renfo
+const CACHE = 'shaolin-v56-cervin';
 const ASSETS = [
   './',
   './index.html',
