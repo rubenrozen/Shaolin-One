@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v53 · Blocs personnalisables + Custom bonus dans BONUS list
-const CACHE = 'shaolin-v53-cervin';
+// v54 · Illustrations webp sur exercices custom (16 mappings)
+const CACHE = 'shaolin-v54-cervin';
 const ASSETS = [
   './',
   './index.html',
