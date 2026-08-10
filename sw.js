@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v52 · Fix tabbar 4col + Seance libre simplifiee + Onglet Exercices
-const CACHE = 'shaolin-v52-cervin';
+// v53 · Blocs personnalisables + Custom bonus dans BONUS list
+const CACHE = 'shaolin-v53-cervin';
 const ASSETS = [
   './',
   './index.html',
