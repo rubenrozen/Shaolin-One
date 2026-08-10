@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v51 · Sprint 4 - Onglet Seances + archives + filtres
-const CACHE = 'shaolin-v51-cervin';
+// v52 · Fix tabbar 4col + Seance libre simplifiee + Onglet Exercices
+const CACHE = 'shaolin-v52-cervin';
 const ASSETS = [
   './',
   './index.html',
