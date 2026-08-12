@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v58 · Electric Yellow palette + status-bar ring + focus-card next session
-const CACHE = 'shaolin-v58-cervin';
+// v59 · Split Cockpit → Programme + Réglages, ring X/Y, focus-card conditionnelle
+const CACHE = 'shaolin-v59-cervin';
 const ASSETS = [
   './',
   './index.html',
