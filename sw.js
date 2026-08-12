@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v62 · Refonte Séances (groupées par semaine) + Exercices (grille 2 colonnes)
-const CACHE = 'shaolin-v62-cervin';
+// v64 · Refonte typo Réglages : Inter/Archivo, plus de mono terminal
+const CACHE = 'shaolin-v64-cervin';
 const ASSETS = [
   './',
   './index.html',
