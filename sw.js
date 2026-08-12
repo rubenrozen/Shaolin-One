@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v59 · Split Cockpit → Programme + Réglages, ring X/Y, focus-card conditionnelle
-const CACHE = 'shaolin-v59-cervin';
+// v62 · Refonte Séances (groupées par semaine) + Exercices (grille 2 colonnes)
+const CACHE = 'shaolin-v62-cervin';
 const ASSETS = [
   './',
   './index.html',
