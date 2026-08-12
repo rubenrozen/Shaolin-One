@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v57 · Mes stats collapse + Seances granulaire + barres
-const CACHE = 'shaolin-v57-cervin';
+// v58 · Electric Yellow palette + status-bar ring + focus-card next session
+const CACHE = 'shaolin-v58-cervin';
 const ASSETS = [
   './',
   './index.html',
