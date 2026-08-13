@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v64 · Refonte typo Réglages : Inter/Archivo, plus de mono terminal
-const CACHE = 'shaolin-v64-cervin';
+// v65 · Typo massive nettoyée (font-mono → Inter partout) + images exercices
+const CACHE = 'shaolin-v65-cervin';
 const ASSETS = [
   './',
   './index.html',
