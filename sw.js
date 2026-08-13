@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v65 · Typo massive nettoyée (font-mono → Inter partout) + images exercices
-const CACHE = 'shaolin-v65-cervin';
+// v66 · Sprint 1 GPS tracking : live map, coloration vitesse post-séance, compte rendu photo/titre/commentaire
+const CACHE = 'shaolin-v66-cervin';
 const ASSETS = [
   './',
   './index.html',
