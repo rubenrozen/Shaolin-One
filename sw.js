@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v66 · Sprint 1 GPS tracking : live map, coloration vitesse post-séance, compte rendu photo/titre/commentaire
-const CACHE = 'shaolin-v66-cervin';
+// v70 · Splash screen : vidéo moine + poster, en cache pour offline
+const CACHE = 'shaolin-v70-cervin';
 const ASSETS = [
   './',
   './index.html',
@@ -9,7 +9,9 @@ const ASSETS = [
   './icon-512.png',
   './icon-192-maskable.png',
   './icon-512-maskable.png',
-  './apple-touch-icon.png'
+  './apple-touch-icon.png',
+  './splash.mp4',
+  './splash-poster.jpg'
 ];
 
 self.addEventListener('install', (event) => {
