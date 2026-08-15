@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v74 · Expert bouclé toutes durées (6/9/12/18 mois) + Phase P auto (Sédentaire/60+/18m)
-const CACHE = 'shaolin-v74-cervin';
+// v75 · Fixes UX Expert : startDate fallback, status bar + journey + phase selector adaptés v72
+const CACHE = 'shaolin-v75-cervin';
 const ASSETS = [
   './',
   './index.html',
