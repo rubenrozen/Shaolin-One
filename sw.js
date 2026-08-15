@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v70 · Splash screen : vidéo moine + poster, en cache pour offline
-const CACHE = 'shaolin-v70-cervin';
+// v74 · Expert bouclé toutes durées (6/9/12/18 mois) + Phase P auto (Sédentaire/60+/18m)
+const CACHE = 'shaolin-v74-cervin';
 const ASSETS = [
   './',
   './index.html',
