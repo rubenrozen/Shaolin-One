@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v75 · Fixes UX Expert : startDate fallback, status bar + journey + phase selector adaptés v72
-const CACHE = 'shaolin-v75-cervin';
+// v75.1 · Fix positionnement patch Complémentaires (width 100% du wrap dans le grid)
+const CACHE = 'shaolin-v75-1-cervin';
 const ASSETS = [
   './',
   './index.html',
