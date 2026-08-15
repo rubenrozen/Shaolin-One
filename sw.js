@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v76 · Onboarding refondu (fondu progressif image + étape identité obligatoire + ton adouci) + splash HD 1080p
-const CACHE = 'shaolin-v76-cervin';
+// v82 · Multi-sports course/vélo/vélo intérieur + conversion cibles + FTP optionnel + étape onboarding sport
+const CACHE = 'shaolin-v82-cervin';
 const ASSETS = [
   './',
   './index.html',
