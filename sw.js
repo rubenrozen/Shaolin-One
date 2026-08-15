@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v82 · Multi-sports course/vélo/vélo intérieur + conversion cibles + FTP optionnel + étape onboarding sport
-const CACHE = 'shaolin-v82-cervin';
+// v83 · Expédition (5e famille alpinisme · altitude extrême 6000-8000+ m) — famille alpi bouclée
+const CACHE = 'shaolin-v83-cervin';
 const ASSETS = [
   './',
   './index.html',
