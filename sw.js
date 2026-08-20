@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v83 · Expédition (5e famille alpinisme · altitude extrême 6000-8000+ m) — famille alpi bouclée
-const CACHE = 'shaolin-v83-cervin';
+// v94 · Combat explosif (2e Sports & performance) + système Bases théoriques transverse (17 programmes)
+const CACHE = 'shaolin-v94-cervin';
 const ASSETS = [
   './',
   './index.html',
