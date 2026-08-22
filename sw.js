@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v109 · (a) Onboarding option "Créer mon programme sur mesure" (3e choix step 0.7 → skip discipline/programme/durée → step 4 → email → onbFinishCustomFlow → ouvre builder) · (b) Compétences acquises cross-programmes dans Réglages > Mes stats avec cycle validité (fresh 6m / to-refresh 3m / expired) + bouton Rafraîchir
-const CACHE = 'shaolin-v109-cervin';
+// v112 · Correction 3 dettes v110-v111 · (1) Saisie durée/km/D+ manuelle dans runner custom cardio + fallback estimation · (2) Hiérarchie parent/child muscles (jambes → quadriceps/ischios/etc, bras → biceps/triceps/etc, core → abdominaux/transverse/obliques, chaine-post transverse) + badge ◈ dans wizard + expandExerciseMuscles bidirectionnel · (3) Bouton 🔄 Régénérer sur customPrograms generatedFrom
+const CACHE = 'shaolin-v112-cervin';
 const ASSETS = [
   './',
   './index.html',
