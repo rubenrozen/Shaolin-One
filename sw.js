@@ -1,6 +1,6 @@
 // Shaolin One · service worker
-// v94 · Combat explosif (2e Sports & performance) + système Bases théoriques transverse (17 programmes)
-const CACHE = 'shaolin-v94-cervin';
+// v109 · (a) Onboarding option "Créer mon programme sur mesure" (3e choix step 0.7 → skip discipline/programme/durée → step 4 → email → onbFinishCustomFlow → ouvre builder) · (b) Compétences acquises cross-programmes dans Réglages > Mes stats avec cycle validité (fresh 6m / to-refresh 3m / expired) + bouton Rafraîchir
+const CACHE = 'shaolin-v109-cervin';
 const ASSETS = [
   './',
   './index.html',
